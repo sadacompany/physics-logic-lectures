@@ -564,5 +564,204 @@
   </footer>
 
   <script src="../js/main.js"></script>
+  <script>
+  (function() {
+    const canvas = document.getElementById('waveCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width;
+    const H = canvas.height;
+    const rowH = H / 3;
+
+    // Sliders
+    const freq1Slider = document.getElementById('freq1Slider');
+    const amp1Slider = document.getElementById('amp1Slider');
+    const freq2Slider = document.getElementById('freq2Slider');
+    const amp2Slider = document.getElementById('amp2Slider');
+    const phaseSlider = document.getElementById('phaseSlider');
+
+    // Labels
+    const freq1Val = document.getElementById('freq1Val');
+    const amp1Val = document.getElementById('amp1Val');
+    const freq2Val = document.getElementById('freq2Val');
+    const amp2Val = document.getElementById('amp2Val');
+    const phaseVal = document.getElementById('phaseVal');
+
+    // Data displays
+    const datFreq1 = document.getElementById('datFreq1');
+    const datFreq2 = document.getElementById('datFreq2');
+    const datBeatFreq = document.getElementById('datBeatFreq');
+    const datResultAmp = document.getElementById('datResultAmp');
+
+    // Buttons
+    const playBtn = document.getElementById('wavePlayBtn');
+    const pauseBtn = document.getElementById('wavePauseBtn');
+    const resetBtn = document.getElementById('waveResetBtn');
+
+    let running = true;
+    let time = 0;
+    let animId = null;
+
+    function getParams() {
+      return {
+        f1: parseFloat(freq1Slider.value) / 10,
+        a1: parseFloat(amp1Slider.value),
+        f2: parseFloat(freq2Slider.value) / 10,
+        a2: parseFloat(amp2Slider.value),
+        phase: parseFloat(phaseSlider.value) * Math.PI / 180
+      };
+    }
+
+    function updateLabels() {
+      const p = getParams();
+      freq1Val.textContent = p.f1.toFixed(1);
+      amp1Val.textContent = Math.round(p.a1);
+      freq2Val.textContent = p.f2.toFixed(1);
+      amp2Val.textContent = Math.round(p.a2);
+      phaseVal.textContent = Math.round(parseFloat(phaseSlider.value));
+    }
+
+    function drawRowBg(rowIndex, label, color) {
+      const y0 = rowIndex * rowH;
+      // Separator line
+      if (rowIndex > 0) {
+        ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+        ctx.beginPath();
+        ctx.moveTo(0, y0);
+        ctx.lineTo(W, y0);
+        ctx.stroke();
+      }
+      // Center line
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(0, y0 + rowH / 2);
+      ctx.lineTo(W, y0 + rowH / 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      // Label
+      ctx.font = "11px 'Space Grotesk', monospace";
+      ctx.fillStyle = color;
+      ctx.globalAlpha = 0.5;
+      ctx.fillText(label, 8, y0 + 16);
+      ctx.globalAlpha = 1;
+    }
+
+    function drawWave(rowIndex, freq, amp, phaseOffset, color, t) {
+      const y0 = rowIndex * rowH;
+      const cy = y0 + rowH / 2;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for (let x = 0; x < W; x++) {
+        const xNorm = x / W;
+        const val = amp * Math.sin(2 * Math.PI * freq * (xNorm * 4 - t) + phaseOffset);
+        const clamped = Math.max(-rowH / 2 + 4, Math.min(rowH / 2 - 4, val));
+        if (x === 0) ctx.moveTo(x, cy + clamped);
+        else ctx.lineTo(x, cy + clamped);
+      }
+      ctx.stroke();
+      ctx.lineWidth = 1;
+    }
+
+    function drawResultant(t) {
+      const p = getParams();
+      const y0 = 2 * rowH;
+      const cy = y0 + rowH / 2;
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      let maxAmp = 0;
+      for (let x = 0; x < W; x++) {
+        const xNorm = x / W;
+        const v1 = p.a1 * Math.sin(2 * Math.PI * p.f1 * (xNorm * 4 - t));
+        const v2 = p.a2 * Math.sin(2 * Math.PI * p.f2 * (xNorm * 4 - t) + p.phase);
+        const val = v1 + v2;
+        const absVal = Math.abs(val);
+        if (absVal > maxAmp) maxAmp = absVal;
+        const clamped = Math.max(-rowH / 2 + 4, Math.min(rowH / 2 - 4, val));
+        if (x === 0) ctx.moveTo(x, cy + clamped);
+        else ctx.lineTo(x, cy + clamped);
+      }
+      ctx.stroke();
+      ctx.lineWidth = 1;
+      return maxAmp;
+    }
+
+    function updateData(maxAmp) {
+      const p = getParams();
+      datFreq1.textContent = p.f1.toFixed(1);
+      datFreq2.textContent = p.f2.toFixed(1);
+      datBeatFreq.textContent = Math.abs(p.f1 - p.f2).toFixed(1);
+      datResultAmp.textContent = maxAmp.toFixed(1);
+    }
+
+    function frame() {
+      ctx.clearRect(0, 0, W, H);
+      const p = getParams();
+
+      // Draw row backgrounds
+      drawRowBg(0, 'Wave 1', '#00d4ff');
+      drawRowBg(1, 'Wave 2', '#ff00ff');
+      drawRowBg(2, 'Resultant', '#ffffff');
+
+      // Draw waves
+      drawWave(0, p.f1, p.a1, 0, '#00d4ff', time);
+      drawWave(1, p.f2, p.a2, p.phase, '#ff00ff', time);
+      const maxAmp = drawResultant(time);
+
+      updateData(maxAmp);
+
+      if (running) {
+        time += 0.008;
+      }
+
+      animId = requestAnimationFrame(frame);
+    }
+
+    // Slider events
+    freq1Slider.addEventListener('input', updateLabels);
+    amp1Slider.addEventListener('input', updateLabels);
+    freq2Slider.addEventListener('input', updateLabels);
+    amp2Slider.addEventListener('input', updateLabels);
+    phaseSlider.addEventListener('input', updateLabels);
+
+    // Buttons
+    playBtn.addEventListener('click', function() {
+      running = true;
+      playBtn.classList.add('active');
+      pauseBtn.classList.remove('active');
+    });
+    pauseBtn.addEventListener('click', function() {
+      running = false;
+      pauseBtn.classList.add('active');
+      playBtn.classList.remove('active');
+    });
+    resetBtn.addEventListener('click', function() {
+      time = 0;
+      running = true;
+      playBtn.classList.add('active');
+      pauseBtn.classList.remove('active');
+      freq1Slider.value = 20; amp1Slider.value = 50;
+      freq2Slider.value = 25; amp2Slider.value = 50;
+      phaseSlider.value = 0;
+      updateLabels();
+    });
+
+    // Responsive canvas sizing
+    function resizeCanvas() {
+      const wrap = canvas.parentElement;
+      const w = wrap.clientWidth;
+      const ratio = 480 / 800;
+      canvas.style.height = (w * ratio) + 'px';
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Init
+    updateLabels();
+    frame();
+  })();
+  </script>
 </body>
 </html>

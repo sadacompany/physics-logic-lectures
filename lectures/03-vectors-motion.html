@@ -224,7 +224,7 @@
 
           <div class="example">
             <div class="example-label">Worked Example &mdash; Adding Displacement Vectors</div>
-            <p>A hiker walks 6.0 km at 30&deg; north of east, then 4.0 km due north. Find the magnitude and direction of the total displacement.</p>
+            <p>A hiker walks 6.0 km at 30&deg; north of east, then 4.0 km due north. Find the magnitude and direction of the total displacement. This is a classic two-step displacement problem that showcases the power of the component method.</p>
             <div class="solution">
               <div class="solution-label">Solution</div>
               <p><strong>Step 1: Resolve each vector into components.</strong></p>
@@ -306,6 +306,7 @@
           <p>Displacement is the quantity that connects most naturally to the rest of kinematics. Velocity is defined as the rate of change of displacement, not distance. This is why direction matters so much in physics: the vector nature of displacement propagates through every equation of motion we will encounter.</p>
           <p>In two dimensions, displacement becomes even more interesting. Suppose you walk 4 meters east and then 3 meters north. Your total distance is 7 meters, but your displacement is the straight-line vector from your starting point to your ending point: 5 meters at approximately 36.9&deg; north of east (from the Pythagorean theorem: &radic;(4&sup2; + 3&sup2;) = 5). The displacement vector encodes both how far you are from the start and in what direction. This is precisely the kind of information needed to describe an object&rsquo;s position change in a coordinate system, which is why displacement rather than distance appears in the equations of motion.</p>
           <p>One subtle but important point: displacement depends only on the initial and final positions. It is completely independent of the path taken. Whether you walk in a straight line from A to B, or take a winding detour through C, D, and E before arriving at B, the displacement is the same&mdash;it is always the vector from A to B. This property makes displacement especially useful in physics because it simplifies the mathematics: we do not need to know every detail of the journey, only where it began and where it ended.</p>
+          <p>In the language of mathematics, displacement is said to be <strong>path-independent</strong>. This property will become extremely important when we study energy in Lecture 5, where we will encounter another path-independent quantity: the work done by conservative forces. The parallel is not a coincidence&mdash;it reflects a deep mathematical structure shared by all path-independent quantities in physics. For now, simply remember that displacement is determined entirely by the endpoints, never by the route between them.</p>
         </section>
 
         <!-- Section: Velocity -->
@@ -429,6 +430,7 @@
 
           <h3>Why &ldquo;Uniformly&rdquo; Accelerated?</h3>
           <p>The word &ldquo;uniformly&rdquo; is crucial. It means the acceleration is constant&mdash;it does not change with time. Many forms of acceleration are not uniform: a car&rsquo;s acceleration depends on engine power and speed, air resistance increases with velocity, and springs exert forces that depend on displacement. The kinematic equations we derive in this section are valid <em>only</em> when acceleration is constant. Applying them to situations with changing acceleration will give wrong answers. Always verify that the acceleration is constant before reaching for these equations.</p>
+          <p>Despite this limitation, uniformly accelerated motion is extremely common and useful. Free fall near the Earth&rsquo;s surface is uniformly accelerated (a = g &asymp; 9.8 m/s&sup2; downward). Objects sliding down frictionless inclined planes experience uniform acceleration. Charged particles in uniform electric fields accelerate uniformly. And even when acceleration is not perfectly constant, the kinematic equations can often be applied over short intervals where the acceleration is approximately constant, then the results stitched together. This piecewise-constant approximation is, in essence, the idea behind numerical integration, one of the most powerful techniques in computational physics.</p>
 
           <h3>First Kinematic Equation: Velocity as a Function of Time</h3>
           <p>Since acceleration is constant, the change in velocity during any time interval is simply the acceleration multiplied by the time. Starting from the definition a = &Delta;v / &Delta;t and rearranging:</p>
