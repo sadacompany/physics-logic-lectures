@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pendulum — Physics Logic Simulations</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .sim-hero { padding: var(--space-2xl) var(--space-lg) var(--space-lg); text-align: center; }
+    .sim-hero .label { display: inline-block; font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--electric); background: var(--electric-glow); padding: 4px 14px; border-radius: 20px; margin-bottom: var(--space-sm); }
+    .sim-hero h1 { font-size: var(--text-3xl); margin-bottom: var(--space-xs); }
+    .sim-hero h1 em { color: var(--magenta); font-style: normal; }
+    .sim-hero p { color: var(--text-secondary); max-width: 640px; margin: 0 auto; font-size: var(--text-base); }
+
+    .sim-container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-lg) var(--space-2xl); display: grid; grid-template-columns: 1fr 320px; gap: var(--space-lg); }
+    .sim-main { display: flex; flex-direction: column; gap: var(--space-md); }
+
+    .canvas-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: var(--void-light); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    .canvas-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    .sim-controls { display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; }
+    .sim-btn { font-family: var(--font-display); font-size: var(--text-sm); font-weight: 600; padding: 10px 22px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface); color: var(--text-primary); cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+    .sim-btn:hover { border-color: var(--electric); color: var(--electric); box-shadow: 0 0 16px var(--electric-glow); }
+    .sim-btn.active { background: var(--electric); color: var(--void); border-color: var(--electric); }
+    .sim-btn.reset-btn:hover { border-color: var(--magenta); color: var(--magenta); box-shadow: 0 0 16px var(--magenta-glow); }
+
+    .sim-sidebar { display: flex; flex-direction: column; gap: var(--space-md); }
+    .sim-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-md); }
+    .sim-panel h3 { font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--electric); margin-bottom: var(--space-sm); display: flex; align-items: center; gap: 8px; }
+    .sim-panel h3::before { content: ''; width: 3px; height: 14px; background: var(--electric); border-radius: 2px; }
+
+    .slider-group { margin-bottom: var(--space-sm); }
+    .slider-label { display: flex; justify-content: space-between; align-items: center; font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: 6px; }
+    .slider-label .slider-val { color: var(--electric); font-weight: 600; font-family: var(--font-display); }
+
+    input[type="range"] { -webkit-appearance: none; width: 100%; height: 6px; background: var(--surface-hover); border-radius: 3px; outline: none; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--electric); border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px var(--electric-glow-strong); border: 2px solid var(--void); }
+    input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; background: var(--electric); border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px rgba(0,212,255,0.3); border: 2px solid var(--void); }
+
+    .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .data-item { background: var(--void-light); border-radius: var(--radius-sm); padding: 10px 12px; }
+    .data-item .data-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 2px; }
+    .data-item .data-value { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; color: var(--electric); }
+    .data-item .data-unit { font-size: var(--text-xs); color: var(--text-muted); margin-left: 4px; }
+    .data-item.lime .data-value { color: var(--lime); }
+    .data-item.magenta .data-value { color: var(--magenta); }
+    .data-item.gold .data-value { color: var(--gold); }
+
+    .formula-display { text-align: center; padding: 12px; background: var(--void-light); border-radius: var(--radius-md); margin-bottom: var(--space-sm); border: 1px solid var(--border); }
+    .formula-display .formula { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--magenta); }
+    .formula-display .formula-sub { font-size: var(--text-xs); color: var(--text-muted); margin-top: 4px; }
+
+    .comparison-row { display: flex; gap: 8px; margin-top: 8px; }
+    .comparison-item { flex: 1; background: var(--void-light); border-radius: var(--radius-sm); padding: 8px 10px; text-align: center; }
+    .comparison-item .comp-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 2px; }
+    .comparison-item .comp-value { font-family: var(--font-display); font-size: 1rem; font-weight: 600; }
+    .comparison-item .comp-value.theory { color: var(--lime); }
+    .comparison-item .comp-value.measured { color: var(--magenta); }
+
+    .explanation-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-md); margin-top: 0; }
+    .explanation-panel h3 { font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--violet); margin-bottom: var(--space-sm); display: flex; align-items: center; gap: 8px; }
+    .explanation-panel h3::before { content: ''; width: 3px; height: 14px; background: var(--violet); border-radius: 2px; }
+    #explanation-text { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.7; }
+    #explanation-text strong { color: var(--electric); font-weight: 600; }
+
+    @media (max-width: 900px) {
+      .sim-container { grid-template-columns: 1fr; }
+      .canvas-wrap { aspect-ratio: 4/3; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reading-progress"></div>
+  <nav class="nav"><div class="nav-inner">
+    <a href="../index.html" class="nav-brand"><span class="brand-icon">&phi;</span> Physics Logic</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../lectures.html">Lectures</a>
+      <a href="../simulations.html" class="active">Simulations</a>
+      <a href="../faq.html">FAQ</a>
+    </div>
+    <div class="nav-search"><span class="search-icon">&#128269;</span><input type="text" placeholder="Search lectures..."><div class="search-results"></div></div>
+    <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+  </div></nav>
+
+  <main class="main-content">
+    <section class="sim-hero">
+      <span class="label">Simulation</span>
+      <h1>The <em>Pendulum</em></h1>
+      <p>Swing a pendulum from any angle and length. Measure the period and compare it to the small-angle approximation T = 2 pi sqrt(L/g). Explore how large angles cause the period to deviate from theory.</p>
+    </section>
+
+    <div class="sim-container">
+      <div class="sim-main">
+        <div class="canvas-wrap">
+          <canvas id="simCanvas"></canvas>
+        </div>
+        <div class="sim-controls">
+          <button class="sim-btn" id="btn-play">&#9654; Play</button>
+          <button class="sim-btn" id="btn-pause">&#10074;&#10074; Pause</button>
+          <button class="sim-btn reset-btn" id="btn-reset">&#8634; Reset</button>
+        </div>
+        <div class="explanation-panel">
+          <h3>What's Happening</h3>
+          <div id="explanation-text">Press <strong>Play</strong> to release the pendulum from the initial angle. The restoring force is proportional to sin(theta), not theta itself. For small angles these are nearly equal, making the motion approximately simple harmonic.</div>
+        </div>
+      </div>
+
+      <div class="sim-sidebar">
+        <div class="sim-panel">
+          <div class="formula-display">
+            <div class="formula">T = 2&pi;&radic;(L/g)</div>
+            <div class="formula-sub">Small-angle approximation</div>
+          </div>
+          <h3>Parameters</h3>
+          <div class="slider-group">
+            <div class="slider-label"><span>Length</span><span class="slider-val"><span id="disp-length">2</span> m</span></div>
+            <input type="range" id="sl-length" min="0.5" max="5" step="0.1" value="2">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Initial Angle</span><span class="slider-val"><span id="disp-angle">30</span>&deg;</span></div>
+            <input type="range" id="sl-angle" min="5" max="170" step="1" value="30">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Gravity</span><span class="slider-val"><span id="disp-g">9.81</span> m/s&sup2;</span></div>
+            <input type="range" id="sl-g" min="1" max="20" step="0.1" value="9.81">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Damping</span><span class="slider-val" id="disp-damp">0.00</span></div>
+            <input type="range" id="sl-damp" min="0" max="0.5" step="0.01" value="0">
+          </div>
+        </div>
+
+        <div class="sim-panel">
+          <h3>Period Comparison</h3>
+          <div class="comparison-row">
+            <div class="comparison-item">
+              <div class="comp-label">Theory (small angle)</div>
+              <div class="comp-value theory" id="data-t-theory">--</div>
+            </div>
+            <div class="comparison-item">
+              <div class="comp-label">Measured</div>
+              <div class="comp-value measured" id="data-t-measured">--</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sim-panel">
+          <h3>Live Data</h3>
+          <div class="data-grid">
+            <div class="data-item">
+              <div class="data-label">Angle</div>
+              <div><span class="data-value" id="data-angle">0</span><span class="data-unit">&deg;</span></div>
+            </div>
+            <div class="data-item lime">
+              <div class="data-label">Angular Vel.</div>
+              <div><span class="data-value" id="data-omega">0</span><span class="data-unit">rad/s</span></div>
+            </div>
+            <div class="data-item">
+              <div class="data-label">KE</div>
+              <div><span class="data-value" id="data-ke">0</span><span class="data-unit">J</span></div>
+            </div>
+            <div class="data-item magenta">
+              <div class="data-label">PE</div>
+              <div><span class="data-value" id="data-pe">0</span><span class="data-unit">J</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <div class="footer-brand">Physics Logic</div>
+          <p class="footer-desc">A free educational platform dedicated to teaching physics through deep reasoning and logical thinking.</p>
+        </div>
+        <div class="footer-col"><h5>Simulations</h5><a href="../simulations.html">All Simulations</a><a href="simple-harmonic-motion.html">SHM</a><a href="projectile-motion.html">Projectile</a></div>
+        <div class="footer-col"><h5>Resources</h5><a href="../about.html">About</a><a href="../lectures.html">Lectures</a><a href="../faq.html">FAQ</a></div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Physics Logic Lectures. All rights reserved.</span>
+        <span>Built for learners, by learners.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/simulations.js"></script>
+  <script>
+  (function() {
+    let length = 2, initAngleDeg = 30, grav = 9.81, damping = 0;
+    let theta = 0, omega = 0; // angle (rad) and angular velocity
+    let trail = [];
+    let measuredPeriod = 0;
+    let lastCrossTime = 0;
+    let crossCount = 0;
+    let crossDir = 0; // direction of last zero crossing
+    const mass = 1; // kg (doesn't affect period)
+
+    const sim = new SimController('simCanvas');
+    const angleGraph = new GraphPlotter(300);
+    angleGraph.addDataset('angle', SIM_COLORS.magenta, 'Angle (\u00B0)');
+    angleGraph.addDataset('omega', SIM_COLORS.lime, '\u03C9 (rad/s)');
+
+    function theoreticalPeriod() {
+      return 2 * Math.PI * Math.sqrt(length / grav);
+    }
+
+    bindSlider('sl-length', 'disp-length', v => { length = v; updateTheory(); });
+    bindSlider('sl-angle', 'disp-angle', v => { initAngleDeg = v; });
+    bindSlider('sl-g', 'disp-g', v => { grav = v; updateTheory(); });
+    bindSlider('sl-damp', 'disp-damp', v => { damping = v; });
+
+    function updateTheory() {
+      setDisplay('data-t-theory', formatNum(theoreticalPeriod(), 3) + ' s');
+    }
+
+    sim.onReset = function() {
+      theta = degToRad(initAngleDeg);
+      omega = 0;
+      trail = [];
+      measuredPeriod = 0;
+      lastCrossTime = 0;
+      crossCount = 0;
+      crossDir = 0;
+      angleGraph.clear();
+      updateTheory();
+      setDisplay('data-t-measured', '--');
+      updateDisplays();
+      setExplanation('Press <strong>Play</strong> to release the pendulum from the initial angle. The restoring force is proportional to sin(\u03B8), not \u03B8 itself. For small angles these are nearly equal, making the motion approximately simple harmonic.');
+    };
+
+    sim.update = function(dt) {
+      // Exact pendulum equation: d2theta/dt2 = -(g/L)*sin(theta) - b*omega
+      const b = damping * 2 * Math.sqrt(grav / length);
+      const alpha = -(grav / length) * Math.sin(theta) - b * omega;
+
+      const prevTheta = theta;
+      omega += alpha * dt;
+      theta += omega * dt;
+
+      // Detect zero-crossing (going from positive to negative angle) for period measurement
+      if (prevTheta > 0 && theta <= 0 && omega < 0) {
+        if (crossCount > 0 && lastCrossTime > 0) {
+          measuredPeriod = (sim.time - lastCrossTime);
+          setDisplay('data-t-measured', formatNum(measuredPeriod, 3) + ' s');
+        }
+        lastCrossTime = sim.time;
+        crossCount++;
+      }
+
+      trail.push({ t: sim.time, theta: theta });
+      if (trail.length > 600) trail.shift();
+
+      angleGraph.push('angle', radToDeg(theta));
+      angleGraph.push('omega', omega);
+
+      updateDisplays();
+      updateExplanation();
+    };
+
+    function updateDisplays() {
+      const thetaDeg = radToDeg(theta);
+      const h = length * (1 - Math.cos(theta));
+      const ke = 0.5 * mass * (length * omega) * (length * omega);
+      const pe = mass * grav * h;
+
+      setDisplay('data-angle', thetaDeg);
+      setDisplay('data-omega', omega);
+      setDisplay('data-ke', ke);
+      setDisplay('data-pe', pe);
+    }
+
+    function updateExplanation() {
+      const tPred = theoreticalPeriod();
+      if (measuredPeriod > 0) {
+        const diff = ((measuredPeriod - tPred) / tPred) * 100;
+        if (Math.abs(diff) < 2) {
+          setExplanation('At <strong>' + initAngleDeg + '\u00B0</strong>, the small-angle approximation works well. Theoretical period: <strong>' + formatNum(tPred, 3) + ' s</strong>. Measured period: <strong>' + formatNum(measuredPeriod, 3) + ' s</strong>. Difference: <strong>' + formatNum(Math.abs(diff), 1) + '%</strong>. The sin(\u03B8) \u2248 \u03B8 approximation holds for angles below ~15\u00B0.');
+        } else {
+          setExplanation('At <strong>' + initAngleDeg + '\u00B0</strong>, the real period deviates from the small-angle formula. Theoretical (small-angle): <strong>' + formatNum(tPred, 3) + ' s</strong>. Measured: <strong>' + formatNum(measuredPeriod, 3) + ' s</strong>. Difference: <strong>' + formatNum(Math.abs(diff), 1) + '%</strong>. Large angles make the pendulum swing slower because sin(\u03B8) < \u03B8 for large \u03B8.');
+        }
+      } else {
+        setExplanation('The pendulum is swinging from <strong>' + initAngleDeg + '\u00B0</strong>. Waiting to measure the period... The first complete oscillation will give us a measured period to compare with the theoretical <strong>' + formatNum(tPred, 3) + ' s</strong>.');
+      }
+    }
+
+    sim.draw = function() {
+      const w = this.getWidth(), h = this.getHeight();
+      const ctx = this.ctx;
+      ctx.clearRect(0, 0, w, h);
+      drawGrid(ctx, w, h);
+
+      const pendulumAreaH = h * 0.6;
+      const graphAreaH = h - pendulumAreaH - 10;
+
+      // ── Pendulum Visualization ──
+      const pivotX = w * 0.4;
+      const pivotY = 60;
+      const maxLen = Math.min(pendulumAreaH - 80, w * 0.35);
+      const pixelLen = (length / 5) * maxLen; // scale: 5m = maxLen pixels
+      const bobR = 16;
+
+      // Bob position
+      const bobX = pivotX + pixelLen * Math.sin(theta);
+      const bobY = pivotY + pixelLen * Math.cos(theta);
+
+      // Pivot
+      ctx.fillStyle = SIM_COLORS.surfaceRaised;
+      ctx.fillRect(pivotX - 40, pivotY - 6, 80, 6);
+      ctx.strokeStyle = SIM_COLORS.electric;
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(pivotX - 40, pivotY); ctx.lineTo(pivotX + 40, pivotY); ctx.stroke();
+
+      // Pivot dot
+      ctx.fillStyle = SIM_COLORS.electric;
+      ctx.beginPath();
+      ctx.arc(pivotX, pivotY, 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Trail (arc of bob path)
+      if (trail.length > 2) {
+        ctx.strokeStyle = 'rgba(255,45,123,0.15)';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        trail.forEach((p, i) => {
+          const tx = pivotX + pixelLen * Math.sin(p.theta);
+          const ty = pivotY + pixelLen * Math.cos(p.theta);
+          if (i === 0) ctx.moveTo(tx, ty); else ctx.lineTo(tx, ty);
+        });
+        ctx.stroke();
+      }
+
+      // Equilibrium line (dashed)
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath(); ctx.moveTo(pivotX, pivotY); ctx.lineTo(pivotX, pivotY + pixelLen + 20); ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Angle arc
+      if (Math.abs(theta) > 0.02) {
+        const arcR = Math.min(50, pixelLen * 0.3);
+        ctx.strokeStyle = SIM_COLORS.gold;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        if (theta > 0) {
+          ctx.arc(pivotX, pivotY, arcR, Math.PI / 2 - theta, Math.PI / 2);
+        } else {
+          ctx.arc(pivotX, pivotY, arcR, Math.PI / 2, Math.PI / 2 - theta);
+        }
+        ctx.stroke();
+
+        ctx.fillStyle = SIM_COLORS.gold;
+        ctx.font = '11px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'left';
+        const labelX = pivotX + (arcR + 8) * Math.sin(theta / 2);
+        const labelY = pivotY + (arcR + 8) * Math.cos(theta / 2);
+        ctx.fillText(formatNum(radToDeg(theta), 1) + '\u00B0', labelX + 4, labelY);
+      }
+
+      // Rod
+      ctx.strokeStyle = SIM_COLORS.textSecondary;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(pivotX, pivotY);
+      ctx.lineTo(bobX, bobY);
+      ctx.stroke();
+
+      // Bob glow
+      ctx.shadowColor = SIM_COLORS.magenta;
+      ctx.shadowBlur = 15;
+      ctx.fillStyle = SIM_COLORS.magenta;
+      ctx.beginPath();
+      ctx.arc(bobX, bobY, bobR, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      ctx.strokeStyle = SIM_COLORS.white;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(bobX, bobY, bobR, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Velocity tangent arrow
+      if (Math.abs(omega) > 0.05) {
+        const tangentX = Math.cos(theta);
+        const tangentY = -Math.sin(theta);
+        const vMag = clamp(Math.abs(omega * pixelLen) * 0.4, 5, 80);
+        const dir = omega > 0 ? 1 : -1;
+        drawArrow(ctx, bobX, bobY, bobX + dir * tangentX * vMag, bobY + dir * tangentY * vMag, SIM_COLORS.lime, 7, 2);
+      }
+
+      // Gravity arrow on bob
+      const gArrowLen = 30;
+      drawArrow(ctx, bobX, bobY + bobR + 5, bobX, bobY + bobR + 5 + gArrowLen, SIM_COLORS.textMuted, 6, 1.5);
+      ctx.fillStyle = SIM_COLORS.textMuted;
+      ctx.font = '10px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('g', bobX + 6, bobY + bobR + 5 + gArrowLen / 2);
+
+      // Height marker
+      const heightPx = pixelLen - pixelLen * Math.cos(theta);
+      if (heightPx > 2) {
+        const hLineY = pivotY + pixelLen;
+        ctx.strokeStyle = 'rgba(0,212,255,0.3)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.moveTo(bobX, bobY); ctx.lineTo(bobX, hLineY); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = SIM_COLORS.electric;
+        ctx.font = '10px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'left';
+        const hVal = length * (1 - Math.cos(theta));
+        ctx.fillText('h=' + formatNum(hVal) + 'm', bobX + 8, (bobY + hLineY) / 2);
+      }
+
+      // ── Right side: Period & Energy info ──
+      const infoX = w * 0.7;
+      const infoY = 70;
+
+      // Energy bars (vertical, next to pendulum)
+      const barX = infoX;
+      const barW = 30;
+      const barMaxH = pendulumAreaH - 100;
+      const hVal = length * (1 - Math.cos(theta));
+      const ke = 0.5 * mass * (length * omega) * (length * omega);
+      const pe = mass * grav * hVal;
+      const totalE = mass * grav * length * (1 - Math.cos(degToRad(initAngleDeg)));
+      const maxE = Math.max(totalE, 0.1);
+
+      // KE bar
+      const keH = (ke / maxE) * barMaxH;
+      ctx.fillStyle = SIM_COLORS.electric;
+      ctx.globalAlpha = 0.3;
+      roundRect(ctx, barX, infoY + barMaxH - keH, barW, keH, 4);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = SIM_COLORS.electric;
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, barX, infoY + barMaxH - keH, barW, keH, 4);
+      ctx.stroke();
+      ctx.fillStyle = SIM_COLORS.electric;
+      ctx.font = '10px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('KE', barX + barW / 2, infoY + barMaxH + 16);
+      ctx.fillText(formatNum(ke, 1) + 'J', barX + barW / 2, infoY + barMaxH - keH - 6);
+
+      // PE bar
+      const peH = (pe / maxE) * barMaxH;
+      ctx.fillStyle = SIM_COLORS.magenta;
+      ctx.globalAlpha = 0.3;
+      roundRect(ctx, barX + 50, infoY + barMaxH - peH, barW, peH, 4);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = SIM_COLORS.magenta;
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, barX + 50, infoY + barMaxH - peH, barW, peH, 4);
+      ctx.stroke();
+      ctx.fillStyle = SIM_COLORS.magenta;
+      ctx.fillText('PE', barX + 50 + barW / 2, infoY + barMaxH + 16);
+      ctx.fillText(formatNum(pe, 1) + 'J', barX + 50 + barW / 2, infoY + barMaxH - peH - 6);
+
+      // Total E bar
+      const totH = ((ke + pe) / maxE) * barMaxH;
+      ctx.fillStyle = SIM_COLORS.white;
+      ctx.globalAlpha = 0.15;
+      roundRect(ctx, barX + 100, infoY + barMaxH - totH, barW, totH, 4);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, barX + 100, infoY + barMaxH - totH, barW, totH, 4);
+      ctx.stroke();
+      ctx.fillStyle = SIM_COLORS.textSecondary;
+      ctx.fillText('Total', barX + 100 + barW / 2, infoY + barMaxH + 16);
+      ctx.fillText(formatNum(ke + pe, 1) + 'J', barX + 100 + barW / 2, infoY + barMaxH - totH - 6);
+
+      // ── Angle Graph at bottom ──
+      const graphY = pendulumAreaH;
+      const maxAngle = Math.max(initAngleDeg * 1.2, 20);
+      const maxOmega = Math.max(Math.sqrt(2 * grav / length) * 1.2, 3);
+      const graphMax = Math.max(maxAngle, maxOmega * 10);
+      angleGraph.draw(ctx, 30, graphY, w - 50, graphAreaH - 10, -graphMax, graphMax);
+
+      // Title
+      ctx.fillStyle = SIM_COLORS.textMuted;
+      ctx.font = '12px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Pendulum — L = ' + formatNum(length) + ' m, g = ' + formatNum(grav) + ' m/s\u00B2', 12, 20);
+      ctx.fillText('t = ' + formatNum(sim.time, 1) + ' s', 12, 36);
+    };
+
+    updateTheory();
+    sim.onReset();
+    sim.draw();
+  })();
+  </script>
+</body>
+</html>

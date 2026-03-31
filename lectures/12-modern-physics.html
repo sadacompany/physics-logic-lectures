@@ -138,6 +138,10 @@
 
           <h3>The Consequences</h3>
           <p>From these two postulates, using nothing more than algebra and logic, Einstein derived consequences that defied all intuition: time runs at different rates for observers in relative motion, lengths contract along the direction of motion, and events that are simultaneous for one observer are not simultaneous for another. None of these effects are perceptible at everyday speeds; they become significant only as velocities approach the speed of light. But they are real: every GPS satellite, every particle accelerator, every cosmic ray observation confirms them.</p>
+
+          <h3>The Relativity of Simultaneity</h3>
+          <p>Perhaps the most conceptually challenging consequence of special relativity is the relativity of simultaneity. Two events that occur at the same time for one observer may occur at different times for another observer in relative motion. This is not a perceptual illusion; it is a fundamental property of spacetime. If you are riding a train and two lightning bolts strike the front and back of the train simultaneously from your perspective, an observer on the platform will not agree that the bolts were simultaneous. The disagreement arises because the finite speed of light, combined with the motion of the train, means the light from the two events reaches the two observers differently. Since both observers are equally valid, there is no universal "now" that everyone shares. Simultaneity is relative.</p>
+          <p>This insight has profound philosophical implications. It means that the past, present, and future are not absolute categories. Events in your "present" may be in another observer's "past" or "future." This led to the block universe interpretation, in which all of spacetime, past, present, and future, exists simultaneously as a four-dimensional structure, and our perception of "now" is merely a feature of our particular worldline through it.</p>
         </section>
 
         <!-- Time Dilation -->
@@ -158,7 +162,19 @@
 
           <p>Here, &Delta;t&sub0; is the proper time (the time measured by an observer at rest relative to the clock), &Delta;t is the dilated time (the time measured by an observer for whom the clock is moving), v is the relative velocity, and &gamma; (gamma) is the Lorentz factor:</p>
           <p>&gamma; = 1 / &radic;(1 &minus; v&sup2;/c&sup2;)</p>
-          <p>At everyday speeds (v much less than c), &gamma; is essentially 1 and there is no noticeable time dilation. At v = 0.87c, &gamma; = 2: the moving clock ticks at half the rate of the stationary one. As v approaches c, &gamma; approaches infinity: time essentially stops for an object moving at the speed of light.</p>
+          <p>At everyday speeds (v much less than c), &gamma; is essentially 1 and there is no noticeable time dilation. At v = 0.1c (10% of light speed), &gamma; &approx; 1.005, a difference of only 0.5%. At v = 0.5c, &gamma; &approx; 1.15. At v = 0.87c, &gamma; = 2: the moving clock ticks at half the rate of the stationary one. At v = 0.99c, &gamma; &approx; 7.1: one second on the moving clock corresponds to 7.1 seconds on the stationary one. As v approaches c, &gamma; approaches infinity: time essentially stops for an object moving at the speed of light. No massive object can reach the speed of light because doing so would require infinite energy.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example</div>
+            <p>A spacecraft travels to a star 10 light-years away at v = 0.8c. How long does the trip take according to Earth observers, and how long according to the astronauts on board?</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>According to Earth observers: t = d/v = 10 light-years / 0.8c = 12.5 years</p>
+              <p>The Lorentz factor: &gamma; = 1/&radic;(1 &minus; 0.64) = 1/&radic;(0.36) = 1/0.6 = 1.667</p>
+              <p>According to the astronauts (proper time): t&sub0; = t/&gamma; = 12.5/1.667 = 7.5 years</p>
+              <p>The astronauts experience only 7.5 years of elapsed time, while 12.5 years pass on Earth. When they return (assuming the same speed), they will have aged 15 years while 25 years have passed on Earth. This is not science fiction; it is a quantitative prediction confirmed by every experiment that has tested it.</p>
+            </div>
+          </div>
 
           <h3>Experimental Confirmation</h3>
           <p>Time dilation is not merely theoretical. In 1971, Hafele and Keating flew cesium atomic clocks around the world on commercial airliners and compared them to identical clocks that stayed on the ground. The flying clocks lost time, exactly as predicted by relativity. Muons created by cosmic rays in the upper atmosphere provide another dramatic confirmation: these particles decay with a half-life of about 2.2 microseconds, which would allow them to travel only about 660 meters before decaying. Yet they are detected at Earth's surface, having traveled many kilometers. From our perspective, their internal clocks are running slowly due to their high speed, extending their apparent lifetime. From the muon's perspective, the distance to Earth's surface is length-contracted (as we will discuss next). Both perspectives give the same result: relativity is self-consistent.</p>
@@ -197,6 +213,18 @@
           <h3>Nuclear Reactions</h3>
           <p>E = mc&sup2; explains why nuclear reactions release millions of times more energy than chemical reactions. In a chemical reaction, atoms rearrange but their nuclei remain intact; the energy changes come from rearranging electron bonds, which involves tiny mass changes. In a nuclear reaction, the nucleus itself is restructured. The mass difference between reactants and products is much larger, and the corresponding energy release is enormous.</p>
           <p>In nuclear fission, a heavy nucleus (like uranium-235) splits into lighter fragments whose combined mass is less than the original. The mass deficit becomes kinetic energy of the fragments and radiation. In nuclear fusion, light nuclei (like hydrogen isotopes) combine to form a heavier nucleus. Again, the product has less mass than the ingredients, and the difference is released as energy. Fusion is the process that powers every star in the universe, including our Sun, which converts about 4 million tonnes of mass into energy every second.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example</div>
+            <p>In the fusion reaction that powers the Sun's core, four hydrogen nuclei (protons) ultimately fuse to produce one helium-4 nucleus. The mass of four protons is 4 &times; 1.00728 u = 4.02912 u. The mass of helium-4 is 4.00260 u. How much energy is released per fusion event?</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>Mass defect: &Delta;m = 4.02912 &minus; 4.00260 = 0.02652 u</p>
+              <p>Converting to energy using 1 u = 931.5 MeV/c&sup2;:</p>
+              <p>E = &Delta;m &times; 931.5 MeV = 0.02652 &times; 931.5 = 24.7 MeV</p>
+              <p>Each fusion event releases about 24.7 MeV of energy. This seems small, but the Sun performs this reaction approximately 3.8 &times; 10&sup3;&sup8; times every second, producing a luminosity of 3.8 &times; 10&sup2;&sup6; watts. The mass converted to energy each second, about 4 million tonnes, is a negligible fraction of the Sun's total mass of 2 &times; 10&sup3;&sup0; kg, which is why the Sun has been shining steadily for 4.6 billion years and will continue for another 5 billion.</p>
+            </div>
+          </div>
         </section>
 
         <!-- Blackbody Radiation -->
@@ -214,7 +242,12 @@
 
           <p>Here, n is a positive integer, f is the frequency of the oscillator, and h is a new fundamental constant, now called Planck's constant: h = 6.626 &times; 10&sup3;&sup4; J&middot;s. The key idea is that energy comes in discrete packets, or quanta, of size hf. An oscillator can have energy 0, hf, 2hf, 3hf, and so on, but nothing in between.</p>
           <p>This quantization solves the ultraviolet catastrophe because high-frequency oscillators (those responsible for ultraviolet radiation) require large energy quanta (hf is large). At any finite temperature, the probability of an oscillator having enough energy to be activated at high frequency becomes vanishingly small. The contribution of high-frequency modes is suppressed, and the total energy remains finite.</p>
-          <p>Planck himself was uneasy with his hypothesis, viewing it as a mathematical trick rather than a physical reality. It took Einstein, five years later, to recognize that quantization was not just a feature of oscillators but a property of light itself.</p>
+          <p>Planck himself was uneasy with his hypothesis, viewing it as a mathematical trick rather than a physical reality. He called it "an act of desperation," confessing that he had introduced quantization solely because it gave the right answer, not because he understood why nature should behave this way. It took Einstein, five years later, to recognize that quantization was not just a feature of oscillators but a property of light itself. Planck's reluctant hypothesis turned out to be the first crack in the edifice of classical physics, a crack that would eventually bring the entire structure down and give rise to quantum mechanics.</p>
+
+          <div class="definition-box">
+            <div class="def-term">Quantum</div>
+            <div class="def-text">A quantum (plural: quanta) is the minimum discrete amount of a physical quantity. The word comes from the Latin "quantus," meaning "how much." In Planck's original context, it referred to the smallest possible amount of energy an oscillator could emit or absorb at a given frequency: E = hf. The concept was later generalized: light comes in quanta called photons, electric charge comes in quanta of e, and angular momentum comes in quanta of &hbar;. Quantization is one of the defining features of quantum mechanics.</div>
+          </div>
         </section>
 
         <!-- Photoelectric Effect -->
@@ -283,6 +316,19 @@
           <p>This is a remarkable equation. It says that everything, electrons, protons, baseballs, people, has a wavelength. But because Planck's constant h is so extraordinarily small (6.626 &times; 10&sup3;&sup4; J&middot;s), the wavelength of any macroscopic object is fantastically tiny, far too small to ever detect. A 0.15 kg baseball moving at 40 m/s has a de Broglie wavelength of about 10&sup3;&sup4; m, smaller than the smallest known particle by a factor of 10&sup1;&sup5;. Wave behavior at macroscopic scales is completely undetectable.</p>
           <p>But for electrons and other subatomic particles, the story is entirely different. An electron accelerated through a potential difference of 100 V has a de Broglie wavelength of about 0.12 nm, comparable to the spacing between atoms in a crystal. At this scale, wave effects are not just detectable; they dominate the behavior of the particle.</p>
 
+          <div class="example">
+            <div class="example-label">Worked Example</div>
+            <p>Calculate the de Broglie wavelength of an electron accelerated through a potential difference of 54 V (the conditions of the Davisson-Germer experiment).</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>The kinetic energy gained: KE = eV = (1.6 &times; 10&sup1;&sup9; C)(54 V) = 8.64 &times; 10&sup1;&sup8; J</p>
+              <p>The momentum: p = &radic;(2mKE) = &radic;(2 &times; 9.11 &times; 10&sup3;&sup1; &times; 8.64 &times; 10&sup1;&sup8;)</p>
+              <p>p = &radic;(1.574 &times; 10&sup4;&sup8;) = 3.97 &times; 10&sup2;&sup4; kg&middot;m/s</p>
+              <p>&lambda; = h/p = (6.626 &times; 10&sup3;&sup4;) / (3.97 &times; 10&sup2;&sup4;) = 1.67 &times; 10&sup1;&sup0; m = 0.167 nm</p>
+              <p>This wavelength is comparable to the atomic spacing in nickel (0.215 nm), which is why Davisson and Germer observed clear diffraction peaks. The electrons were diffracting off the crystal lattice exactly as X-rays of similar wavelength would, confirming the wave nature of matter.</p>
+            </div>
+          </div>
+
           <h3>Experimental Confirmation</h3>
           <p>In 1927, Clinton Davisson and Lester Germer demonstrated electron diffraction: a beam of electrons scattered off a nickel crystal produced a diffraction pattern, exactly as X-rays (which are electromagnetic waves) do when scattered off crystals. The electrons were behaving as waves, and their wavelength matched de Broglie's prediction precisely. Matter waves are real. Today, electron diffraction is a standard technique in materials science for determining crystal structures.</p>
         </section>
@@ -346,7 +392,8 @@
           <p>The mass of a nucleus is always less than the sum of the masses of its individual protons and neutrons. This mass difference, called the mass defect, corresponds (via E = mc&sup2;) to the binding energy: the energy that would be needed to completely disassemble the nucleus into separate nucleons. The binding energy per nucleon varies across the periodic table and reaches a maximum at iron-56. This is why iron is the most stable nucleus. Elements lighter than iron can release energy by fusing together (fusion), and elements heavier than iron can release energy by splitting apart (fission). Both processes move toward higher binding energy per nucleon.</p>
 
           <h3>Fission</h3>
-          <p>Nuclear fission occurs when a heavy nucleus (such as uranium-235 or plutonium-239) absorbs a neutron and splits into two medium-sized fragments, releasing additional neutrons and a large amount of energy. The released neutrons can trigger fission in other nearby nuclei, creating a chain reaction. In a nuclear reactor, this chain reaction is controlled to produce a steady output of energy. In a nuclear weapon, it is uncontrolled, releasing enormous energy in a fraction of a second.</p>
+          <p>Nuclear fission occurs when a heavy nucleus (such as uranium-235 or plutonium-239) absorbs a neutron and splits into two medium-sized fragments, releasing additional neutrons and a large amount of energy. The released neutrons can trigger fission in other nearby nuclei, creating a chain reaction. In a nuclear reactor, this chain reaction is controlled, using moderators to slow neutrons and control rods to absorb excess neutrons, producing a steady output of thermal energy that drives turbines to generate electricity. In a nuclear weapon, the chain reaction is uncontrolled, releasing enormous energy in a fraction of a second.</p>
+          <p>A single fission event of uranium-235 releases about 200 MeV of energy, roughly a million times more than the energy released by the combustion of a single molecule of octane (about 0.00001 MeV). This extraordinary energy density explains why nuclear fuel is so compact: a single fuel pellet the size of a pencil eraser contains as much energy as one ton of coal.</p>
 
           <h3>Fusion</h3>
           <p>Nuclear fusion is the process that powers the stars. Two light nuclei (such as hydrogen isotopes deuterium and tritium) are brought close enough together for the strong force to overcome their electromagnetic repulsion, and they fuse into a heavier nucleus (such as helium), releasing energy. Achieving this on Earth requires temperatures of hundreds of millions of degrees to give the nuclei enough kinetic energy to overcome the Coulomb barrier. Despite decades of effort, controlled fusion energy production remains one of the great unsolved engineering challenges, but its potential is transformative: essentially unlimited clean energy from hydrogen, the most abundant element in the universe.</p>
