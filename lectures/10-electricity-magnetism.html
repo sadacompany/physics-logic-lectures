@@ -630,5 +630,491 @@
   </footer>
 
   <script src="../js/main.js"></script>
+  <script>
+  (function() {
+    const canvas = document.getElementById('circuitCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const voltSlider = document.getElementById('voltSlider');
+    const resSlider = document.getElementById('resSlider');
+    const res2Slider = document.getElementById('res2Slider');
+    const voltValEl = document.getElementById('voltVal');
+    const resValEl = document.getElementById('resVal');
+    const res2ValEl = document.getElementById('res2Val');
+    const dispVolt = document.getElementById('dispVolt');
+    const dispRes = document.getElementById('dispRes');
+    const dispCurrent = document.getElementById('dispCurrent');
+    const dispPower = document.getElementById('dispPower');
+    const playBtn = document.getElementById('circPlayBtn');
+    const resetBtn = document.getElementById('circResetBtn');
+    const modeBtn = document.getElementById('circModeBtn');
+    const explanationEl = document.getElementById('circExplanation');
+
+    let playing = true;
+    let animId = null;
+    // Modes: 'single', 'series', 'parallel'
+    let circuitMode = 'single';
+    let electronOffset = 0;
+    let lastTime = performance.now();
+
+    function getTotalR() {
+      const r1 = parseFloat(resSlider.value);
+      const r2 = parseFloat(res2Slider.value);
+      if (circuitMode === 'single') return r1;
+      if (circuitMode === 'series') return r1 + r2;
+      // parallel
+      return (r1 * r2) / (r1 + r2);
+    }
+
+    function getCurrent() {
+      const v = parseFloat(voltSlider.value);
+      const r = getTotalR();
+      return r > 0 ? v / r : 0;
+    }
+
+    function getPower() {
+      const v = parseFloat(voltSlider.value);
+      const i = getCurrent();
+      return v * i;
+    }
+
+    // Circuit path coordinates (all relative to canvas size)
+    function getLayout() {
+      const w = canvas.width;
+      const h = canvas.height;
+      const mx = 60;  // margin x
+      const my = 50;  // margin y
+
+      const left = mx;
+      const right = w - mx;
+      const top = my;
+      const bottom = h - my;
+      const midX = (left + right) / 2;
+      const midY = (top + bottom) / 2;
+
+      return { left, right, top, bottom, midX, midY, w, h };
+    }
+
+    function drawBattery(x, y, voltage) {
+      const L = getLayout();
+      // Battery symbol: two vertical lines (thin long + thick short)
+      ctx.strokeStyle = '#636780';
+      ctx.lineWidth = 2;
+      // Negative plate (short thick)
+      ctx.beginPath(); ctx.moveTo(x - 8, y - 18); ctx.lineTo(x - 8, y + 18); ctx.stroke();
+      ctx.lineWidth = 4;
+      // Positive plate (long thin)
+      ctx.beginPath(); ctx.moveTo(x + 8, y - 12); ctx.lineTo(x + 8, y + 12); ctx.stroke();
+      ctx.lineWidth = 1;
+      // + and - labels
+      ctx.fillStyle = '#00d4ff';
+      ctx.font = 'bold 14px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('+', x + 8, y - 22);
+      ctx.fillStyle = '#636780';
+      ctx.fillText('-', x - 8, y - 22);
+      // Voltage label
+      ctx.fillStyle = '#a0a4b8';
+      ctx.font = '12px "Space Grotesk", sans-serif';
+      ctx.fillText(voltage.toFixed(1) + ' V', x, y + 36);
+    }
+
+    function drawResistor(x, y, R, label, horizontal) {
+      ctx.strokeStyle = '#a0a4b8';
+      ctx.lineWidth = 2;
+      const zigLen = horizontal ? 60 : 60;
+      const zigAmp = 8;
+      const segments = 6;
+      ctx.beginPath();
+      if (horizontal) {
+        ctx.moveTo(x - zigLen / 2, y);
+        for (let i = 0; i < segments; i++) {
+          const sx = x - zigLen / 2 + (i + 0.25) * (zigLen / segments);
+          const ex = x - zigLen / 2 + (i + 0.75) * (zigLen / segments);
+          const dir = i % 2 === 0 ? -1 : 1;
+          ctx.lineTo(sx, y + dir * zigAmp);
+          ctx.lineTo(ex, y - dir * zigAmp);
+        }
+        ctx.lineTo(x + zigLen / 2, y);
+      } else {
+        ctx.moveTo(x, y - zigLen / 2);
+        for (let i = 0; i < segments; i++) {
+          const sy = y - zigLen / 2 + (i + 0.25) * (zigLen / segments);
+          const ey = y - zigLen / 2 + (i + 0.75) * (zigLen / segments);
+          const dir = i % 2 === 0 ? -1 : 1;
+          ctx.lineTo(x + dir * zigAmp, sy);
+          ctx.lineTo(x - dir * zigAmp, ey);
+        }
+        ctx.lineTo(x, y + zigLen / 2);
+      }
+      ctx.stroke();
+      // Label
+      ctx.fillStyle = '#a0a4b8';
+      ctx.font = '12px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      if (horizontal) {
+        ctx.fillText(label + ' = ' + R + ' \u03A9', x, y - 18);
+      } else {
+        ctx.fillText(label + ' = ' + R + ' \u03A9', x + 30, y);
+      }
+    }
+
+    function drawAmmeter(x, y, current) {
+      ctx.strokeStyle = '#636780';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(x, y, 16, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = '#16162a';
+      ctx.fill();
+      ctx.fillStyle = '#00d4ff';
+      ctx.font = 'bold 13px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('A', x, y);
+      ctx.textBaseline = 'alphabetic';
+      // Current reading
+      ctx.fillStyle = '#a0a4b8';
+      ctx.font = '11px "Space Grotesk", sans-serif';
+      ctx.fillText(current.toFixed(3) + ' A', x, y + 30);
+    }
+
+    function drawBulb(x, y, power, maxPower) {
+      const brightness = Math.min(power / Math.max(maxPower, 1), 1);
+      const glowRadius = 14 + brightness * 12;
+      // Outer glow
+      if (brightness > 0.01) {
+        const grad = ctx.createRadialGradient(x, y, 0, x, y, glowRadius + 20);
+        grad.addColorStop(0, `rgba(255,220,80,${brightness * 0.4})`);
+        grad.addColorStop(0.5, `rgba(255,180,40,${brightness * 0.15})`);
+        grad.addColorStop(1, 'rgba(255,180,40,0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(x, y, glowRadius + 20, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      // Bulb body
+      ctx.strokeStyle = '#636780';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(x, y, glowRadius, 0, Math.PI * 2);
+      ctx.stroke();
+      // Inner fill
+      ctx.fillStyle = `rgba(255,220,80,${0.05 + brightness * 0.7})`;
+      ctx.beginPath();
+      ctx.arc(x, y, glowRadius, 0, Math.PI * 2);
+      ctx.fill();
+      // Filament
+      ctx.strokeStyle = `rgba(255,200,60,${0.3 + brightness * 0.7})`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(x - 6, y + 6);
+      ctx.lineTo(x - 3, y - 6);
+      ctx.lineTo(x + 3, y + 6);
+      ctx.lineTo(x + 6, y - 6);
+      ctx.stroke();
+      // Label
+      ctx.fillStyle = '#636780';
+      ctx.font = '11px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('BULB', x, y + glowRadius + 16);
+    }
+
+    function drawElectrons(path, offset, speed) {
+      if (speed < 0.001) return;
+      const spacing = 28;
+      const totalLen = pathLength(path);
+      const count = Math.floor(totalLen / spacing);
+      ctx.fillStyle = '#00d4ff';
+      for (let i = 0; i < count; i++) {
+        const dist = ((i * spacing + offset) % totalLen + totalLen) % totalLen;
+        const pt = pointOnPath(path, dist);
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        // Glow
+        ctx.fillStyle = 'rgba(0,212,255,0.15)';
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#00d4ff';
+      }
+    }
+
+    function pathLength(path) {
+      let len = 0;
+      for (let i = 1; i < path.length; i++) {
+        const dx = path[i].x - path[i-1].x;
+        const dy = path[i].y - path[i-1].y;
+        len += Math.sqrt(dx*dx + dy*dy);
+      }
+      return len;
+    }
+
+    function pointOnPath(path, dist) {
+      let remaining = dist;
+      for (let i = 1; i < path.length; i++) {
+        const dx = path[i].x - path[i-1].x;
+        const dy = path[i].y - path[i-1].y;
+        const segLen = Math.sqrt(dx*dx + dy*dy);
+        if (remaining <= segLen) {
+          const t = remaining / segLen;
+          return { x: path[i-1].x + dx * t, y: path[i-1].y + dy * t };
+        }
+        remaining -= segLen;
+      }
+      return path[path.length - 1];
+    }
+
+    function drawWire(path) {
+      ctx.strokeStyle = '#3a3a5a';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(path[0].x, path[0].y);
+      for (let i = 1; i < path.length; i++) {
+        ctx.lineTo(path[i].x, path[i].y);
+      }
+      ctx.stroke();
+    }
+
+    function getCircuitPath(L) {
+      // Main rectangular loop: battery(left) -> top wire -> resistor area(top) -> right side -> bulb(right) -> bottom wire -> ammeter(bottom) -> back to battery
+      if (circuitMode === 'single') {
+        return [
+          { x: L.left, y: L.midY - 30 },    // battery top
+          { x: L.left, y: L.top },             // top-left corner
+          { x: L.midX, y: L.top },             // to resistor center (top)
+          { x: L.right, y: L.top },            // top-right corner
+          { x: L.right, y: L.midY },           // to bulb
+          { x: L.right, y: L.bottom },         // bottom-right
+          { x: L.midX, y: L.bottom },          // to ammeter
+          { x: L.left, y: L.bottom },          // bottom-left
+          { x: L.left, y: L.midY + 30 },      // battery bottom
+        ];
+      } else if (circuitMode === 'series') {
+        const r1x = L.left + (L.right - L.left) * 0.33;
+        const r2x = L.left + (L.right - L.left) * 0.66;
+        return [
+          { x: L.left, y: L.midY - 30 },
+          { x: L.left, y: L.top },
+          { x: r1x, y: L.top },
+          { x: r2x, y: L.top },
+          { x: L.right, y: L.top },
+          { x: L.right, y: L.midY },
+          { x: L.right, y: L.bottom },
+          { x: L.midX, y: L.bottom },
+          { x: L.left, y: L.bottom },
+          { x: L.left, y: L.midY + 30 },
+        ];
+      } else {
+        // Parallel: two paths on top, merge
+        // Main loop for drawing (we'll draw the parallel branches separately)
+        return [
+          { x: L.left, y: L.midY - 30 },
+          { x: L.left, y: L.top },
+          { x: L.midX - 40, y: L.top },
+          // split point - electrons go both ways, but we draw main path
+          { x: L.midX + 40, y: L.top },
+          { x: L.right, y: L.top },
+          { x: L.right, y: L.midY },
+          { x: L.right, y: L.bottom },
+          { x: L.midX, y: L.bottom },
+          { x: L.left, y: L.bottom },
+          { x: L.left, y: L.midY + 30 },
+        ];
+      }
+    }
+
+    function draw() {
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      const L = getLayout();
+      const V = parseFloat(voltSlider.value);
+      const R1 = parseFloat(resSlider.value);
+      const R2 = parseFloat(res2Slider.value);
+      const Rtotal = getTotalR();
+      const I = getCurrent();
+      const P = getPower();
+      const maxPower = 24 * 24 / 1; // max possible power
+
+      const path = getCircuitPath(L);
+
+      // Draw wires
+      drawWire(path);
+
+      // Draw parallel branch wires if needed
+      if (circuitMode === 'parallel') {
+        const branchTop = L.top;
+        const branchBot = L.top + 70;
+        const splitLeft = L.midX - 40;
+        const splitRight = L.midX + 40;
+        // Upper branch (R1) - already on the main top wire
+        // Lower branch (R2)
+        const lowerPath = [
+          { x: splitLeft, y: branchTop },
+          { x: splitLeft, y: branchBot },
+          { x: splitRight, y: branchBot },
+          { x: splitRight, y: branchTop },
+        ];
+        drawWire(lowerPath);
+        drawElectrons(lowerPath, electronOffset * 0.7, I * 0.5);
+      }
+
+      // Draw electrons flowing
+      const speed = Math.min(I * 1.2, 6);
+      drawElectrons(path, electronOffset, speed);
+
+      // Draw battery (left side, centered vertically)
+      drawBattery(L.left, L.midY, V);
+
+      // Draw resistor(s)
+      if (circuitMode === 'single') {
+        drawResistor(L.midX, L.top, R1, 'R', true);
+      } else if (circuitMode === 'series') {
+        const r1x = L.left + (L.right - L.left) * 0.33;
+        const r2x = L.left + (L.right - L.left) * 0.66;
+        drawResistor(r1x, L.top, R1, 'R1', true);
+        drawResistor(r2x, L.top, R2, 'R2', true);
+      } else {
+        // Parallel
+        const branchBot = L.top + 70;
+        drawResistor(L.midX, L.top, R1, 'R1', true);
+        drawResistor(L.midX, branchBot, R2, 'R2', true);
+        // Draw parallel junction markers
+        ctx.fillStyle = '#00d4ff';
+        ctx.beginPath(); ctx.arc(L.midX - 40, L.top, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(L.midX + 40, L.top, 4, 0, Math.PI * 2); ctx.fill();
+      }
+
+      // Draw bulb (right side)
+      drawBulb(L.right, L.midY, P, maxPower);
+
+      // Draw ammeter (bottom, center)
+      drawAmmeter(L.midX, L.bottom, I);
+
+      // Circuit mode label
+      ctx.fillStyle = '#636780';
+      ctx.font = '11px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'left';
+      const modeLabel = circuitMode === 'single' ? 'Single Resistor' : circuitMode === 'series' ? 'Series (R1 + R2)' : 'Parallel (R1 || R2)';
+      ctx.fillText('Mode: ' + modeLabel, L.left, L.bottom + 30);
+    }
+
+    function updateDisplay() {
+      const V = parseFloat(voltSlider.value);
+      const R1 = parseFloat(resSlider.value);
+      const R2 = parseFloat(res2Slider.value);
+      const Rtotal = getTotalR();
+      const I = getCurrent();
+      const P = getPower();
+
+      voltValEl.textContent = V;
+      resValEl.textContent = R1;
+      res2ValEl.textContent = R2;
+      dispVolt.textContent = V.toFixed(1) + ' V';
+      dispRes.textContent = Rtotal.toFixed(1) + ' \u03A9';
+      dispCurrent.textContent = I.toFixed(3) + ' A';
+      dispPower.textContent = P.toFixed(1) + ' W';
+
+      // Enable/disable R2 slider visibility
+      const r2Control = res2Slider.closest('.sim-control');
+      r2Control.style.opacity = circuitMode === 'single' ? '0.3' : '1';
+      r2Control.style.pointerEvents = circuitMode === 'single' ? 'none' : 'auto';
+
+      // Explanation updates
+      if (V < 1) {
+        explanationEl.textContent = 'With near-zero voltage, there is no driving force for current. The electrons are stationary and the bulb is off. Voltage is the "push" that drives charges through the circuit.';
+      } else if (circuitMode === 'series') {
+        explanationEl.textContent = 'Series resistors: R_total = R1 + R2 = ' + R1 + ' + ' + R2 + ' = ' + Rtotal.toFixed(1) + ' \u03A9. The same current flows through both resistors. Total resistance increases, so current decreases compared to a single resistor.';
+      } else if (circuitMode === 'parallel') {
+        explanationEl.textContent = 'Parallel resistors: 1/R_total = 1/R1 + 1/R2. R_total = ' + Rtotal.toFixed(1) + ' \u03A9 (always less than either individual resistor). Current splits between the two branches. Total current increases compared to a single resistor.';
+      } else if (Rtotal > 80) {
+        explanationEl.textContent = 'High resistance severely limits current flow (I = V/R). The bulb is dim because power P = IV is small. Resistors oppose the flow of charge by converting electrical energy to heat.';
+      } else if (P > 100) {
+        explanationEl.textContent = 'High power! The bulb is very bright. Power P = IV = ' + P.toFixed(1) + ' W tells you the rate of energy conversion. In a real circuit, components have maximum power ratings to prevent damage.';
+      } else {
+        explanationEl.textContent = 'A single resistor circuit: I = V/R. Adjust voltage and resistance to see Ohm\'s law in action. The light bulb brightness reflects the power dissipated in the circuit.';
+      }
+    }
+
+    function animate(time) {
+      if (!playing) return;
+      const dt = Math.min((time - lastTime) / 16.67, 3);
+      lastTime = time;
+
+      const I = getCurrent();
+      const speed = Math.min(I * 1.2, 6);
+      electronOffset += speed * dt;
+
+      draw();
+      updateDisplay();
+      animId = requestAnimationFrame(animate);
+    }
+
+    // Event listeners
+    voltSlider.addEventListener('input', () => { updateDisplay(); if (!playing) draw(); });
+    resSlider.addEventListener('input', () => { updateDisplay(); if (!playing) draw(); });
+    res2Slider.addEventListener('input', () => { updateDisplay(); if (!playing) draw(); });
+
+    playBtn.addEventListener('click', () => {
+      playing = !playing;
+      if (playing) {
+        playBtn.textContent = 'Pause';
+        playBtn.classList.add('active');
+        lastTime = performance.now();
+        requestAnimationFrame(animate);
+      } else {
+        playBtn.textContent = 'Play';
+        playBtn.classList.remove('active');
+        if (animId) cancelAnimationFrame(animId);
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      voltSlider.value = 12;
+      resSlider.value = 10;
+      res2Slider.value = 20;
+      circuitMode = 'single';
+      modeBtn.textContent = 'Add Series R2';
+      electronOffset = 0;
+      updateDisplay();
+      if (!playing) draw();
+    });
+
+    modeBtn.addEventListener('click', () => {
+      if (circuitMode === 'single') {
+        circuitMode = 'series';
+        modeBtn.textContent = 'Switch to Parallel';
+      } else if (circuitMode === 'series') {
+        circuitMode = 'parallel';
+        modeBtn.textContent = 'Remove R2';
+      } else {
+        circuitMode = 'single';
+        modeBtn.textContent = 'Add Series R2';
+      }
+      updateDisplay();
+      if (!playing) draw();
+    });
+
+    // Canvas resize
+    function resizeCanvas() {
+      const wrap = canvas.parentElement;
+      const rect = wrap.getBoundingClientRect();
+      canvas.width = Math.floor(rect.width);
+      canvas.height = Math.floor(rect.width * 0.5625);
+      if (!playing) draw();
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+
+    // Init
+    resizeCanvas();
+    updateDisplay();
+    lastTime = performance.now();
+    requestAnimationFrame(animate);
+  })();
+  </script>
 </body>
 </html>

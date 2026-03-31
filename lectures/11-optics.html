@@ -178,6 +178,10 @@
 
           <h3>The Direction of Bending</h3>
           <p>There is a simple rule: when light enters a medium where it travels more slowly (higher index of refraction), it bends toward the normal. When it enters a medium where it travels faster (lower index), it bends away from the normal. Going from air (n &approx; 1) to glass (n &approx; 1.5), the light slows down and bends toward the normal. Going from glass back to air, the light speeds up and bends away from the normal.</p>
+
+          <h3>Everyday Examples of Refraction</h3>
+          <p>Refraction explains many familiar optical illusions. A swimming pool appears shallower than it really is because light rays bending at the water-air boundary make the bottom seem closer. A straw in a glass of water appears bent or broken at the surface because the portion below the water is seen through refracted light that shifts its apparent position. On a hot day, the road ahead appears to shimmer and show "puddles" because a layer of hot air near the surface has a lower index of refraction than the cooler air above it; light from the sky bends upward as it passes through this gradient, creating the illusion of reflection from a wet surface. This is a mirage, and it is pure refraction, not imagination.</p>
+          <p>More consequentially, refraction is the physical mechanism by which every lens works, from the lens in your eye to the Hubble Space Telescope's corrective optics. Every time light enters or exits a curved glass surface, it bends, and by carefully shaping those surfaces, we can control exactly where the light converges. The entire fields of photography, microscopy, and corrective vision depend on our mastery of refraction.</p>
         </section>
 
         <!-- Snell's Law -->
@@ -211,6 +215,20 @@
 
           <h3>Dispersion</h3>
           <p>The index of refraction of a material actually depends slightly on the wavelength of light. Blue light has a slightly higher index than red light in most transparent materials. This means blue light bends slightly more than red light when passing through a prism, separating white light into the colors of the spectrum. This phenomenon is called dispersion, and it is the basis of rainbows: sunlight enters a raindrop, refracts, reflects off the back surface, and refracts again as it exits, with different colors bending at slightly different angles and spreading into the arc we see in the sky.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example</div>
+            <p>Light travels from water (n = 1.33) into diamond (n = 2.42). If the angle of incidence is 20&deg;, what is the angle of refraction?</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>Applying Snell's law: n&sub1; sin&theta;&sub1; = n&sub2; sin&theta;&sub2;</p>
+              <p>(1.33)(sin 20&deg;) = (2.42)(sin&theta;&sub2;)</p>
+              <p>(1.33)(0.342) = (2.42)(sin&theta;&sub2;)</p>
+              <p>sin&theta;&sub2; = 0.455 / 2.42 = 0.188</p>
+              <p>&theta;&sub2; = sin&sup1;(0.188) = 10.8&deg;</p>
+              <p>The light bends significantly toward the normal because diamond has a much higher index of refraction than water. This dramatic bending is part of what makes diamonds so visually striking when immersed in different media.</p>
+            </div>
+          </div>
         </section>
 
         <!-- Total Internal Reflection -->
@@ -339,6 +357,7 @@
           <h3>Concave Mirrors</h3>
           <p>A concave mirror is curved inward, like the inside of a spoon. It has a real focal point in front of the mirror where parallel rays converge after reflection. Concave mirrors are the reflective equivalent of converging lenses: they can form real, inverted images when the object is beyond the focal point, and virtual, upright, magnified images when the object is inside the focal point.</p>
           <p>Applications of concave mirrors include satellite dishes (which are parabolic reflectors focusing incoming signals to a receiver at the focal point), reflecting telescopes (where a large concave primary mirror collects and focuses starlight), and shaving or makeup mirrors (which place the face inside the focal length to produce a magnified upright image).</p>
+          <p>The mirror equation for a concave mirror takes the same form as the thin lens equation: 1/f = 1/d<sub>o</sub> + 1/d<sub>i</sub>, where f is the focal length (positive for concave mirrors), d<sub>o</sub> is the object distance, and d<sub>i</sub> is the image distance. The focal length of a spherical mirror is half its radius of curvature: f = R/2. This relationship allows us to design mirrors with precisely controlled focusing properties, from bathroom mirrors to the 10-meter primary mirrors of the world's largest telescopes.</p>
 
           <h3>Convex Mirrors</h3>
           <p>A convex mirror is curved outward, like the back of a spoon. Parallel rays diverge after reflecting from a convex mirror, and the reflected rays appear to come from a virtual focal point behind the mirror. Convex mirrors always produce virtual, upright, diminished images, regardless of the object distance.</p>
@@ -359,6 +378,18 @@
           <p>In 1801, Thomas Young performed one of the most elegant and consequential experiments in the history of physics. He passed a beam of light through two narrow, closely spaced slits and observed the pattern on a distant screen. If light were simply a stream of particles, we would expect to see two bright bands on the screen, one behind each slit. Instead, Young saw a series of alternating bright and dark fringes, an interference pattern.</p>
           <p>This result is impossible to explain with particles. It is exactly what waves do. When two waves overlap, they can interfere constructively (crest meets crest, producing a bright fringe) or destructively (crest meets trough, producing a dark fringe). The condition for constructive interference is that the path difference from the two slits to a point on the screen is a whole number of wavelengths: d sin&theta; = m&lambda;, where d is the slit separation, &theta; is the angle to the bright fringe, m is the order number (0, 1, 2, ...), and &lambda; is the wavelength.</p>
           <p>Young's experiment provided powerful evidence that light is a wave. It also gave the first measurement of the wavelength of visible light, which turned out to be incredibly small: a few hundred nanometers.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example</div>
+            <p>In a double-slit experiment, the slit separation is d = 0.25 mm and the screen is 2.0 m away. If monochromatic light of wavelength 550 nm (green) is used, what is the spacing between adjacent bright fringes?</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>For small angles, the fringe spacing is: &Delta;y = &lambda;L / d</p>
+              <p>&Delta;y = (550 &times; 10&sup9; m)(2.0 m) / (0.25 &times; 10&sup3; m)</p>
+              <p>&Delta;y = (1.1 &times; 10&sup6;) / (2.5 &times; 10&sup4;) = 4.4 &times; 10&sup3; m = 4.4 mm</p>
+              <p>The bright fringes are spaced 4.4 mm apart on the screen. This is easily visible to the naked eye, which is remarkable given that we are detecting a wave phenomenon at a wavelength of just 550 billionths of a meter. The amplification from the tiny wavelength to a visible pattern comes from the geometry of the experiment: the screen is far away relative to the slit separation.</p>
+            </div>
+          </div>
 
           <h3>Interference Fringes</h3>
           <p>The bright fringes in the double-slit pattern are evenly spaced (for small angles) and their separation depends on the wavelength: longer wavelengths produce wider spacing. Red light (long wavelength) produces more widely spaced fringes than blue light (short wavelength). If white light is used, each color produces its own set of fringes at slightly different positions, creating a central white fringe flanked by rainbow-colored fringes.</p>
@@ -383,6 +414,10 @@
           <h3>Diffraction and Resolution</h3>
           <p>Every lens has a finite aperture, and the light passing through it diffracts. This means that even a perfect lens cannot focus light to an infinitely small point; the best it can produce is a small diffraction pattern called an Airy disk. Two closely spaced objects can be resolved as separate only if their Airy disks do not overlap too much. This is the Rayleigh criterion, and it sets a fundamental limit on the resolving power of any optical system, from microscopes to telescopes to the human eye.</p>
           <p>To improve resolution, you need either a larger aperture (which reduces diffraction spreading) or a shorter wavelength (which also reduces it). This is why electron microscopes, which use electrons with wavelengths thousands of times shorter than visible light, can resolve individual atoms, while optical microscopes cannot.</p>
+
+          <h3>Thin Film Interference</h3>
+          <p>When light encounters a thin transparent film, such as a soap bubble or an oil slick on water, it partially reflects from both the top and bottom surfaces. The two reflected beams overlap and interfere. Whether they interfere constructively or destructively depends on the film thickness, the wavelength of the light, and the indices of refraction. For a particular thickness, some wavelengths interfere constructively (appearing bright and vivid) while others interfere destructively (being suppressed). This is why soap bubbles and oil slicks display brilliant, swirling colors: different thicknesses across the film selectively enhance different wavelengths.</p>
+          <p>Thin film interference has practical applications. Anti-reflection coatings on lenses use a thin film whose thickness is chosen so that reflected light from the two surfaces interferes destructively, canceling the reflection and allowing more light to pass through. This technology is essential for high-quality cameras, eyeglasses, and solar cells.</p>
         </section>
 
         <!-- Wave-Particle Duality -->

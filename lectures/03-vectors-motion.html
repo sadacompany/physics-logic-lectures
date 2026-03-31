@@ -567,6 +567,27 @@
 
           <h3>Horizontal Launch</h3>
           <p>A common special case is a projectile launched horizontally from a height&mdash;a ball rolling off a table, for instance. In this case, &theta; = 0, so v<sub>0y</sub> = 0 and v<sub>0x</sub> = v<sub>0</sub>. The horizontal velocity remains v<sub>0</sub> throughout the flight, while the vertical motion is pure free fall from rest. The time to hit the ground depends only on the height and gravity (t = &radic;(2h/g)), completely independent of the horizontal speed. A bullet fired horizontally from a gun and a ball dropped from the same height at the same instant will hit the ground at the same time&mdash;one of the most counterintuitive yet well-verified results in classical mechanics.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example &mdash; Horizontal Launch from a Cliff</div>
+            <p>A ball is thrown horizontally at 15 m/s from the edge of a cliff that is 80 m high. Using g = 10 m/s&sup2;, find: (a) the time to reach the ground, (b) the horizontal distance from the base of the cliff, and (c) the speed just before impact.</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p><strong>(a) Time to reach the ground.</strong></p>
+              <p>The vertical motion is free fall from rest (v<sub>0y</sub> = 0). Using y = &frac12;gt&sup2;:</p>
+              <p>80 = &frac12;(10)t&sup2; &rarr; t&sup2; = 16 &rarr; t = <strong>4.0 s</strong></p>
+              <p><strong>(b) Horizontal distance.</strong></p>
+              <p>The horizontal velocity is constant at 15 m/s: x = v<sub>0x</sub> &times; t = 15 &times; 4.0 = <strong>60 m</strong></p>
+              <p><strong>(c) Speed just before impact.</strong></p>
+              <p>At impact: v<sub>x</sub> = 15 m/s (unchanged), v<sub>y</sub> = gt = 10 &times; 4 = 40 m/s (downward).</p>
+              <p>Speed = &radic;(v<sub>x</sub>&sup2; + v<sub>y</sub>&sup2;) = &radic;(225 + 1600) = &radic;1825 &asymp; <strong>42.7 m/s</strong></p>
+              <p>The direction of the final velocity is &theta; = tan<sup>&minus;1</sup>(40/15) &asymp; 69.4&deg; below the horizontal. The ball strikes the ground at a steep angle, moving much faster than its initial 15 m/s because gravity has been accelerating it vertically for 4 seconds.</p>
+            </div>
+          </div>
+
+          <h3>Practical Applications of Projectile Motion</h3>
+          <p>Projectile motion is far more than an academic exercise. It underpins the physics of sports (the arc of a basketball, the trajectory of a soccer goal kick, the optimal angle for a long jump), military ballistics (artillery range calculations, missile trajectories), engineering (the path of water from a fire hose, the design of fountains), and even space exploration (the parabolic arcs of spacecraft during orbital maneuvers). Understanding projectile motion gives you the ability to predict, control, and optimize the motion of objects through the air&mdash;a capability with applications in nearly every branch of science and engineering.</p>
+          <p>In reality, air resistance affects all projectiles to some degree. For dense, slow-moving objects like a shot put, air resistance is negligible and our idealized equations work beautifully. For fast-moving objects like bullets or baseballs, or for light objects like shuttlecocks and Frisbees, air resistance significantly modifies the trajectory. The analysis of projectile motion with air resistance requires differential equations and is beyond the scope of this lecture, but the foundation we have built here&mdash;decomposition into independent horizontal and vertical components&mdash;remains the starting point for all such analyses.</p>
         </section>
 
         <!-- Section: Graphical Interpretation -->
@@ -603,6 +624,9 @@
           <p><strong>Phase 2 (3 to 6 s):</strong> The slope is 0. The object moves at constant velocity. The displacement is the area of the rectangle: 3 &times; 6 = 18 m.</p>
           <p><strong>Phase 3 (6 to 8 s):</strong> The slope is (0 &minus; 6)/(8 &minus; 6) = &minus;3 m/s&sup2;. The object decelerates at 3 m/s&sup2;. The displacement is the area of the triangle: &frac12; &times; 2 &times; 6 = 6 m.</p>
           <p>Total displacement over the full 8 seconds: 9 + 18 + 6 = 33 m. All of this information&mdash;three phases of motion, three different accelerations, and the total displacement&mdash;was extracted from a single graph without writing a single kinematic equation. This is the power of graphical analysis.</p>
+
+          <h3>When Velocity Goes Negative</h3>
+          <p>Special care is needed when the velocity-time graph crosses the time axis (goes from positive to negative or vice versa). This means the object has reversed direction. The area below the time axis represents negative displacement (motion in the negative direction). To find the total distance traveled (as opposed to the net displacement), you must add the absolute values of each segment&rsquo;s area. For net displacement, the areas above and below the axis partially cancel. This distinction between total distance and net displacement on a v-t graph is a frequent source of exam errors, so be vigilant whenever you see the velocity cross zero.</p>
         </section>
 
         <!-- Section: Common Misconceptions -->
