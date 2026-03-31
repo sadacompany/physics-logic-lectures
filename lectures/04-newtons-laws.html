@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lecture 4: Newton's Laws of Motion | Physics Logic</title>
+  <meta name="description" content="A deep exploration of Newton's three laws of motion — force, inertia, F=ma, action-reaction pairs, free body diagrams, weight, normal force, friction, tension, and real-world applications.">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress"></div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand"><span class="brand-icon">&phi;</span> Physics Logic</a>
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../lectures.html" class="active">Lectures</a>
+        <a href="../faq.html">FAQ</a>
+      </div>
+      <div class="nav-search">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" placeholder="Search lectures...">
+        <div class="search-results"></div>
+      </div>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Lecture Hero -->
+    <section class="lecture-hero">
+      <div class="lecture-hero-inner">
+        <div class="breadcrumb animate-in">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="../lectures.html">Lectures</a>
+          <span class="sep">/</span>
+          Lecture 4
+        </div>
+        <div class="lecture-number animate-in">LECTURE 04</div>
+        <h1 class="animate-in">Newton's Laws of <em>Motion</em></h1>
+        <div class="lecture-meta animate-in">
+          <span>Mechanics</span>
+          <span>Intermediate</span>
+          <span>45 min</span>
+        </div>
+      </div>
+      <div class="hero-decoration">04</div>
+    </section>
+
+    <!-- Two-column Layout: TOC + Article -->
+    <div class="lecture-layout">
+
+      <!-- Sidebar: Table of Contents -->
+      <aside class="lecture-toc">
+        <h3>Contents</h3>
+        <ul class="toc-list">
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#concept-of-force">The Concept of Force</a></li>
+          <li><a href="#first-law">Newton's First Law</a></li>
+          <li><a href="#second-law">Newton's Second Law</a></li>
+          <li><a href="#third-law">Newton's Third Law</a></li>
+          <li><a href="#free-body-diagrams">Free Body Diagrams</a></li>
+          <li><a href="#weight-normal-force">Weight and Normal Force</a></li>
+          <li><a href="#friction">Friction</a></li>
+          <li><a href="#tension">Tension</a></li>
+          <li><a href="#applications">Applications</a></li>
+          <li><a href="#common-misconceptions">Common Misconceptions</a></li>
+          <li><a href="#key-takeaways">Key Takeaways</a></li>
+        </ul>
+      </aside>
+
+      <!-- Main Article -->
+      <article class="lecture-article">
+
+        <!-- Learning Goals -->
+        <div class="learning-goals reveal">
+          <h3>Learning Goals</h3>
+          <ul>
+            <li>Understand force as an interaction between two objects, not a property of a single object</li>
+            <li>State and deeply interpret each of Newton's three laws of motion</li>
+            <li>Draw and analyze free body diagrams for objects in various configurations</li>
+            <li>Distinguish between weight, normal force, friction, and tension</li>
+            <li>Apply Newton's laws to solve problems involving inclined planes, pulleys, and connected objects</li>
+            <li>Identify and correct the most common misconceptions about force and motion</li>
+          </ul>
+        </div>
+
+        <!-- ======================== OVERVIEW ======================== -->
+        <section id="overview" class="lecture-section reveal">
+          <h2>Overview</h2>
+
+          <p>
+            In the previous lectures we built the language of physics: units, dimensions, vectors, and the
+            kinematics of motion. We learned <em>how</em> to describe motion&mdash;position, velocity,
+            acceleration&mdash;but we never asked the deeper question: <strong>why</strong> do objects move
+            the way they do? Why does a ball thrown upward slow down, stop, and reverse? Why does a car skid
+            when the brakes are applied too hard? Why does the Moon orbit the Earth instead of flying off
+            in a straight line? The answers to all these questions come from a single, breathtaking framework
+            laid down by Isaac Newton in 1687: the three laws of motion.
+          </p>
+
+          <p>
+            Newton's laws are not merely historical curiosities. They are the foundation upon which virtually
+            all of classical mechanics is built. Every bridge you cross, every aircraft that flies, every
+            satellite that orbits, every car that brakes&mdash;all are governed by these three laws. Engineers
+            use them daily. Physicists extend them to new domains. And students who truly <em>understand</em>
+            them (rather than merely memorize them) gain an almost magical ability to reason about the physical
+            world. This lecture is devoted to building that understanding from the ground up.
+          </p>
+
+          <p>
+            We will begin with the concept of force itself&mdash;what it is, and what it is not. We will then
+            walk through each of Newton's three laws, not as statements to be memorized but as profound
+            insights into how nature operates. Along the way, we will introduce the essential tools of
+            mechanics: free body diagrams, weight, normal force, friction, and tension. By the end of this
+            lecture, you will be able to analyze the forces acting on any object in a wide variety of
+            physical situations, and predict its motion using Newton's laws.
+          </p>
+        </section>
+
+        <!-- ======================== THE CONCEPT OF FORCE ======================== -->
+        <section id="concept-of-force" class="lecture-section reveal">
+          <h2>The Concept of Force</h2>
+
+          <p>
+            Before we can state Newton's laws, we need to be precise about what we mean by <strong>force</strong>.
+            In everyday language, force is synonymous with strength, power, or effort. In physics, force has a
+            much more specific meaning, and getting this meaning right is essential to everything that follows.
+          </p>
+
+          <div class="definition-box">
+            <div class="definition-label">Definition</div>
+            <p>
+              A <strong>force</strong> is an interaction between two objects that can cause one or both of them
+              to accelerate. Every force involves a <em>push</em> or a <em>pull</em> exerted by one object
+              on another. Force is a vector quantity: it has both magnitude and direction. The SI unit of force
+              is the <strong>newton</strong> (N), where 1 N = 1 kg &middot; m/s&sup2;.
+            </p>
+          </div>
+
+          <p>
+            The most important word in that definition is <strong>interaction</strong>. A force is not something
+            that an object "has" or "possesses." A force is something that happens <em>between</em> two objects.
+            When you push a wall, the force is an interaction between your hand and the wall. When the Earth
+            pulls an apple downward, the gravitational force is an interaction between the Earth and the apple.
+            There is no such thing as a force that involves only one object. This may seem like a pedantic
+            point, but it is actually one of the deepest insights in mechanics and will become critically
+            important when we discuss Newton's third law.
+          </p>
+
+          <p>
+            Forces can be broadly classified into two categories. <strong>Contact forces</strong> arise when
+            objects are physically touching: you push a box, a rope pulls a sled, the ground supports your
+            weight, friction resists sliding. <strong>Field forces</strong> (also called non-contact forces or
+            action-at-a-distance forces) act without physical contact: gravity pulls you toward the Earth even
+            though you are not "touching" the center of the Earth; a magnet attracts a paperclip across a gap
+            of air; electric charges push and pull each other through empty space. In this lecture, we will
+            focus primarily on contact forces and gravity, but the laws we develop apply to all forces
+            without exception.
+          </p>
+
+          <p>
+            Because force is a vector, it is not enough to say "a 10-newton force acts on the object." You
+            must also specify the <em>direction</em>: 10 newtons to the right, 10 newtons downward,
+            10 newtons at 30 degrees above the horizontal. When multiple forces act on the same object, we
+            add them as vectors to find the <strong>net force</strong> (also called the resultant force or
+            total force). It is the net force&mdash;not any individual force&mdash;that determines how the
+            object accelerates. This principle is so important that it deserves to be called out explicitly:
+            the motion of an object is determined entirely by the net force acting on it.
+          </p>
+        </section>
+
+        <!-- ======================== NEWTON'S FIRST LAW ======================== -->
+        <section id="first-law" class="lecture-section reveal">
+          <h2>Newton's First Law: The Law of Inertia</h2>
+
+          <h3>The Aristotelian View and Its Downfall</h3>
+
+          <p>
+            For nearly two thousand years, the dominant theory of motion was that of Aristotle: an object
+            moves only when a force acts on it, and the object stops when the force is removed. This seems
+            almost self-evidently true from everyday experience. Push a book across a table, and it slides.
+            Stop pushing, and the book stops. It <em>looks</em> as though the natural state of an object is
+            to be at rest, and that force is needed to maintain motion.
+          </p>
+
+          <p>
+            But Galileo saw through this illusion. His great insight was to recognize that the book stops not
+            because of the <em>absence</em> of force, but because of the <em>presence</em> of another force:
+            friction. The table's rough surface exerts a frictional force on the book that opposes its motion
+            and brings it to a halt. What if we could eliminate friction? Galileo conducted a brilliant thought
+            experiment. Imagine rolling a ball down one inclined plane and up another. The ball rises almost to
+            its original height on the second plane. Now reduce the angle of the second plane. The ball travels
+            farther horizontally before reaching the same height. Make the second plane even shallower, and the
+            ball travels farther still. What if the second plane is perfectly horizontal? The ball would never
+            reach its original height, so it would roll <em>forever</em>&mdash;never stopping, never slowing,
+            continuing in a straight line indefinitely.
+          </p>
+
+          <p>
+            This is a revolutionary idea. It says that the natural state of motion is not rest but
+            <strong>constant velocity</strong>. An object in motion does not need a force to keep it moving.
+            It needs a force only to <em>change</em> its motion&mdash;to speed it up, slow it down, or change
+            its direction. Newton elevated this insight into the first of his three laws.
+          </p>
+
+          <div class="key-concept">
+            <div class="concept-label">Newton's First Law</div>
+            <p>
+              An object at rest remains at rest, and an object in motion continues in motion with constant
+              velocity (constant speed in a straight line), unless acted upon by a net external force.
+            </p>
+          </div>
+
+          <h3>Inertia: The Resistance to Change</h3>
+
+          <p>
+            The first law introduces a crucial concept: <strong>inertia</strong>. Inertia is the tendency of
+            an object to resist changes in its state of motion. An object at rest tends to stay at rest. An
+            object moving in a straight line at constant speed tends to keep doing so. The more massive an
+            object, the greater its inertia&mdash;it is harder to start it moving, harder to stop it, harder
+            to change its direction. A loaded freight train has enormous inertia: it takes kilometers to stop
+            even with brakes fully applied. A tennis ball has very little inertia: you can start it, stop it,
+            and redirect it with a flick of your wrist.
+          </p>
+
+          <p>
+            Mass is the quantitative measure of inertia. This is, in fact, one way to <em>define</em> mass:
+            mass is the property of an object that determines how much it resists acceleration when a force
+            is applied. A 10-kilogram object has ten times the inertia of a 1-kilogram object, meaning it
+            requires ten times the force to produce the same acceleration.
+          </p>
+
+          <div class="formula">
+            <span class="formula-name">Condition for Equilibrium (First Law)</span>
+            &Sigma;F = 0 &nbsp;&rArr;&nbsp; a = 0 &nbsp;(constant velocity or rest)
+          </div>
+
+          <p>
+            This formula is more than a mathematical statement. It tells us something profound: if the net
+            force on an object is zero, the object does not accelerate. It either remains at rest or moves at
+            constant velocity. Conversely, if an object is observed to be at rest or moving at constant
+            velocity, we can conclude that the net force on it must be zero. This gives us a powerful diagnostic
+            tool. Whenever you see an object that is not accelerating, you know&mdash;with certainty&mdash;that
+            all the forces on it balance out perfectly.
+          </p>
+
+          <h3>Inertial Reference Frames</h3>
+
+          <p>
+            There is a subtle but important caveat to Newton's first law: it is only valid in an
+            <strong>inertial reference frame</strong>&mdash;a frame of reference that is itself not accelerating.
+            If you are sitting in a car that suddenly brakes, a coffee cup on the dashboard slides forward.
+            From your perspective inside the decelerating car, it <em>looks</em> as though a force pushed the
+            cup forward. But no such force exists. The cup simply continued moving at its original velocity
+            (inertia!) while the car decelerated beneath it. The "mysterious force" is an artifact of
+            observing from a non-inertial (accelerating) reference frame. Newton's laws, in their standard
+            form, apply only in inertial frames&mdash;frames that are at rest or moving at constant velocity
+            relative to distant stars.
+          </p>
+        </section>
+
+        <!-- ======================== NEWTON'S SECOND LAW ======================== -->
+        <section id="second-law" class="lecture-section reveal">
+          <h2>Newton's Second Law: The Law of Acceleration</h2>
+
+          <h3>The Heart of Classical Mechanics</h3>
+
+          <p>
+            Newton's first law tells us what happens when the net force is zero: no acceleration. Newton's
+            second law tells us what happens when the net force is <em>not</em> zero: the object accelerates.
+            More precisely, it tells us exactly <em>how much</em> the object accelerates and in what direction.
+            This is the quantitative powerhouse of mechanics&mdash;the equation that allows us to predict
+            the motion of everything from falling apples to orbiting planets.
+          </p>
+
+          <div class="formula">
+            <span class="formula-name">Newton's Second Law</span>
+            &Sigma;<strong>F</strong> = m<strong>a</strong>
+          </div>
+
+          <p>
+            The boldface reminds us that this is a vector equation: the net force and the acceleration point
+            in the <em>same direction</em>. In component form, this single vector equation becomes two (in 2D)
+            or three (in 3D) scalar equations:
+          </p>
+
+          <div class="formula">
+            <span class="formula-name">Component Form (2D)</span>
+            &Sigma;F<sub>x</sub> = ma<sub>x</sub> &nbsp;&nbsp;&nbsp;&nbsp;
+            &Sigma;F<sub>y</sub> = ma<sub>y</sub>
+          </div>
+
+          <h3>What F = ma Really Means</h3>
+
+          <p>
+            Let us unpack this equation carefully, because its simplicity conceals enormous depth.
+          </p>
+
+          <p>
+            <strong>&Sigma;F</strong> is the <em>net</em> force&mdash;the vector sum of all forces acting
+            on the object. Not the strongest force, not the "applied" force, not any single force in isolation,
+            but the total, combined effect of every force acting on the object. If three forces act on a box
+            (a push to the right, gravity downward, and the floor pushing upward), you must add all three as
+            vectors to find &Sigma;F. Only the net force matters for determining the acceleration.
+          </p>
+
+          <p>
+            <strong>m</strong> is the mass of the object&mdash;a scalar quantity that measures how much the
+            object resists acceleration. Mass is always positive and does not depend on location. Your mass
+            is the same on the Moon as on Earth, even though your weight is different. Mass is the bridge
+            between force and acceleration: it tells you how much acceleration a given force will produce.
+          </p>
+
+          <p>
+            <strong>a</strong> is the acceleration of the object&mdash;the rate at which its velocity changes.
+            The equation says that the acceleration is directly proportional to the net force and inversely
+            proportional to the mass. Double the force, double the acceleration. Double the mass, halve the
+            acceleration. The acceleration always points in the same direction as the net force. This is
+            perhaps the single most important sentence in classical mechanics: <em>the acceleration of an
+            object is always in the direction of the net force acting on it</em>.
+          </p>
+
+          <p>
+            Notice what the second law does <em>not</em> say. It does not say that force causes velocity.
+            It says that force causes <em>acceleration</em>&mdash;a <em>change</em> in velocity. An object
+            can be moving to the right while the net force (and therefore the acceleration) points to the
+            left. This happens all the time: a ball thrown upward is moving upward, but gravity (the net
+            force) pulls it downward, causing it to decelerate. The force and the velocity do not have to
+            point in the same direction. But the force and the acceleration always do.
+          </p>
+
+          <div class="example">
+            <div class="example-label">Worked Example: Pushing a Cart</div>
+            <p>
+              <strong>Problem:</strong> A 25-kg shopping cart is pushed with a horizontal force of 60 N
+              across a level floor. The frictional force opposing the motion is 10 N. Find the acceleration
+              of the cart.
+            </p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>
+                <strong>Step 1: Identify forces in the horizontal direction.</strong><br>
+                Applied force: F<sub>app</sub> = 60 N (forward)<br>
+                Friction: f = 10 N (backward)
+              </p>
+              <p>
+                <strong>Step 2: Find the net horizontal force.</strong><br>
+                &Sigma;F<sub>x</sub> = 60 N &minus; 10 N = 50 N (forward)
+              </p>
+              <p>
+                <strong>Step 3: Apply Newton's second law.</strong><br>
+                &Sigma;F<sub>x</sub> = ma<sub>x</sub><br>
+                50 N = (25 kg)(a<sub>x</sub>)<br>
+                a<sub>x</sub> = 50 / 25 = <strong>2.0 m/s&sup2;</strong> (forward)
+              </p>
+              <p>
+                <strong>Check:</strong> The units work out (N / kg = m/s&sup2;). The magnitude is reasonable:
+                a moderate push on a light cart produces a gentle acceleration, about one-fifth of <em>g</em>.
+                The direction is forward, which makes sense since the push exceeds the friction.
+              </p>
+            </div>
+          </div>
+
+          <h3>The First Law as a Special Case</h3>
+
+          <p>
+            Notice that Newton's first law is actually a special case of the second law. If &Sigma;F = 0,
+            then by the second law, ma = 0, which means a = 0 (since m &ne; 0). Zero acceleration means
+            constant velocity&mdash;which is precisely what the first law says. So why state the first law
+            separately? Because the first law does something the second law alone does not: it establishes
+            the existence of inertial reference frames. It says, in effect, "there exist frames of reference
+            in which an object with no net force on it does not accelerate." This is a foundational
+            statement about the structure of space and time, not merely a special case of F = ma.
+          </p>
+        </section>
+
+        <!-- ======================== NEWTON'S THIRD LAW ======================== -->
+        <section id="third-law" class="lecture-section reveal">
+          <h2>Newton's Third Law: Action and Reaction</h2>
+
+          <h3>Forces Come in Pairs</h3>
+
+          <p>
+            Newton's third law is arguably the most misunderstood of the three, and yet it is astonishingly
+            simple once grasped correctly. It states:
+          </p>
+
+          <div class="key-concept">
+            <div class="concept-label">Newton's Third Law</div>
+            <p>
+              If object A exerts a force on object B, then object B simultaneously exerts a force on object A
+              that is equal in magnitude and opposite in direction. These two forces act on
+              <strong>different objects</strong>.
+            </p>
+          </div>
+
+          <p>
+            In symbolic form: <strong>F</strong><sub>A on B</sub> = &minus;<strong>F</strong><sub>B on A</sub>.
+            The forces are equal in magnitude, opposite in direction, of the same type (both gravitational,
+            both contact, both electromagnetic), and they act on <em>different</em> objects. This last point
+            is the one students most often miss, and it is the source of nearly all confusion about the
+            third law.
+          </p>
+
+          <p>
+            When you push a wall with 50 N of force, the wall pushes back on you with 50 N. When the Earth
+            pulls you downward with gravitational force (your weight), you pull the Earth upward with exactly
+            the same force. When a hammer strikes a nail, the nail exerts just as much force on the hammer as
+            the hammer exerts on the nail. These are not separate, independent phenomena. They are the
+            <em>same</em> interaction viewed from two perspectives. A force is an interaction between two
+            objects, and every interaction is inherently two-sided.
+          </p>
+
+          <h3>The Horse-and-Cart Paradox</h3>
+
+          <p>
+            A classic puzzle that trips up students goes like this: "If the horse pulls the cart forward with
+            a force of 500 N, and the cart pulls the horse backward with a force of 500 N (by Newton's third
+            law), how does the system ever move? Don't the forces cancel out?"
+          </p>
+
+          <p>
+            The resolution is beautiful in its simplicity: the two forces act on <strong>different
+            objects</strong>. The horse pulls the cart forward&mdash;this force acts on the <em>cart</em>.
+            The cart pulls the horse backward&mdash;this force acts on the <em>horse</em>. You cannot add
+            forces that act on different objects. To determine whether the cart accelerates, you look only
+            at the forces acting <em>on the cart</em>: the forward pull from the horse, minus the backward
+            friction from the ground on the cart's wheels. To determine whether the horse accelerates, you
+            look only at the forces acting <em>on the horse</em>: the forward friction from the ground on
+            the horse's hooves, minus the backward pull from the cart.
+          </p>
+
+          <p>
+            The horse moves forward because the friction between its hooves and the ground (pushing the
+            horse forward) exceeds the backward pull of the cart. The cart moves forward because the
+            horse's pull (forward on the cart) exceeds the friction on the cart's wheels. The system
+            accelerates forward because, when you analyze each object separately, the net force on each
+            object points forward. The third-law pairs never cancel because they never act on the same
+            object.
+          </p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>
+              Third-law force pairs <strong>never cancel each other</strong> because they act on different
+              objects. Forces can only cancel when they act on the <em>same</em> object. When analyzing
+              the motion of any object, consider only the forces acting <em>on that object</em>, never
+              the forces it exerts on other objects.
+            </p>
+          </div>
+
+          <h3>Identifying Third-Law Pairs</h3>
+
+          <p>
+            A reliable method for identifying third-law pairs is the "A-on-B / B-on-A" test. For every force
+            you identify, ask: "What exerts this force, and what is it exerted on?" Then swap the roles.
+            For example: gravity on a book is "Earth pulls book downward." The third-law partner is
+            "Book pulls Earth upward." The normal force of the table on the book is "Table pushes book
+            upward." The partner is "Book pushes table downward." Notice that the normal force on the book
+            and the weight of the book are <em>not</em> a third-law pair, even though they are equal and
+            opposite when the book is in equilibrium. They are both forces on the <em>same</em> object (the
+            book) and happen to balance; they are not the same interaction viewed from two sides.
+          </p>
+        </section>
+
+        <!-- ======================== FREE BODY DIAGRAMS ======================== -->
+        <section id="free-body-diagrams" class="lecture-section reveal">
+          <h2>Free Body Diagrams</h2>
+
+          <h3>The Physicist's Most Important Sketch</h3>
+
+          <p>
+            A <strong>free body diagram</strong> (FBD) is a simplified drawing that shows a single object
+            isolated from its environment, with arrows representing every force acting on that object. It is
+            the single most important tool in all of Newtonian mechanics. Attempting to solve a force problem
+            without drawing a free body diagram is like attempting to navigate a city without a map&mdash;you
+            might get lucky occasionally, but you will be lost more often than not.
+          </p>
+
+          <h3>Step-by-Step Method</h3>
+
+          <p>
+            Drawing a free body diagram is a systematic process. Follow these steps every time, without exception:
+          </p>
+
+          <ol>
+            <li>
+              <strong>Isolate the object.</strong> Choose the specific object whose motion you want to analyze.
+              Draw it as a simple shape (a dot or a box). Remove everything else from the picture&mdash;the
+              ground, the ropes, the inclined plane, the other objects. Your diagram shows only the object
+              of interest.
+            </li>
+            <li>
+              <strong>Identify all forces acting on the object.</strong> Systematically consider: Is there
+              gravity? (Almost always yes.) Is there a surface in contact? (If so, there is a normal force
+              perpendicular to the surface and possibly friction parallel to it.) Is there a rope or string?
+              (If so, there is tension along the rope.) Is there an applied push or pull? Is there air
+              resistance? Go through each possibility deliberately.
+            </li>
+            <li>
+              <strong>Draw each force as an arrow starting from the object.</strong> The arrow's direction
+              shows the force's direction. Its length should roughly represent the force's magnitude
+              (longer arrows for stronger forces). Label each arrow with a symbol: <em>W</em> or <em>mg</em>
+              for weight, <em>N</em> for normal force, <em>f</em> for friction, <em>T</em> for tension,
+              <em>F<sub>app</sub></em> for an applied force.
+            </li>
+            <li>
+              <strong>Choose a coordinate system.</strong> For problems on flat ground, use horizontal and
+              vertical axes. For inclined planes, tilt your axes so that one axis runs along the surface and
+              the other runs perpendicular to it. This choice of coordinates simplifies the math enormously.
+            </li>
+            <li>
+              <strong>Resolve forces into components.</strong> Decompose any force that does not lie along
+              one of your coordinate axes into its components. Apply Newton's second law separately in each
+              direction: &Sigma;F<sub>x</sub> = ma<sub>x</sub> and &Sigma;F<sub>y</sub> = ma<sub>y</sub>.
+            </li>
+          </ol>
+
+          <h3>Example: Block on an Inclined Plane</h3>
+
+          <p>
+            Consider a block of mass <em>m</em> resting on a frictionless inclined plane that makes an angle
+            &theta; with the horizontal. What forces act on the block, and what is its acceleration?
+          </p>
+
+          <div class="example">
+            <div class="example-label">Worked Example: Inclined Plane (No Friction)</div>
+            <p>
+              <strong>Step 1:</strong> Isolate the block. Draw it as a point or a small box on the incline.
+            </p>
+            <p>
+              <strong>Step 2:</strong> Identify forces. Gravity pulls the block straight down with magnitude
+              <em>mg</em>. The surface pushes the block perpendicular to the incline with normal force
+              <em>N</em>. There is no friction (the problem says frictionless), no rope, no applied force.
+              Two forces total.
+            </p>
+            <p>
+              <strong>Step 3:</strong> Choose coordinates. Tilt the axes: let the x-axis point down the
+              incline (the direction of expected motion) and the y-axis point perpendicular to the surface
+              (away from it).
+            </p>
+            <p>
+              <strong>Step 4:</strong> Resolve gravity into components along the tilted axes.<br>
+              Component along the incline (x): mg sin &theta; (pointing down the slope)<br>
+              Component perpendicular to incline (y): mg cos &theta; (pointing into the surface)
+            </p>
+            <p>
+              <strong>Step 5:</strong> Apply Newton's second law in each direction.
+            </p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>
+                <strong>Perpendicular to incline (y-direction):</strong> The block does not accelerate
+                perpendicular to the surface, so a<sub>y</sub> = 0.<br>
+                &Sigma;F<sub>y</sub> = N &minus; mg cos &theta; = 0<br>
+                Therefore: <strong>N = mg cos &theta;</strong>
+              </p>
+              <p>
+                <strong>Along the incline (x-direction):</strong><br>
+                &Sigma;F<sub>x</sub> = mg sin &theta; = ma<sub>x</sub><br>
+                Therefore: <strong>a = g sin &theta;</strong>
+              </p>
+              <p>
+                <strong>Check:</strong> When &theta; = 0 (flat surface), a = g sin 0 = 0. The block does not
+                accelerate on a flat surface. When &theta; = 90&deg; (vertical drop), a = g sin 90&deg; = g.
+                The block is in free fall. Both limiting cases make perfect physical sense, which gives us
+                confidence the answer is correct.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================== WEIGHT AND NORMAL FORCE ======================== -->
+        <section id="weight-normal-force" class="lecture-section reveal">
+          <h2>Weight and Normal Force</h2>
+
+          <h3>Weight: The Force of Gravity</h3>
+
+          <p>
+            <strong>Weight</strong> is the gravitational force exerted on an object by a massive body (usually
+            the Earth). It is not the same as mass. Mass is an intrinsic property of the object&mdash;a measure
+            of how much matter it contains and how much it resists acceleration. Weight is a force that depends
+            on where the object is located. On the surface of the Earth, weight and mass are related by:
+          </p>
+
+          <div class="formula">
+            <span class="formula-name">Weight</span>
+            W = mg
+          </div>
+
+          <p>
+            where <em>m</em> is the mass of the object and <em>g</em> is the acceleration due to gravity
+            (approximately 9.8 m/s&sup2; near Earth's surface). On the Moon, where <em>g</em> is about
+            1.6 m/s&sup2;, a 70-kg astronaut weighs only 112 N, compared to 686 N on Earth. The astronaut's
+            mass is the same in both places; the weight changes because <em>g</em> changes. Weight always
+            points toward the center of the gravitational body&mdash;straight down, for objects near Earth's
+            surface.
+          </p>
+
+          <h3>Normal Force: The Surface Pushes Back</h3>
+
+          <p>
+            When an object rests on a surface, the surface exerts a force on the object that prevents it from
+            falling through. This is the <strong>normal force</strong>, and it is always perpendicular
+            ("normal" in the mathematical sense) to the surface. On a flat table, the normal force points
+            straight up. On an inclined plane, it points perpendicular to the slope. On a wall, it points
+            horizontally away from the wall.
+          </p>
+
+          <p>
+            A critical point: the normal force is <em>not</em> always equal to the weight. It adjusts itself
+            to whatever value is needed to prevent the object from accelerating through the surface. On a
+            flat surface with no other vertical forces, N = mg. But if you push down on the object, the
+            normal force increases. If you pull up on the object (but not enough to lift it), the normal
+            force decreases. The normal force is a <strong>responsive force</strong>&mdash;it responds to
+            the situation rather than having a fixed predetermined value.
+          </p>
+
+          <h3>The Elevator Problem</h3>
+
+          <p>
+            The elevator is the classic scenario for understanding the difference between weight and normal
+            force, and for experiencing what it means for the normal force to change.
+          </p>
+
+          <div class="example">
+            <div class="example-label">Worked Example: Person in an Elevator</div>
+            <p>
+              <strong>Problem:</strong> A 70-kg person stands on a bathroom scale in an elevator. The scale
+              reads the normal force. What does the scale read when the elevator (a) is at rest, (b) accelerates
+              upward at 2 m/s&sup2;, (c) accelerates downward at 2 m/s&sup2;, and (d) is in free fall?
+            </p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>
+                The person's weight is W = mg = (70)(9.8) = 686 N in all cases. Apply Newton's second law in
+                the vertical direction, taking upward as positive.
+              </p>
+              <p>
+                <strong>General equation:</strong> N &minus; mg = ma &nbsp;&rArr;&nbsp; N = m(g + a)
+              </p>
+              <p>
+                <strong>(a) At rest (a = 0):</strong><br>
+                N = 70(9.8 + 0) = <strong>686 N</strong><br>
+                The scale reads the true weight. You feel "normal."
+              </p>
+              <p>
+                <strong>(b) Accelerating upward (a = +2 m/s&sup2;):</strong><br>
+                N = 70(9.8 + 2) = 70(11.8) = <strong>826 N</strong><br>
+                The scale reads more than your weight. You feel heavier.
+              </p>
+              <p>
+                <strong>(c) Accelerating downward (a = &minus;2 m/s&sup2;):</strong><br>
+                N = 70(9.8 &minus; 2) = 70(7.8) = <strong>546 N</strong><br>
+                The scale reads less than your weight. You feel lighter.
+              </p>
+              <p>
+                <strong>(d) Free fall (a = &minus;9.8 m/s&sup2;):</strong><br>
+                N = 70(9.8 &minus; 9.8) = <strong>0 N</strong><br>
+                The scale reads zero. You are weightless&mdash;not because gravity has disappeared, but because
+                everything (you, the scale, the elevator) is accelerating downward at the same rate. There is
+                no contact force between you and the scale.
+              </p>
+            </div>
+          </div>
+
+          <p>
+            This example illustrates a profound point: what we <em>feel</em> as weight is not the gravitational
+            force itself, but the normal force (or, more generally, the contact force from whatever supports us).
+            Astronauts on the International Space Station are not "beyond gravity"&mdash;gravity at that altitude
+            is about 90% of its surface value. They feel weightless because they and the station are in free
+            fall together, orbiting the Earth, and there is no contact force between them and the station floor.
+          </p>
+        </section>
+
+        <!-- ======================== FRICTION ======================== -->
+        <section id="friction" class="lecture-section reveal">
+          <h2>Friction</h2>
+
+          <h3>The Force That Opposes Sliding</h3>
+
+          <p>
+            Friction is a contact force that opposes the relative motion (or attempted motion) between two
+            surfaces. It arises from the microscopic roughness of surfaces&mdash;tiny peaks and valleys on
+            each surface interlock and resist sliding. Even surfaces that appear perfectly smooth under the
+            naked eye are rough at the microscopic scale.
+          </p>
+
+          <p>
+            There are two types of friction that behave differently: <strong>static friction</strong> and
+            <strong>kinetic friction</strong>.
+          </p>
+
+          <h3>Static Friction</h3>
+
+          <p>
+            <strong>Static friction</strong> acts when two surfaces are in contact but not sliding relative
+            to each other. You push a heavy crate with a small force, and it does not move. Static friction
+            is matching your applied force, keeping the net force zero. Push harder, and static friction
+            increases to match. It is a <em>responsive</em> force, just like the normal force&mdash;it adjusts
+            to whatever value is needed to prevent sliding, up to a maximum limit.
+          </p>
+
+          <div class="formula">
+            <span class="formula-name">Static Friction</span>
+            f<sub>s</sub> &le; &mu;<sub>s</sub> N
+          </div>
+
+          <p>
+            The symbol &mu;<sub>s</sub> is the <strong>coefficient of static friction</strong>, a dimensionless
+            number that depends on the nature of the two surfaces in contact. The inequality is critical: static
+            friction can be anywhere from zero (when no horizontal force is applied) up to the maximum value
+            &mu;<sub>s</sub>N (the threshold of sliding). Once the applied force exceeds &mu;<sub>s</sub>N,
+            static friction can no longer hold, and the object begins to slide.
+          </p>
+
+          <h3>Kinetic Friction</h3>
+
+          <p>
+            <strong>Kinetic friction</strong> acts when two surfaces are already sliding relative to each other.
+            Once the crate starts moving, the frictional force drops slightly and becomes approximately constant:
+          </p>
+
+          <div class="formula">
+            <span class="formula-name">Kinetic Friction</span>
+            f<sub>k</sub> = &mu;<sub>k</sub> N
+          </div>
+
+          <p>
+            The coefficient of kinetic friction &mu;<sub>k</sub> is typically <em>less</em> than &mu;<sub>s</sub>
+            for the same pair of surfaces. This is why it is harder to <em>start</em> an object sliding than
+            to <em>keep</em> it sliding. Once you overcome the static friction threshold and the object begins
+            to move, less force is needed to maintain the motion.
+          </p>
+
+          <h3>Key Properties of Friction</h3>
+
+          <p>
+            Several features of the friction model deserve emphasis:
+          </p>
+
+          <ul>
+            <li>
+              Friction is proportional to the <strong>normal force</strong>, not to the surface area of
+              contact. A brick lying flat and a brick standing on its end experience the same frictional force
+              (assuming the same normal force and same surfaces), even though the contact areas are different.
+              This is counterintuitive but experimentally verified.
+            </li>
+            <li>
+              Kinetic friction is approximately <strong>independent of speed</strong>. Whether the crate slides
+              at 1 m/s or 5 m/s, the kinetic friction is roughly the same. (At very high speeds, this
+              approximation breaks down.)
+            </li>
+            <li>
+              Friction always opposes the <strong>relative motion</strong> (or tendency of motion) between
+              surfaces. If a block slides to the right, friction points to the left. If the block would slide
+              downhill without friction, static friction points uphill.
+            </li>
+          </ul>
+
+          <div class="example">
+            <div class="example-label">Worked Example: Pulling a Sled</div>
+            <p>
+              <strong>Problem:</strong> A child pulls a 15-kg sled across flat snow with a horizontal force
+              of 40 N. The coefficient of kinetic friction between the sled runners and the snow is
+              &mu;<sub>k</sub> = 0.10. Find the acceleration of the sled.
+            </p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>
+                <strong>Free body diagram (vertical):</strong> Weight W = mg = (15)(9.8) = 147 N downward.
+                Normal force N upward. No vertical acceleration, so N = W = 147 N.
+              </p>
+              <p>
+                <strong>Kinetic friction:</strong> f<sub>k</sub> = &mu;<sub>k</sub>N = (0.10)(147) = 14.7 N,
+                directed backward (opposing motion).
+              </p>
+              <p>
+                <strong>Net horizontal force:</strong><br>
+                &Sigma;F<sub>x</sub> = 40 N &minus; 14.7 N = 25.3 N (forward)
+              </p>
+              <p>
+                <strong>Acceleration:</strong><br>
+                a = &Sigma;F<sub>x</sub> / m = 25.3 / 15 = <strong>1.69 m/s&sup2;</strong>
+              </p>
+              <p>
+                <strong>Check:</strong> The acceleration is positive (forward), which makes sense because the
+                pull exceeds the friction. The magnitude is modest&mdash;about 17% of <em>g</em>&mdash;which
+                seems reasonable for a child pulling a sled on snow.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================== TENSION ======================== -->
+        <section id="tension" class="lecture-section reveal">
+          <h2>Tension</h2>
+
+          <h3>The Force in a Rope</h3>
+
+          <p>
+            <strong>Tension</strong> is the force transmitted through a rope, string, cable, or chain when it
+            is pulled taut by forces acting from opposite ends. When you pull a dog on a leash, you exert a
+            force on the leash, and the leash transmits that force to the dog's collar. The leash is under
+            tension, and the tension force pulls on whatever is attached to each end.
+          </p>
+
+          <p>
+            In introductory physics, we almost always make two simplifying assumptions about ropes:
+          </p>
+
+          <ul>
+            <li>
+              <strong>Massless rope:</strong> The rope has negligible mass compared to the objects it connects.
+              This means that the tension is the same at every point along the rope. Why? Because if a rope
+              segment has zero mass, Newton's second law (F = ma = 0 &middot; a = 0) requires that the net
+              force on it is zero, which means the tension pulling it from the left must equal the tension
+              pulling it from the right. The tension is therefore uniform throughout the rope.
+            </li>
+            <li>
+              <strong>Inextensible rope:</strong> The rope does not stretch. This means that the objects at
+              each end have the same magnitude of acceleration (if they are connected by a single rope over
+              a frictionless pulley).
+            </li>
+          </ul>
+
+          <p>
+            Tension always pulls; it never pushes. A rope can pull an object toward it, but it cannot push
+            an object away. This is because a rope, unlike a rigid rod, collapses when you try to push on
+            it. The direction of the tension force is always along the rope, away from the object in
+            question.
+          </p>
+
+          <h3>Pulleys and the Atwood Machine</h3>
+
+          <p>
+            A <strong>pulley</strong> is a device that redirects the direction of a tension force. An ideal
+            (frictionless, massless) pulley changes the direction of the rope without changing the magnitude
+            of the tension. This is extremely useful in practice: it allows you to lift a heavy object by
+            pulling downward on a rope instead of pushing upward.
+          </p>
+
+          <p>
+            The <strong>Atwood machine</strong> is a classic physics apparatus: two masses connected by a
+            rope that passes over a single frictionless pulley. It is one of the most elegant and instructive
+            systems in mechanics.
+          </p>
+
+          <div class="example">
+            <div class="example-label">Worked Example: The Atwood Machine</div>
+            <p>
+              <strong>Problem:</strong> Two masses, m<sub>1</sub> = 5 kg and m<sub>2</sub> = 3 kg, are
+              connected by a massless rope over a frictionless pulley. Find the acceleration of the system
+              and the tension in the rope.
+            </p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>
+                <strong>Key insight:</strong> Because the rope is inextensible, both masses have the same
+                magnitude of acceleration <em>a</em>. The heavier mass accelerates downward and the lighter
+                mass accelerates upward.
+              </p>
+              <p>
+                <strong>FBD for m<sub>1</sub> (heavier, accelerates down):</strong><br>
+                m<sub>1</sub>g &minus; T = m<sub>1</sub>a &nbsp;&nbsp;&hellip; (1)
+              </p>
+              <p>
+                <strong>FBD for m<sub>2</sub> (lighter, accelerates up):</strong><br>
+                T &minus; m<sub>2</sub>g = m<sub>2</sub>a &nbsp;&nbsp;&hellip; (2)
+              </p>
+              <p>
+                <strong>Add equations (1) and (2):</strong><br>
+                m<sub>1</sub>g &minus; m<sub>2</sub>g = (m<sub>1</sub> + m<sub>2</sub>)a<br>
+                a = (m<sub>1</sub> &minus; m<sub>2</sub>)g / (m<sub>1</sub> + m<sub>2</sub>)
+              </p>
+              <p>
+                a = (5 &minus; 3)(9.8) / (5 + 3) = (2)(9.8) / 8 = <strong>2.45 m/s&sup2;</strong>
+              </p>
+              <p>
+                <strong>Find tension from equation (2):</strong><br>
+                T = m<sub>2</sub>(g + a) = 3(9.8 + 2.45) = 3(12.25) = <strong>36.75 N</strong>
+              </p>
+              <p>
+                <strong>Check:</strong> Is T between m<sub>2</sub>g = 29.4 N and m<sub>1</sub>g = 49.0 N?
+                Yes: 29.4 &lt; 36.75 &lt; 49.0. This makes physical sense&mdash;the tension must exceed the
+                weight of the lighter mass (to accelerate it upward) and must be less than the weight of the
+                heavier mass (to allow it to accelerate downward). If m<sub>1</sub> = m<sub>2</sub>, then
+                a = 0 and T = mg, which is the equilibrium case. If m<sub>2</sub> = 0, then a = g and T = 0,
+                which is free fall. Both limiting cases check out.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================== APPLICATIONS ======================== -->
+        <section id="applications" class="lecture-section reveal">
+          <h2>Applications: Connected Objects</h2>
+
+          <p>
+            Many real-world problems involve multiple objects connected by ropes, in contact, or stacked.
+            The strategy is always the same: draw a free body diagram for <em>each</em> object, write
+            Newton's second law for <em>each</em> object, and solve the resulting system of equations.
+            The constraint provided by the connection (same acceleration if connected by an inextensible
+            rope, same acceleration if in contact) gives you the additional equation needed to solve for
+            all unknowns.
+          </p>
+
+          <div class="example">
+            <div class="example-label">Worked Example: Two Blocks Connected on a Table</div>
+            <p>
+              <strong>Problem:</strong> A block of mass m<sub>1</sub> = 4 kg sits on a frictionless table.
+              It is connected by a massless rope to a block of mass m<sub>2</sub> = 6 kg that hangs over
+              the edge of the table via a frictionless pulley. Find the acceleration and the tension in
+              the rope.
+            </p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>
+                Both blocks have the same magnitude of acceleration <em>a</em>. Block 1 accelerates
+                horizontally (toward the pulley). Block 2 accelerates downward.
+              </p>
+              <p>
+                <strong>FBD for m<sub>1</sub> (on the table, horizontal motion):</strong><br>
+                T = m<sub>1</sub>a &nbsp;&nbsp;&hellip; (1)
+              </p>
+              <p>
+                <strong>FBD for m<sub>2</sub> (hanging, vertical motion):</strong><br>
+                m<sub>2</sub>g &minus; T = m<sub>2</sub>a &nbsp;&nbsp;&hellip; (2)
+              </p>
+              <p>
+                <strong>Add equations (1) and (2):</strong><br>
+                m<sub>2</sub>g = (m<sub>1</sub> + m<sub>2</sub>)a<br>
+                a = m<sub>2</sub>g / (m<sub>1</sub> + m<sub>2</sub>) = (6)(9.8) / (4 + 6) = 58.8 / 10
+                = <strong>5.88 m/s&sup2;</strong>
+              </p>
+              <p>
+                <strong>Tension from equation (1):</strong><br>
+                T = m<sub>1</sub>a = (4)(5.88) = <strong>23.5 N</strong>
+              </p>
+              <p>
+                <strong>Check:</strong> The acceleration is less than g (the hanging block cannot fall faster
+                than free fall). The tension (23.5 N) is less than m<sub>2</sub>g = 58.8 N, which is correct
+                because the hanging block is accelerating downward (net downward force is positive). If
+                m<sub>1</sub> = 0, then a = g and T = 0 (pure free fall). If m<sub>1</sub> is very large,
+                a approaches 0 and T approaches m<sub>2</sub>g (the heavy block on the table barely moves,
+                and the rope simply supports the hanging block). Both limits are physically reasonable.
+              </p>
+            </div>
+          </div>
+
+          <p>
+            The method demonstrated here&mdash;separate FBDs, separate equations, solve the system&mdash;scales
+            to any number of connected objects. Whether you have two blocks, three blocks, a system of pulleys,
+            or a chain of objects on surfaces with friction, the approach is identical. The only thing that
+            changes is the number of equations you need to write and solve.
+          </p>
+
+          <div class="example">
+            <div class="example-label">Worked Example: Block on Incline with Hanging Mass</div>
+            <p>
+              <strong>Problem:</strong> A 3-kg block sits on a frictionless incline at 30&deg;. A massless rope
+              connects it over a pulley at the top of the incline to a 2-kg block that hangs vertically. Which
+              way does the system move, and what is the acceleration?
+            </p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>
+                <strong>First, determine which direction the system tends to move.</strong> The component of
+                gravity pulling the 3-kg block down the incline is m<sub>1</sub>g sin 30&deg; = (3)(9.8)(0.5)
+                = 14.7 N. The weight of the hanging block is m<sub>2</sub>g = (2)(9.8) = 19.6 N. Since
+                19.6 N &gt; 14.7 N, the hanging block falls and the block on the incline moves up the slope.
+              </p>
+              <p>
+                <strong>FBD for m<sub>1</sub> (on incline, along the slope, up-the-incline positive):</strong><br>
+                T &minus; m<sub>1</sub>g sin &theta; = m<sub>1</sub>a &nbsp;&nbsp;&hellip; (1)
+              </p>
+              <p>
+                <strong>FBD for m<sub>2</sub> (hanging, downward positive):</strong><br>
+                m<sub>2</sub>g &minus; T = m<sub>2</sub>a &nbsp;&nbsp;&hellip; (2)
+              </p>
+              <p>
+                <strong>Add:</strong><br>
+                m<sub>2</sub>g &minus; m<sub>1</sub>g sin &theta; = (m<sub>1</sub> + m<sub>2</sub>)a<br>
+                a = (m<sub>2</sub>g &minus; m<sub>1</sub>g sin &theta;) / (m<sub>1</sub> + m<sub>2</sub>)<br>
+                a = (19.6 &minus; 14.7) / 5 = 4.9 / 5 = <strong>0.98 m/s&sup2;</strong>
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================== COMMON MISCONCEPTIONS ======================== -->
+        <section id="common-misconceptions" class="lecture-section reveal">
+          <h2>Common Misconceptions</h2>
+
+          <p>
+            Newton's laws seem straightforward when stated in textbook language, but students consistently
+            fall into the same conceptual traps. Confronting these misconceptions head-on is essential for
+            building genuine understanding.
+          </p>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p>
+              <strong>"An object in motion must have a net force acting on it."</strong> &mdash; This is the
+              Aristotelian view, and it is wrong. Newton's first law explicitly states that an object can move
+              at constant velocity with zero net force. A hockey puck sliding on frictionless ice continues
+              moving in a straight line at constant speed with no force needed to maintain that motion. A force
+              is needed only to <em>change</em> the velocity. If an object is moving at constant velocity,
+              the net force on it is exactly zero. Motion does not require force; <em>changes</em> in motion
+              require force.
+            </p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p>
+              <strong>"Heavier objects fall faster."</strong> &mdash; In a vacuum (no air resistance), all
+              objects fall with the same acceleration <em>g</em>, regardless of mass. A hammer and a feather
+              dropped on the Moon (where there is no air) hit the ground at the same time&mdash;as demonstrated
+              by Apollo 15 astronaut David Scott. On Earth, air resistance complicates matters and can make
+              lighter objects fall more slowly, but this is the effect of air resistance, not a failure of
+              Newton's laws. The gravitational force on a heavier object is greater, but so is its mass, and
+              the two effects cancel exactly: a = F/m = mg/m = g.
+            </p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p>
+              <strong>"The normal force always equals the weight."</strong> &mdash; The normal force equals
+              the weight only in the special case of an object on a horizontal surface with no other vertical
+              forces. If the surface is inclined, N = mg cos &theta;, which is less than mg. If someone pushes
+              down on the object, N exceeds mg. If someone pulls up on it, N is less than mg. If the object is
+              on a vertical wall, the normal force is horizontal and has nothing to do with the weight at all.
+              The normal force is whatever value is needed to prevent the object from passing through the
+              surface. Always calculate it from Newton's second law; never assume it equals mg.
+            </p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p>
+              <strong>"Action and reaction forces cancel out."</strong> &mdash; This is the single most
+              common error in applying Newton's third law. Third-law force pairs <em>never</em> cancel
+              because they act on <em>different</em> objects. The force of the Earth on you (your weight)
+              and the force of you on the Earth are a third-law pair. They do not cancel because one acts
+              on you and the other acts on the Earth. Forces can only cancel when they act on the same
+              object. The weight pulling you down and the normal force of the floor pushing you up act
+              on the <em>same</em> object (you) and can cancel&mdash;but they are <em>not</em> a third-law
+              pair. They are two different forces from two different interactions that happen to be equal
+              and opposite when you are in equilibrium.
+            </p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p>
+              <strong>"Force is needed to keep an object moving in a circle at constant speed."</strong>
+              &mdash; This one is actually <em>true</em>, and the misconception is thinking it contradicts
+              the first law. An object moving in a circle at constant <em>speed</em> is still accelerating,
+              because its direction is constantly changing. The velocity vector changes direction even though
+              its magnitude stays the same. This change in direction requires a centripetal (center-seeking)
+              force. Without that force, the object would fly off in a straight line&mdash;exactly as the
+              first law predicts. Circular motion does not violate the first law; it <em>illustrates</em> it.
+            </p>
+          </div>
+        </section>
+
+        <!-- ======================== KEY TAKEAWAYS ======================== -->
+        <section id="key-takeaways" class="lecture-section reveal">
+          <h2>Key Takeaways</h2>
+
+          <div class="takeaways">
+            <h3>Summary</h3>
+            <ul>
+              <li>
+                A <strong>force</strong> is an interaction between two objects&mdash;a push or a pull. It is a
+                vector quantity measured in newtons (N). The net force on an object is the vector sum of all
+                individual forces acting on it.
+              </li>
+              <li>
+                <strong>Newton's first law</strong> (inertia): An object remains at rest or moves at constant
+                velocity unless a net external force acts on it. The natural state of motion is constant
+                velocity, not rest. Force is needed to <em>change</em> motion, not to maintain it.
+              </li>
+              <li>
+                <strong>Newton's second law</strong>: &Sigma;F = ma. The net force on an object equals its
+                mass times its acceleration. Acceleration is always in the direction of the net force. This
+                is the quantitative engine of mechanics.
+              </li>
+              <li>
+                <strong>Newton's third law</strong>: Forces always come in pairs. If A pushes B, then B pushes
+                A with equal magnitude in the opposite direction. These paired forces act on different objects
+                and therefore never cancel each other.
+              </li>
+              <li>
+                <strong>Free body diagrams</strong> are essential. Isolate the object, identify all forces,
+                draw arrows, choose a coordinate system, resolve into components, and apply &Sigma;F = ma in
+                each direction. Never skip this step.
+              </li>
+              <li>
+                <strong>Weight</strong> (W = mg) is the gravitational force on an object, always directed
+                toward the center of the Earth. The <strong>normal force</strong> is the perpendicular contact
+                force from a surface, and it is not always equal to the weight.
+              </li>
+              <li>
+                <strong>Friction</strong> opposes relative motion between surfaces. Static friction
+                (f<sub>s</sub> &le; &mu;<sub>s</sub>N) prevents sliding and adjusts up to a maximum.
+                Kinetic friction (f<sub>k</sub> = &mu;<sub>k</sub>N) acts during sliding and is typically
+                less than the maximum static friction.
+              </li>
+              <li>
+                <strong>Tension</strong> is the pulling force transmitted through a rope or string. In an
+                ideal (massless, inextensible) rope, tension is the same at every point. Pulleys redirect
+                the tension without changing its magnitude.
+              </li>
+              <li>
+                For <strong>connected objects</strong>, draw a separate FBD for each object, write Newton's
+                second law for each, and use the constraint (same acceleration for objects connected by an
+                inextensible rope) to solve the system of equations.
+              </li>
+              <li>
+                The most common misconceptions involve confusing force with velocity, assuming the normal
+                force always equals weight, and believing that third-law pairs cancel. Recognizing and
+                correcting these errors is essential to mastering mechanics.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ======================== LECTURE NAVIGATION ======================== -->
+        <div class="lecture-nav">
+          <a href="03-vectors-motion.html" class="nav-prev">
+            <div class="nav-direction">&larr; Previous Lecture</div>
+            <div class="nav-title">Lecture 3: Vectors and Motion</div>
+          </a>
+          <a href="05-work-energy-power.html" class="nav-next">
+            <div class="nav-direction">Next Lecture &rarr;</div>
+            <div class="nav-title">Lecture 5: Work, Energy, and Power</div>
+          </a>
+        </div>
+
+      </article>
+    </div><!-- /.lecture-layout -->
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">&phi; Physics Logic</div>
+          <p class="footer-desc">
+            A lecture series built on the conviction that understanding the reasoning behind
+            physics is more powerful than memorizing its results.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h5>Pages</h5>
+          <a href="../index.html">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../lectures.html">Lectures</a>
+          <a href="../faq.html">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h5>Foundations</h5>
+          <a href="01-introduction.html">Lecture 1: Introduction</a>
+          <a href="02-units-dimensions.html">Lecture 2: Units &amp; Dimensions</a>
+        </div>
+        <div class="footer-col">
+          <h5>Mechanics</h5>
+          <a href="03-vectors-motion.html">Lecture 3: Vectors &amp; Motion</a>
+          <a href="04-newtons-laws.html">Lecture 4: Newton's Laws</a>
+          <a href="05-work-energy-power.html">Lecture 5: Work &amp; Energy</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Physics Logic Lectures</span>
+        <span>Built for learners who want to understand, not just calculate.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

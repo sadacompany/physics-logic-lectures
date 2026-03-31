@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Simulations — Physics Logic Lectures</title>
+  <meta name="description" content="Explore physics concepts through interactive HTML5 Canvas simulations with real-time calculations and controls.">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .sim-index-hero {
+      padding: 120px 24px 60px;
+      text-align: center;
+    }
+    .sim-index-hero .label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--electric);
+      background: var(--electric-glow);
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .sim-index-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .sim-index-hero h1 em {
+      color: var(--electric);
+      font-style: normal;
+    }
+    .sim-index-hero p {
+      color: var(--text-secondary);
+      max-width: 640px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .sim-grid-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+    .sim-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .sim-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .sim-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--electric), var(--violet));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .sim-card:hover {
+      border-color: var(--electric);
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.08);
+      transform: translateY(-4px);
+    }
+    .sim-card:hover::before { opacity: 1; }
+
+    .sim-card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .sim-card-icon.cyan { background: rgba(0, 212, 255, 0.1); color: #00d4ff; }
+    .sim-card-icon.magenta { background: rgba(255, 45, 123, 0.1); color: #ff2d7b; }
+    .sim-card-icon.lime { background: rgba(0, 255, 136, 0.1); color: #00ff88; }
+    .sim-card-icon.violet { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+    .sim-card-icon.gold { background: rgba(251, 191, 36, 0.1); color: #fbbf24; }
+    .sim-card-icon.orange { background: rgba(255, 153, 51, 0.1); color: #ff9933; }
+
+    .sim-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+    .sim-card .sim-card-eq {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      color: var(--electric);
+      font-weight: 500;
+    }
+    .sim-card p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 0;
+      flex: 1;
+    }
+    .sim-card .sim-card-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .sim-card .sim-tag {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 10px;
+      border-radius: 10px;
+      background: var(--void-light);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .sim-card .sim-arrow {
+      color: var(--electric);
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 700px) {
+      .sim-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="reading-progress"></div>
+  <nav class="nav"><div class="nav-inner">
+    <a href="index.html" class="nav-brand"><span class="brand-icon">&phi;</span> Physics Logic</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="lectures.html">Lectures</a>
+      <a href="simulations.html" class="active">Simulations</a>
+      <a href="faq.html">FAQ</a>
+    </div>
+    <div class="nav-search"><span class="search-icon">&#128269;</span><input type="text" placeholder="Search lectures..."><div class="search-results"></div></div>
+    <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+  </div></nav>
+
+  <main class="main-content">
+    <section class="sim-index-hero">
+      <span class="label">Interactive Lab</span>
+      <h1>Physics <em>Simulations</em></h1>
+      <p>Explore fundamental physics concepts through interactive HTML5 Canvas simulations. Adjust parameters in real time, observe the physics, and build genuine intuition.</p>
+    </section>
+
+    <section class="sim-grid-section">
+      <div class="sim-grid">
+
+        <!-- 1. Newton's First Law -->
+        <a href="simulations/newton-first-law.html" class="sim-card">
+          <div class="sim-card-icon cyan">&#9632;</div>
+          <h3>Newton's First Law</h3>
+          <span class="sim-card-eq">Inertia &amp; Friction</span>
+          <p>Observe how an object in motion stays in motion unless acted upon by friction. Adjust velocity and friction coefficient to explore inertia.</p>
+          <div class="sim-card-tags"><span class="sim-tag">Mechanics</span><span class="sim-tag">Interactive</span></div>
+          <span class="sim-arrow">Launch Simulation &rarr;</span>
+        </a>
+
+        <!-- 2. Newton's Second Law -->
+        <a href="simulations/newton-second-law.html" class="sim-card">
+          <div class="sim-card-icon magenta">&#9654;</div>
+          <h3>Newton's Second Law</h3>
+          <span class="sim-card-eq">F = ma</span>
+          <p>Apply force to a mass and watch it accelerate. See the real-time velocity graph and understand how force, mass, and acceleration are related.</p>
+          <div class="sim-card-tags"><span class="sim-tag">Mechanics</span><span class="sim-tag">Graphs</span></div>
+          <span class="sim-arrow">Launch Simulation &rarr;</span>
+        </a>
+
+        <!-- 3. Projectile Motion -->
+        <a href="simulations/projectile-motion.html" class="sim-card">
+          <div class="sim-card-icon lime">&#9679;</div>
+          <h3>Projectile Motion</h3>
+          <span class="sim-card-eq">Parabolic Trajectory</span>
+          <p>Launch a projectile at any angle and velocity. Trace the parabolic path, track velocity components, and measure range and max height.</p>
+          <div class="sim-card-tags"><span class="sim-tag">Kinematics</span><span class="sim-tag">2D Motion</span></div>
+          <span class="sim-arrow">Launch Simulation &rarr;</span>
+        </a>
+
+        <!-- 4. Energy Conservation -->
+        <a href="simulations/energy-conservation.html" class="sim-card">
+          <div class="sim-card-icon violet">&#9733;</div>
+          <h3>Conservation of Energy</h3>
+          <span class="sim-card-eq">KE + PE = constant</span>
+          <p>Watch a ball roll along a curved track as kinetic and potential energy transform into each other. Add friction to see energy dissipation.</p>
+          <div class="sim-card-tags"><span class="sim-tag">Energy</span><span class="sim-tag">Bar Chart</span></div>
+          <span class="sim-arrow">Launch Simulation &rarr;</span>
+        </a>
+
+        <!-- 5. Momentum & Collisions -->
+        <a href="simulations/momentum-collision.html" class="sim-card">
+          <div class="sim-card-icon gold">&#8644;</div>
+          <h3>Momentum &amp; Collisions</h3>
+          <span class="sim-card-eq">p = mv</span>
+          <p>Set up two objects with different masses and velocities, then watch them collide. Compare elastic and inelastic collisions.</p>
+          <div class="sim-card-tags"><span class="sim-tag">Momentum</span><span class="sim-tag">Collisions</span></div>
+          <span class="sim-arrow">Launch Simulation &rarr;</span>
+        </a>
+
+        <!-- 6. Simple Harmonic Motion -->
+        <a href="simulations/simple-harmonic-motion.html" class="sim-card">
+          <div class="sim-card-icon cyan">&#8767;</div>
+          <h3>Simple Harmonic Motion</h3>
+          <span class="sim-card-eq">T = 2&pi;&radic;(m/k)</span>
+          <p>A mass on a spring oscillates back and forth. See real-time position and velocity graphs, and watch energy shift between kinetic and potential.</p>
+          <div class="sim-card-tags"><span class="sim-tag">Oscillations</span><span class="sim-tag">Graphs</span></div>
+          <span class="sim-arrow">Launch Simulation &rarr;</span>
+        </a>
+
+        <!-- 7. Pendulum -->
+        <a href="simulations/pendulum.html" class="sim-card">
+          <div class="sim-card-icon magenta">&#9201;</div>
+          <h3>Pendulum</h3>
+          <span class="sim-card-eq">T = 2&pi;&radic;(L/g)</span>
+          <p>Swing a pendulum from any angle and length. Measure the period and compare it to the theoretical prediction. Explore large-angle effects.</p>
+          <div class="sim-card-tags"><span class="sim-tag">Oscillations</span><span class="sim-tag">Gravity</span></div>
+          <span class="sim-arrow">Launch Simulation &rarr;</span>
+        </a>
+
+        <!-- 8. Free Fall -->
+        <a href="simulations/newton-first-law.html" class="sim-card">
+          <div class="sim-card-icon lime">&#8595;</div>
+          <h3>Free Fall &amp; Air Resistance</h3>
+          <span class="sim-card-eq">v = gt (vacuum)</span>
+          <p>Drop objects in vacuum and air. Compare how mass and drag coefficient affect terminal velocity and fall time.</p>
+          <div class="sim-card-tags"><span class="sim-tag">Kinematics</span><span class="sim-tag">Drag</span></div>
+          <span class="sim-arrow">Coming Soon</span>
+        </a>
+
+        <!-- 9. Circular Motion -->
+        <a href="simulations/newton-first-law.html" class="sim-card">
+          <div class="sim-card-icon violet">&#9676;</div>
+          <h3>Circular Motion</h3>
+          <span class="sim-card-eq">a = v&sup2;/r</span>
+          <p>Visualize centripetal acceleration and force for an object moving in a circle. Adjust speed and radius to explore the relationship.</p>
+          <div class="sim-card-tags"><span class="sim-tag">Mechanics</span><span class="sim-tag">Rotation</span></div>
+          <span class="sim-arrow">Coming Soon</span>
+        </a>
+
+        <!-- 10. Hooke's Law -->
+        <a href="simulations/newton-first-law.html" class="sim-card">
+          <div class="sim-card-icon gold">&#8614;</div>
+          <h3>Hooke's Law</h3>
+          <span class="sim-card-eq">F = -kx</span>
+          <p>Stretch and compress a spring. See how restoring force grows linearly with displacement and explore elastic limits.</p>
+          <div class="sim-card-tags"><span class="sim-tag">Springs</span><span class="sim-tag">Elasticity</span></div>
+          <span class="sim-arrow">Coming Soon</span>
+        </a>
+
+        <!-- 11. Wave Superposition -->
+        <a href="simulations/newton-first-law.html" class="sim-card">
+          <div class="sim-card-icon cyan">&#8776;</div>
+          <h3>Wave Superposition</h3>
+          <span class="sim-card-eq">y = y&#8321; + y&#8322;</span>
+          <p>Combine two traveling waves and see constructive and destructive interference. Adjust frequency, amplitude, and phase.</p>
+          <div class="sim-card-tags"><span class="sim-tag">Waves</span><span class="sim-tag">Interference</span></div>
+          <span class="sim-arrow">Coming Soon</span>
+        </a>
+
+        <!-- 12. Electric Field -->
+        <a href="simulations/newton-first-law.html" class="sim-card">
+          <div class="sim-card-icon orange">&#9889;</div>
+          <h3>Electric Field Lines</h3>
+          <span class="sim-card-eq">E = kQ/r&sup2;</span>
+          <p>Place positive and negative charges and see electric field lines emerge. Explore dipoles, quadrupoles, and superposition of fields.</p>
+          <div class="sim-card-tags"><span class="sim-tag">E&amp;M</span><span class="sim-tag">Fields</span></div>
+          <span class="sim-arrow">Coming Soon</span>
+        </a>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <div class="footer-brand">Physics Logic</div>
+          <p class="footer-desc">A free educational platform dedicated to teaching physics through deep reasoning and logical thinking.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Simulations</h5>
+          <a href="simulations/newton-first-law.html">Newton's First Law</a>
+          <a href="simulations/newton-second-law.html">F = ma</a>
+          <a href="simulations/projectile-motion.html">Projectile Motion</a>
+          <a href="simulations/pendulum.html">Pendulum</a>
+        </div>
+        <div class="footer-col">
+          <h5>Resources</h5>
+          <a href="about.html">About</a>
+          <a href="lectures.html">All Lectures</a>
+          <a href="faq.html">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h5>Connect</h5>
+          <a href="#">Twitter</a>
+          <a href="#">GitHub</a>
+          <a href="#">YouTube</a>
+          <a href="#">Email</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Physics Logic Lectures. All rights reserved.</span>
+        <span>Built for learners, by learners.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

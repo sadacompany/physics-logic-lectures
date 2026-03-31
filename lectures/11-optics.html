@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lecture 11: Optics — Physics Logic Lectures</title>
+  <meta name="description" content="Explore the nature of light, reflection, refraction, Snell's law, lenses, mirrors, wave optics, diffraction, and wave-particle duality in this comprehensive intermediate lecture on optics.">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress"></div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand"><span class="brand-icon">&phi;</span> Physics Logic</a>
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../lectures.html" class="active">Lectures</a>
+        <a href="../faq.html">FAQ</a>
+      </div>
+      <div class="nav-search">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" placeholder="Search lectures...">
+        <div class="search-results"></div>
+      </div>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Lecture Hero -->
+    <section class="lecture-hero">
+      <div class="lecture-hero-inner">
+        <div class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="../lectures.html">Lectures</a>
+          <span class="sep">/</span>
+          Lecture 11
+        </div>
+        <div class="lecture-number">Lecture 11</div>
+        <h1><em>Optics</em></h1>
+        <div class="lecture-meta">
+          <span>Waves</span>
+          <span>Intermediate</span>
+          <span>40 min read</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two-Column Layout -->
+    <div class="lecture-layout">
+
+      <!-- Sidebar: Table of Contents -->
+      <aside class="lecture-toc">
+        <h3>Contents</h3>
+        <div class="toc-list">
+          <a href="#overview">Overview</a>
+          <a href="#nature-of-light">Nature of Light</a>
+          <a href="#reflection">Reflection</a>
+          <a href="#refraction">Refraction</a>
+          <a href="#snells-law">Snell's Law</a>
+          <a href="#total-internal-reflection">Total Internal Reflection</a>
+          <a href="#lenses">Lenses</a>
+          <a href="#thin-lens-equation">Thin Lens Equation</a>
+          <a href="#image-formation">Image Formation</a>
+          <a href="#mirrors">Mirrors</a>
+          <a href="#wave-optics">Wave Optics</a>
+          <a href="#diffraction">Diffraction</a>
+          <a href="#wave-particle-duality">Wave-Particle Duality</a>
+          <a href="#misconceptions">Common Misconceptions</a>
+          <a href="#takeaways">Key Takeaways</a>
+        </div>
+      </aside>
+
+      <!-- Main Article -->
+      <article class="lecture-article">
+
+        <!-- Learning Goals -->
+        <div class="learning-goals">
+          <h3>Learning Goals</h3>
+          <ul>
+            <li>Understand the dual nature of light and how the debate between Newton and Huygens shaped modern physics</li>
+            <li>Apply the laws of reflection and refraction to predict the behavior of light at boundaries</li>
+            <li>Use Snell's law quantitatively and understand total internal reflection</li>
+            <li>Analyze image formation by lenses and mirrors using the thin lens equation and ray diagrams</li>
+            <li>Grasp wave optics phenomena including interference and diffraction</li>
+            <li>Appreciate wave-particle duality as a cornerstone of modern physics</li>
+          </ul>
+        </div>
+
+        <!-- Overview -->
+        <section class="lecture-section" id="overview">
+          <h2>Overview</h2>
+          <p>Optics is the branch of physics concerned with the behavior and properties of light, and it is one of the oldest areas of scientific inquiry. Humans have been fascinated by light since antiquity: the Greeks debated whether vision was caused by beams emanating from the eyes or by something entering them, the Arabs made groundbreaking contributions to understanding how light travels, and the Renaissance saw the invention of telescopes and microscopes that transformed our understanding of the universe and the microscopic world.</p>
+          <p>What makes optics particularly rich is that light refuses to be pinned down by a single description. Sometimes light behaves as a wave, producing interference patterns and diffraction fringes. Sometimes it behaves as a stream of particles, knocking electrons out of metals with precision that no wave model can explain. This duality is not a failure of understanding but a deep truth about nature, and it set the stage for quantum mechanics in the twentieth century.</p>
+          <p>In this lecture, we trace the logical arc of optics from its most intuitive phenomena, reflection and refraction, through the powerful formalism of lenses and mirrors, and into the wave domain where interference and diffraction reveal light's wavelike character. We conclude with wave-particle duality, which connects optics to the foundations of modern physics. Throughout, we will emphasize not just the formulas but the reasoning behind them: why light bends when it enters glass, why lenses form images, and why a single photon can interfere with itself.</p>
+        </section>
+
+        <!-- Nature of Light -->
+        <section class="lecture-section" id="nature-of-light">
+          <h2>Nature of Light</h2>
+          <p>The question "What is light?" has driven some of the most important debates in the history of science. For centuries, two competing theories vied for dominance, and the eventual resolution revealed something far more surprising than either side had imagined.</p>
+
+          <h3>Newton's Corpuscular Theory</h3>
+          <p>Isaac Newton proposed that light consists of tiny, fast-moving particles, which he called corpuscles. This model explained several observations beautifully: light travels in straight lines (as particles would), it reflects off surfaces like billiard balls bouncing off a wall, and it casts sharp shadows behind obstacles. Newton's immense authority gave this theory enormous influence for over a century.</p>
+          <p>However, the corpuscular theory had difficulties. It predicted that light should travel faster in denser media (since particles would be pulled in and accelerated by the medium), and it could not easily explain certain phenomena like the colored fringes observed at the edges of shadows.</p>
+
+          <h3>Huygens' Wave Theory</h3>
+          <p>Christiaan Huygens, a contemporary of Newton, proposed an alternative: light is a wave, spreading outward from a source much like ripples on a pond. Each point on a wavefront acts as a source of new secondary wavelets, and the envelope of those wavelets forms the next wavefront. This is Huygens' principle, and it explained refraction naturally: if a wave enters a denser medium where it travels more slowly, the wavefront bends because one side slows down before the other.</p>
+          <p>The wave theory predicted that light should travel slower in denser media, the exact opposite of Newton's prediction. When Foucault measured the speed of light in water in 1850 and found it was indeed slower than in air, the wave theory gained decisive evidence in its favor.</p>
+
+          <h3>Light as an Electromagnetic Wave</h3>
+          <p>In the 1860s, James Clerk Maxwell unified electricity and magnetism into a single set of equations and discovered that these equations predicted the existence of electromagnetic waves traveling at a speed that matched the measured speed of light exactly. Light, Maxwell realized, is an electromagnetic wave: oscillating electric and magnetic fields propagating through space at:</p>
+
+          <div class="formula">
+            <span class="formula-name">Speed of Light in Vacuum</span>
+            c = 3.00 &times; 10&sup8; m/s
+          </div>
+
+          <p>The electromagnetic spectrum encompasses an enormous range of wavelengths, from radio waves (meters to kilometers) through microwaves, infrared, the narrow band of visible light (approximately 400 to 700 nanometers), ultraviolet, X-rays, and gamma rays (down to fractions of a picometer). All of these are fundamentally the same phenomenon: electromagnetic waves differing only in wavelength and frequency. What we call "light" is simply the tiny sliver of this spectrum to which our eyes happen to be sensitive.</p>
+
+          <div class="definition-box">
+            <div class="def-term">Index of Refraction</div>
+            <div class="def-text">The index of refraction n of a medium is the ratio of the speed of light in vacuum to the speed of light in that medium: n = c/v. It is a dimensionless number always greater than or equal to 1. Vacuum has n = 1, air has n &approx; 1.0003, water has n &approx; 1.33, and glass has n &approx; 1.5. A higher index means light travels more slowly in that medium.</div>
+          </div>
+        </section>
+
+        <!-- Reflection -->
+        <section class="lecture-section" id="reflection">
+          <h2>Reflection</h2>
+          <p>When light strikes a surface, some or all of it bounces back. This everyday phenomenon, reflection, obeys a beautifully simple law that was known to the ancient Greeks and has remained unchallenged ever since.</p>
+
+          <h3>The Law of Reflection</h3>
+          <p>The law of reflection states that the angle of incidence equals the angle of reflection: &theta;<sub>i</sub> = &theta;<sub>r</sub>. Both angles are measured from the normal, the line perpendicular to the surface at the point where the light strikes. Furthermore, the incident ray, the reflected ray, and the normal all lie in the same plane.</p>
+          <p>This law holds universally for all types of reflection, at every wavelength, and for every surface. It follows directly from both the particle model (particles bouncing elastically off a surface) and the wave model (wavefronts reflecting off a boundary), which is why reflection alone could not distinguish between the two theories of light.</p>
+
+          <h3>Regular versus Diffuse Reflection</h3>
+          <p>When parallel rays of light strike a smooth, flat surface, such as a polished mirror or a calm lake, they reflect in parallel and produce a clear image. This is regular (specular) reflection. The surface is so smooth that all the normals at different points are parallel, so all the rays obey the same angular relationship and maintain their organization.</p>
+          <p>When parallel rays strike a rough surface, such as a sheet of paper, a painted wall, or a dirt road, each ray still obeys the law of reflection at its particular point. But because the surface is microscopically rough, the normals at adjacent points tilt in random directions. The reflected rays scatter in many directions, producing diffuse reflection. You cannot see a clear image in a wall, but you can see the wall from almost any angle, precisely because the reflected light spreads in all directions. Diffuse reflection is the reason we can see most objects in our environment: they scatter light toward our eyes regardless of our viewing angle.</p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>The law of reflection (&theta;<sub>i</sub> = &theta;<sub>r</sub>) is universally obeyed at every point on every surface. The distinction between regular and diffuse reflection is not about different laws of physics but about the geometry of the surface. Smooth surfaces preserve the organization of reflected rays; rough surfaces randomize it.</p>
+          </div>
+        </section>
+
+        <!-- Refraction -->
+        <section class="lecture-section" id="refraction">
+          <h2>Refraction</h2>
+          <p>When light passes from one transparent medium into another, such as from air into water or from air into glass, it changes direction. This bending of light at a boundary is called refraction, and it is responsible for a vast array of optical phenomena: the apparent bending of a straw in a glass of water, the shimmering of hot pavement, the focusing action of lenses, and the splitting of white light into a rainbow by a prism.</p>
+
+          <h3>Why Light Bends</h3>
+          <p>The physical cause of refraction is the change in speed of light as it crosses a boundary between two media. Light travels at different speeds in different materials: faster in air, slower in water, and slower still in glass. When a light wave approaches a boundary at an angle, one edge of the wavefront enters the new medium and slows down while the other edge is still in the original medium traveling at the original speed. This speed difference causes the wavefront to pivot, changing the direction of propagation.</p>
+          <p>The analogy often used is a marching band turning a corner from pavement to mud. If the band marches at an angle toward the boundary, the marchers who reach the mud first slow down while those still on pavement continue at the original pace. The line pivots, and the band changes direction. The steeper the speed change, the greater the bending.</p>
+
+          <div class="definition-box">
+            <div class="def-term">Refraction</div>
+            <div class="def-text">Refraction is the bending of light as it passes from one medium to another, caused by the change in the speed of light between the two media. Light bends toward the normal when entering a slower (higher-n) medium, and away from the normal when entering a faster (lower-n) medium.</div>
+          </div>
+
+          <h3>The Direction of Bending</h3>
+          <p>There is a simple rule: when light enters a medium where it travels more slowly (higher index of refraction), it bends toward the normal. When it enters a medium where it travels faster (lower index), it bends away from the normal. Going from air (n &approx; 1) to glass (n &approx; 1.5), the light slows down and bends toward the normal. Going from glass back to air, the light speeds up and bends away from the normal.</p>
+        </section>
+
+        <!-- Snell's Law -->
+        <section class="lecture-section" id="snells-law">
+          <h2>Snell's Law</h2>
+          <p>The quantitative relationship between the angle of incidence and the angle of refraction was discovered empirically by Willebrord Snellius in 1621 and later derived from wave theory. Snell's law is one of the most important equations in optics:</p>
+
+          <div class="formula">
+            <span class="formula-name">Snell's Law</span>
+            n&sub1; sin&theta;&sub1; = n&sub2; sin&theta;&sub2;
+          </div>
+
+          <p>Here, n&sub1; and n&sub2; are the indices of refraction of the two media, and &theta;&sub1; and &theta;&sub2; are the angles of incidence and refraction, both measured from the normal. This elegant equation encodes everything about how light bends at a boundary.</p>
+
+          <h3>Reading Snell's Law</h3>
+          <p>Consider what the equation tells us. If n&sub2; &gt; n&sub1; (entering a denser medium), then sin&theta;&sub2; must be less than sin&theta;&sub1;, which means &theta;&sub2; &lt; &theta;&sub1;: the refracted ray bends toward the normal. If n&sub2; &lt; n&sub1; (entering a less dense medium), then &theta;&sub2; &gt; &theta;&sub1;: the ray bends away from the normal. If the light hits the boundary head-on (&theta;&sub1; = 0), then &theta;&sub2; = 0: the light passes straight through without bending. All of this is consistent with what we described qualitatively in the previous section, but now we can calculate exact angles.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example</div>
+            <p>A ray of light in air (n = 1.00) strikes the surface of a glass block (n = 1.50) at an angle of incidence of 30&deg;. What is the angle of refraction?</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>Using Snell's law: n&sub1; sin&theta;&sub1; = n&sub2; sin&theta;&sub2;</p>
+              <p>(1.00)(sin 30&deg;) = (1.50)(sin&theta;&sub2;)</p>
+              <p>(1.00)(0.500) = (1.50)(sin&theta;&sub2;)</p>
+              <p>sin&theta;&sub2; = 0.500 / 1.50 = 0.333</p>
+              <p>&theta;&sub2; = sin&sup1;(0.333) = 19.5&deg;</p>
+              <p>The light bends toward the normal, from 30&deg; to 19.5&deg;, consistent with entering a denser medium. The light has slowed down inside the glass, and the wavefront has pivoted accordingly.</p>
+            </div>
+          </div>
+
+          <h3>Dispersion</h3>
+          <p>The index of refraction of a material actually depends slightly on the wavelength of light. Blue light has a slightly higher index than red light in most transparent materials. This means blue light bends slightly more than red light when passing through a prism, separating white light into the colors of the spectrum. This phenomenon is called dispersion, and it is the basis of rainbows: sunlight enters a raindrop, refracts, reflects off the back surface, and refracts again as it exits, with different colors bending at slightly different angles and spreading into the arc we see in the sky.</p>
+        </section>
+
+        <!-- Total Internal Reflection -->
+        <section class="lecture-section" id="total-internal-reflection">
+          <h2>Total Internal Reflection</h2>
+          <p>Something remarkable happens when light travels from a denser medium to a less dense one (for example, from glass to air). As the angle of incidence increases, the refracted ray bends further and further away from the normal. At a certain critical angle, the refracted ray bends so far that it travels exactly along the boundary surface (&theta;&sub2; = 90&deg;). Beyond this critical angle, no refracted ray exists at all: the light is completely reflected back into the denser medium. This is total internal reflection.</p>
+
+          <h3>The Critical Angle</h3>
+          <p>Setting &theta;&sub2; = 90&deg; in Snell's law gives us the critical angle:</p>
+          <p>n&sub1; sin&theta;<sub>c</sub> = n&sub2; sin 90&deg; = n&sub2;</p>
+          <p>sin&theta;<sub>c</sub> = n&sub2; / n&sub1;</p>
+          <p>For glass (n = 1.50) to air (n = 1.00), the critical angle is &theta;<sub>c</sub> = sin&sup1;(1.00/1.50) = sin&sup1;(0.667) = 41.8&deg;. Any ray hitting the glass-air boundary at an angle greater than 41.8&deg; from the normal will be totally internally reflected. Not a single photon escapes.</p>
+
+          <h3>Applications of Total Internal Reflection</h3>
+          <p><strong>Fiber optics:</strong> The entire modern telecommunications infrastructure depends on total internal reflection. Light pulses carrying information are launched into thin glass fibers at angles exceeding the critical angle. The light bounces along the fiber, unable to escape, traveling kilometers with remarkably little loss. Every phone call you make, every website you load, every video you stream very likely travels through optical fibers for at least part of its journey. The information capacity of a single fiber is staggering: billions of bits per second.</p>
+          <p><strong>Diamonds:</strong> A well-cut diamond exploits total internal reflection to achieve its characteristic brilliance. Diamond has an exceptionally high index of refraction (n = 2.42), which gives it a very small critical angle of only about 24.4&deg;. Light entering the top of the diamond is reflected internally many times before finally escaping through the top facets. This means light entering the diamond bounces around inside and eventually exits upward toward the viewer rather than leaking out the bottom or sides. The result is the intense sparkle and fire that makes diamonds prized.</p>
+          <p><strong>Prisms in binoculars:</strong> Total internal reflection is more efficient than metallic reflection because no light is absorbed. High-quality binoculars use glass prisms to fold the light path and correct the image orientation, relying on total internal reflection rather than mirrors.</p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>Total internal reflection occurs when light traveling in a denser medium strikes the boundary with a less dense medium at an angle exceeding the critical angle. All light is reflected; none is transmitted. This phenomenon requires light to be going from high-n to low-n media, never the reverse. It is the physical basis of fiber-optic communication, the brilliance of diamonds, and precision optical instruments.</p>
+          </div>
+        </section>
+
+        <!-- Lenses -->
+        <section class="lecture-section" id="lenses">
+          <h2>Lenses</h2>
+          <p>A lens is a piece of transparent material (usually glass or plastic) shaped so that refraction at its surfaces redirects light rays in a useful way, typically to form an image. Lenses are arguably the most important optical devices ever created: they make possible eyeglasses, cameras, microscopes, telescopes, projectors, and the human eye itself is a lens system.</p>
+
+          <h3>Converging Lenses (Convex)</h3>
+          <p>A converging lens is thicker at the center than at the edges. Parallel rays of light passing through a converging lens are refracted inward and brought to a single point called the focal point. The distance from the center of the lens to the focal point is the focal length f, and it is the single most important parameter of a lens. A short focal length means strong focusing power; a long focal length means weaker focusing power.</p>
+          <p>Converging lenses are used in magnifying glasses (to produce enlarged virtual images), in cameras and the human eye (to form real images on a sensor or retina), and in projectors (to cast enlarged real images onto a screen).</p>
+
+          <h3>Diverging Lenses (Concave)</h3>
+          <p>A diverging lens is thinner at the center than at the edges. Parallel rays passing through a diverging lens are refracted outward and appear to spread from a virtual focal point on the same side of the lens as the incoming light. Diverging lenses never form real images on their own; they always produce virtual, upright, reduced images.</p>
+          <p>Diverging lenses are used to correct nearsightedness (myopia), where the eye's own lens focuses light in front of the retina. A diverging lens spreads the light slightly before it enters the eye, moving the focal point back onto the retina. They are also used in combination with converging lenses in camera systems and telescopes to correct aberrations and control image properties.</p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>Converging lenses (convex, thick in the middle) bring parallel rays to a real focal point and can form both real and virtual images. Diverging lenses (concave, thin in the middle) spread parallel rays apart from a virtual focal point and always produce virtual, upright, reduced images. The focal length is the fundamental property that determines a lens's behavior.</p>
+          </div>
+        </section>
+
+        <!-- Thin Lens Equation -->
+        <section class="lecture-section" id="thin-lens-equation">
+          <h2>Thin Lens Equation</h2>
+          <p>The thin lens equation provides a precise mathematical relationship between the object distance, the image distance, and the focal length of a lens. "Thin" means we assume the lens thickness is negligible compared to the object and image distances, which is an excellent approximation for most everyday lenses.</p>
+
+          <div class="formula">
+            <span class="formula-name">Thin Lens Equation</span>
+            1/f = 1/d<sub>o</sub> + 1/d<sub>i</sub>
+          </div>
+
+          <p>Here, f is the focal length, d<sub>o</sub> is the object distance (from the object to the lens), and d<sub>i</sub> is the image distance (from the lens to the image). All distances are positive when measured in their conventional directions: the object is on the incoming light side, and the image is on the outgoing light side for a real image.</p>
+
+          <h3>Sign Conventions</h3>
+          <p>The sign conventions are critical for using the thin lens equation correctly. For a converging lens, f is positive. For a diverging lens, f is negative. The object distance d<sub>o</sub> is positive when the object is on the incoming side of the lens (which is the normal situation). The image distance d<sub>i</sub> is positive for a real image (formed on the opposite side of the lens from the object) and negative for a virtual image (formed on the same side as the object).</p>
+
+          <h3>Magnification</h3>
+          <p>The magnification M tells us how the image size compares to the object size and whether the image is upright or inverted:</p>
+
+          <div class="formula">
+            <span class="formula-name">Magnification</span>
+            M = &minus;d<sub>i</sub> / d<sub>o</sub>
+          </div>
+
+          <p>When |M| &gt; 1, the image is larger than the object (magnified). When |M| &lt; 1, the image is smaller (diminished). When M is positive, the image is upright; when M is negative, the image is inverted. The negative sign in the formula ensures that a real image (positive d<sub>i</sub>) is inverted, which is what we observe experimentally.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example</div>
+            <p>An object is placed 30 cm from a converging lens with a focal length of 10 cm. Where is the image formed, and what is the magnification?</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>Using the thin lens equation: 1/f = 1/d<sub>o</sub> + 1/d<sub>i</sub></p>
+              <p>1/10 = 1/30 + 1/d<sub>i</sub></p>
+              <p>1/d<sub>i</sub> = 1/10 &minus; 1/30 = 3/30 &minus; 1/30 = 2/30</p>
+              <p>d<sub>i</sub> = 30/2 = 15 cm</p>
+              <p>The image is formed 15 cm on the opposite side of the lens. It is a real image (positive d<sub>i</sub>).</p>
+              <p>M = &minus;d<sub>i</sub>/d<sub>o</sub> = &minus;15/30 = &minus;0.5</p>
+              <p>The magnification is &minus;0.5, meaning the image is inverted and half the size of the object. This is the type of image a camera lens forms on a sensor when the subject is relatively far away.</p>
+            </div>
+          </div>
+
+          <div class="example">
+            <div class="example-label">Worked Example</div>
+            <p>An object is placed 5 cm from a converging lens with a focal length of 10 cm. Describe the image.</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>1/10 = 1/5 + 1/d<sub>i</sub></p>
+              <p>1/d<sub>i</sub> = 1/10 &minus; 1/5 = 1/10 &minus; 2/10 = &minus;1/10</p>
+              <p>d<sub>i</sub> = &minus;10 cm</p>
+              <p>The negative image distance tells us the image is virtual, formed on the same side as the object (10 cm from the lens). The object is inside the focal length, so the lens acts as a magnifying glass.</p>
+              <p>M = &minus;(&minus;10)/5 = +2</p>
+              <p>The image is upright (positive M) and twice the size of the object. This is exactly what you observe when you hold a magnifying glass close to a page of text.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Image Formation -->
+        <section class="lecture-section" id="image-formation">
+          <h2>Image Formation</h2>
+          <p>To understand image formation by lenses, it is invaluable to trace the paths of specific rays. Ray diagrams provide a geometric method for locating images without any algebra. While the thin lens equation gives precise numerical answers, ray diagrams build physical intuition about where images form, how large they are, and whether they are real or virtual.</p>
+
+          <h3>Real versus Virtual Images</h3>
+          <p>A real image is formed when light rays actually converge to a point. If you place a screen at the location of a real image, you see a sharp picture, because light energy is physically concentrated there. The image on a movie screen, the image on the sensor of a camera, and the image on your retina are all real images. Real images are always inverted relative to the object.</p>
+          <p>A virtual image is formed when light rays appear to diverge from a point, but do not actually pass through that point. No light energy is concentrated there, so placing a screen at the location produces nothing. However, if you look through the lens toward the virtual image, your eye traces the diverging rays backward and perceives an image at the virtual location. The image you see in a flat mirror and the image through a magnifying glass are virtual images. Virtual images are always upright relative to the object.</p>
+
+          <h3>Principal Rays for Converging Lenses</h3>
+          <p>Three rays are sufficient to locate the image formed by a converging lens:</p>
+          <ol>
+            <li><strong>Parallel ray:</strong> A ray traveling parallel to the principal axis refracts through the focal point on the far side of the lens.</li>
+            <li><strong>Focal ray:</strong> A ray passing through the focal point on the near side of the lens refracts parallel to the principal axis.</li>
+            <li><strong>Central ray:</strong> A ray passing through the center of the lens continues in a straight line, undeviated.</li>
+          </ol>
+          <p>The point where any two of these rays intersect (or appear to intersect when extended backward) is the location of the image. Drawing all three provides a check on accuracy.</p>
+
+          <h3>How Object Distance Affects the Image</h3>
+          <p>The character of the image changes dramatically as the object moves relative to the focal point of a converging lens. When the object is very far away (d<sub>o</sub> much greater than f), the image is real, inverted, and diminished, located just beyond the focal point. As the object moves closer to the lens, the image moves further away and grows larger. When the object is at exactly 2f, the image is at 2f on the other side, real, inverted, and exactly the same size. When the object is between f and 2f, the image is real, inverted, and magnified. When the object is at f, the rays emerge parallel and the image is at infinity. When the object is inside f, the image is virtual, upright, and magnified.</p>
+        </section>
+
+        <!-- Mirrors -->
+        <section class="lecture-section" id="mirrors">
+          <h2>Mirrors</h2>
+          <p>Curved mirrors form images by reflection rather than refraction, but the underlying geometry is remarkably similar to that of lenses. The same thin lens equation applies (with appropriate sign conventions), and the same types of images, real and virtual, enlarged and diminished, can be produced.</p>
+
+          <h3>Concave Mirrors</h3>
+          <p>A concave mirror is curved inward, like the inside of a spoon. It has a real focal point in front of the mirror where parallel rays converge after reflection. Concave mirrors are the reflective equivalent of converging lenses: they can form real, inverted images when the object is beyond the focal point, and virtual, upright, magnified images when the object is inside the focal point.</p>
+          <p>Applications of concave mirrors include satellite dishes (which are parabolic reflectors focusing incoming signals to a receiver at the focal point), reflecting telescopes (where a large concave primary mirror collects and focuses starlight), and shaving or makeup mirrors (which place the face inside the focal length to produce a magnified upright image).</p>
+
+          <h3>Convex Mirrors</h3>
+          <p>A convex mirror is curved outward, like the back of a spoon. Parallel rays diverge after reflecting from a convex mirror, and the reflected rays appear to come from a virtual focal point behind the mirror. Convex mirrors always produce virtual, upright, diminished images, regardless of the object distance.</p>
+          <p>The key advantage of convex mirrors is their wide field of view. Because they diverge light, they compress a wide scene into a smaller image, letting you see more of your surroundings. This is why convex mirrors are used as side mirrors on vehicles ("objects in mirror are closer than they appear") and as security mirrors in stores and at blind corners in parking garages.</p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>Concave mirrors behave like converging lenses: they have a real focal point and can form both real and virtual images. Convex mirrors behave like diverging lenses: they have a virtual focal point and always form virtual, upright, diminished images. The mirror equation has the same form as the thin lens equation, and the same sign conventions apply.</p>
+          </div>
+        </section>
+
+        <!-- Wave Optics -->
+        <section class="lecture-section" id="wave-optics">
+          <h2>Wave Optics</h2>
+          <p>Everything we have discussed so far, reflection, refraction, lenses, and mirrors, can be explained by treating light as rays that travel in straight lines. This is the domain of geometric optics, and it works beautifully when the objects and openings involved are much larger than the wavelength of light. But when we examine light at scales comparable to its wavelength (around 400 to 700 nm for visible light), new phenomena appear that geometric optics cannot explain. We enter the domain of wave optics, also called physical optics.</p>
+
+          <h3>Young's Double-Slit Experiment</h3>
+          <p>In 1801, Thomas Young performed one of the most elegant and consequential experiments in the history of physics. He passed a beam of light through two narrow, closely spaced slits and observed the pattern on a distant screen. If light were simply a stream of particles, we would expect to see two bright bands on the screen, one behind each slit. Instead, Young saw a series of alternating bright and dark fringes, an interference pattern.</p>
+          <p>This result is impossible to explain with particles. It is exactly what waves do. When two waves overlap, they can interfere constructively (crest meets crest, producing a bright fringe) or destructively (crest meets trough, producing a dark fringe). The condition for constructive interference is that the path difference from the two slits to a point on the screen is a whole number of wavelengths: d sin&theta; = m&lambda;, where d is the slit separation, &theta; is the angle to the bright fringe, m is the order number (0, 1, 2, ...), and &lambda; is the wavelength.</p>
+          <p>Young's experiment provided powerful evidence that light is a wave. It also gave the first measurement of the wavelength of visible light, which turned out to be incredibly small: a few hundred nanometers.</p>
+
+          <h3>Interference Fringes</h3>
+          <p>The bright fringes in the double-slit pattern are evenly spaced (for small angles) and their separation depends on the wavelength: longer wavelengths produce wider spacing. Red light (long wavelength) produces more widely spaced fringes than blue light (short wavelength). If white light is used, each color produces its own set of fringes at slightly different positions, creating a central white fringe flanked by rainbow-colored fringes.</p>
+          <p>The existence of interference is the defining signature of waves. Wherever we observe interference, we know a wave phenomenon is at work. This principle applies not just to light but to sound, water waves, and even matter waves (as we will see in quantum mechanics).</p>
+
+          <div class="formula">
+            <span class="formula-name">Double-Slit Constructive Interference</span>
+            d sin&theta; = m&lambda; &nbsp; (m = 0, &plusmn;1, &plusmn;2, ...)
+          </div>
+        </section>
+
+        <!-- Diffraction -->
+        <section class="lecture-section" id="diffraction">
+          <h2>Diffraction</h2>
+          <p>Diffraction is the bending and spreading of waves around obstacles and through openings. When light passes through a single narrow slit, rather than casting a sharp shadow, it spreads out and produces a characteristic pattern of bright and dark bands on a screen. This is single-slit diffraction, and it is a purely wave phenomenon with no explanation in the particle model.</p>
+
+          <h3>Single-Slit Diffraction Pattern</h3>
+          <p>The diffraction pattern from a single slit consists of a broad central maximum flanked by progressively narrower and dimmer secondary maxima. The central maximum is twice as wide as the secondary maxima, and it contains most of the light energy. The condition for destructive interference (dark fringes) in single-slit diffraction is:</p>
+          <p>a sin&theta; = m&lambda; &nbsp; (m = &plusmn;1, &plusmn;2, ...)</p>
+          <p>Here, a is the slit width, &theta; is the angle to the dark fringe, and m is a nonzero integer. Note that narrower slits produce wider diffraction patterns: the smaller the opening, the more the wave spreads out. This is a fundamental property of waves and has profound implications for the resolution of optical instruments.</p>
+
+          <h3>Diffraction and Resolution</h3>
+          <p>Every lens has a finite aperture, and the light passing through it diffracts. This means that even a perfect lens cannot focus light to an infinitely small point; the best it can produce is a small diffraction pattern called an Airy disk. Two closely spaced objects can be resolved as separate only if their Airy disks do not overlap too much. This is the Rayleigh criterion, and it sets a fundamental limit on the resolving power of any optical system, from microscopes to telescopes to the human eye.</p>
+          <p>To improve resolution, you need either a larger aperture (which reduces diffraction spreading) or a shorter wavelength (which also reduces it). This is why electron microscopes, which use electrons with wavelengths thousands of times shorter than visible light, can resolve individual atoms, while optical microscopes cannot.</p>
+        </section>
+
+        <!-- Wave-Particle Duality -->
+        <section class="lecture-section" id="wave-particle-duality">
+          <h2>Wave-Particle Duality</h2>
+          <p>Throughout this lecture, we have described light as a wave: it reflects, refracts, interferes, and diffracts. Young's double-slit experiment seemed to settle the matter definitively in favor of the wave model. But the story has one more twist, and it is one of the most astonishing revelations in the history of science.</p>
+
+          <h3>The Photoelectric Effect</h3>
+          <p>In 1905, Albert Einstein analyzed the photoelectric effect: when light shines on a metal surface, electrons are ejected. Classical wave theory predicted that any frequency of light should be able to eject electrons, given enough intensity and time. But experiments showed something entirely different: below a certain threshold frequency, no electrons are ejected regardless of how intense the light is. Above the threshold, electrons are ejected immediately, even at very low intensities. Increasing the intensity increases the number of ejected electrons but not their energy. Increasing the frequency increases the energy of each ejected electron.</p>
+          <p>Einstein's explanation was revolutionary: light is quantized. It comes in discrete packets of energy called photons, each carrying energy E = hf, where h is Planck's constant and f is the frequency. A single photon with sufficient energy (frequency above the threshold) can eject an electron. A million photons below the threshold frequency cannot, because no single photon carries enough energy. This explanation, which earned Einstein the Nobel Prize, treated light as particles.</p>
+
+          <h3>The Double-Slit Experiment Revisited</h3>
+          <p>The deepest puzzle arises when we combine these two aspects of light. If we send photons through a double slit one at a time, each photon lands at a specific point on the screen, like a particle. But over time, as thousands of photons accumulate, their individual impacts build up an interference pattern, the same pattern produced by waves. Each photon somehow "knows" about both slits and interferes with itself. If we place a detector at the slits to determine which slit the photon passes through, the interference pattern vanishes, and we see two bands, as if the photons are particles. The act of observation changes the outcome.</p>
+          <p>This is wave-particle duality: light is neither purely a wave nor purely a particle. It exhibits both wave and particle properties depending on the experimental context. This duality is not limited to light; it extends to all matter, as we will explore in the next lecture on modern physics.</p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>Light exhibits wave-particle duality: it behaves as a wave in interference and diffraction experiments, and as a particle (photon) in the photoelectric effect. Each photon carries energy E = hf. A single photon passing through a double slit interferes with itself, building up a wave-like pattern over many detections. Attempting to determine which slit a photon passes through destroys the interference pattern. This duality is a fundamental feature of nature, not a shortcoming of our models.</p>
+          </div>
+        </section>
+
+        <!-- Common Misconceptions -->
+        <section class="lecture-section" id="misconceptions">
+          <h2>Common Misconceptions</h2>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>"Light slows down in glass because glass is harder to travel through."</strong> This framing suggests friction or resistance, which is misleading. Light is not a ball rolling through molasses. When light enters glass, the electromagnetic wave interacts with the electrons in the glass atoms. These electrons absorb and re-emit the light with a slight delay. The cumulative effect of billions of these absorption-and-reemission events is that the overall wavefront advances more slowly. The individual photons still travel at c between interactions; the net propagation speed is reduced by the interaction process. The index of refraction quantifies this slowing without implying any mechanical resistance.</p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>"A magnifying glass always magnifies."</strong> A converging lens only produces a magnified image when the object is placed inside the focal length. When the object is beyond the focal length, the lens produces a real, inverted image that can be either the same size, larger, or smaller than the object, depending on the exact distances. A magnifying glass held far from text does not magnify it; it inverts and may shrink it. The magnifying effect occurs specifically and only when the object is between the lens and the focal point.</p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>"Total internal reflection can happen when light goes from air to glass."</strong> Total internal reflection can only occur when light travels from a medium with a higher index of refraction to one with a lower index. Light going from air (n = 1.00) to glass (n = 1.50) is going from low-n to high-n: it bends toward the normal and always has a transmitted ray. Total internal reflection requires going from high-n to low-n (e.g., glass to air). This is a frequent error in problem-solving, and getting the direction right is essential.</p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>"Interference proves light is a wave, so it cannot be a particle."</strong> This is the classical either/or thinking that quantum physics has overturned. Interference proves light has wave-like properties. The photoelectric effect proves light has particle-like properties. Light is not one or the other; it exhibits both, depending on the experiment. This wave-particle duality is a fundamental feature of quantum objects and cannot be reduced to a single classical picture.</p>
+          </div>
+        </section>
+
+        <!-- Key Takeaways -->
+        <section class="lecture-section" id="takeaways">
+          <div class="takeaways">
+            <h3>Key Takeaways</h3>
+            <ul>
+              <li>Light is an electromagnetic wave that can also behave as a particle (photon). The debate between Newton's corpuscular theory and Huygens' wave theory was ultimately resolved by wave-particle duality.</li>
+              <li>The index of refraction n = c/v quantifies how much slower light travels in a medium compared to vacuum. It determines how much light bends at boundaries.</li>
+              <li>The law of reflection (&theta;<sub>i</sub> = &theta;<sub>r</sub>) holds universally. The difference between regular and diffuse reflection is the geometry of the surface, not the law of physics.</li>
+              <li>Snell's law (n&sub1; sin&theta;&sub1; = n&sub2; sin&theta;&sub2;) governs refraction. Light bends toward the normal when entering a denser medium and away from the normal when entering a less dense medium.</li>
+              <li>Total internal reflection occurs when light in a denser medium hits the boundary at an angle exceeding the critical angle. It is the basis of fiber optics and the brilliance of diamonds.</li>
+              <li>Converging lenses bring parallel rays to a real focal point and can form real or virtual images. Diverging lenses spread rays from a virtual focal point and always form virtual, upright, diminished images.</li>
+              <li>The thin lens equation (1/f = 1/d<sub>o</sub> + 1/d<sub>i</sub>) and magnification (M = &minus;d<sub>i</sub>/d<sub>o</sub>) provide precise numerical predictions for image location, size, and orientation.</li>
+              <li>Young's double-slit experiment demonstrated the wave nature of light through interference. Constructive interference occurs when the path difference equals a whole number of wavelengths.</li>
+              <li>Diffraction, the spreading of light through narrow openings, sets a fundamental limit on the resolution of all optical instruments via the Rayleigh criterion.</li>
+              <li>The photoelectric effect showed that light comes in discrete energy packets (photons) with energy E = hf, demonstrating its particle nature.</li>
+              <li>Wave-particle duality is a fundamental feature of nature: light and all quantum objects exhibit both wave and particle properties depending on the experimental context.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Lecture Navigation -->
+        <div class="lecture-nav">
+          <a href="10-electricity-magnetism.html" class="nav-prev">
+            <div class="nav-direction">&larr; Previous</div>
+            <div class="nav-title">Lecture 10: Electricity and Magnetism</div>
+          </a>
+          <a href="12-modern-physics.html" class="nav-next">
+            <div class="nav-direction">Next &rarr;</div>
+            <div class="nav-title">Lecture 12: Modern Physics</div>
+          </a>
+        </div>
+
+      </article>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">Physics Logic</div>
+          <p class="footer-desc">Deep, logical physics education.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Lectures</h5>
+          <a href="../lectures/01-introduction.html">Introduction</a>
+          <a href="../lectures/02-units-dimensions.html">Units</a>
+          <a href="../lectures/03-vectors-motion.html">Vectors</a>
+        </div>
+        <div class="footer-col">
+          <h5>Pages</h5>
+          <a href="../about.html">About</a>
+          <a href="../lectures.html">All Lectures</a>
+          <a href="../faq.html">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h5>Connect</h5>
+          <a href="#">Twitter</a>
+          <a href="#">GitHub</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Physics Logic Lectures</span>
+        <span>Built for learners</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

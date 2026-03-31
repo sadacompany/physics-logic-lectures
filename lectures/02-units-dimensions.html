@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lecture 2: Units, Dimensions, and Measurement | Physics Logic Lectures</title>
+  <meta name="description" content="A deep exploration of SI units, dimensional analysis, precision, accuracy, uncertainty, significant figures, and scientific notation — the foundational tools of every physicist.">
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .sim-container { background: #101020; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 24px; margin: 2rem 0; }
+    .sim-canvas-wrap { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,212,255,0.15); }
+    .sim-canvas-wrap canvas { display: block; width: 100%; background: #0a0a14; }
+    .sim-controls { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px; align-items: center; }
+    .sim-control { display: flex; flex-direction: column; gap: 4px; }
+    .sim-control label { font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; color: #636780; text-transform: uppercase; letter-spacing: 0.1em; }
+    .sim-control input[type="range"] { -webkit-appearance: none; width: 160px; height: 4px; background: #222244; border-radius: 2px; outline: none; }
+    .sim-control input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #00d4ff; cursor: pointer; box-shadow: 0 0 8px rgba(0,212,255,0.4); }
+    .sim-btn { font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 600; padding: 8px 20px; border-radius: 20px; border: 1px solid rgba(0,212,255,0.3); background: rgba(0,212,255,0.08); color: #00d4ff; cursor: pointer; transition: all 0.15s; }
+    .sim-btn:hover { background: rgba(0,212,255,0.15); box-shadow: 0 0 12px rgba(0,212,255,0.2); }
+    .sim-btn.active { background: #00d4ff; color: #06060c; }
+    .sim-data { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-top: 16px; }
+    .sim-datum { background: #16162a; border-radius: 8px; padding: 12px; text-align: center; }
+    .sim-datum .datum-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; color: #00d4ff; }
+    .sim-datum .datum-label { font-size: 0.7rem; color: #636780; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+    .sim-explanation { margin-top: 16px; padding: 16px; background: rgba(0,212,255,0.04); border-left: 2px solid #00d4ff; border-radius: 0 8px 8px 0; font-size: 0.9rem; color: #a0a4b8; line-height: 1.6; }
+    .dim-select { font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; padding: 8px 14px; border-radius: 8px; border: 1px solid rgba(0,212,255,0.3); background: #16162a; color: #a0a4b8; cursor: pointer; outline: none; min-width: 200px; }
+    .dim-select:focus { border-color: #00d4ff; box-shadow: 0 0 8px rgba(0,212,255,0.2); }
+    .dim-select option { background: #16162a; color: #a0a4b8; }
+    .converter-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin-top: 16px; }
+    .converter-row input[type="number"] { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(0,212,255,0.3); background: #16162a; color: #00d4ff; width: 130px; outline: none; }
+    .converter-row input[type="number"]:focus { border-color: #00d4ff; box-shadow: 0 0 8px rgba(0,212,255,0.2); }
+    .converter-result { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; color: #00d4ff; padding: 8px 16px; background: rgba(0,212,255,0.06); border-radius: 8px; min-width: 160px; text-align: center; }
+  </style>
+</head>
+<body>
+
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress"></div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand">
+        <span class="brand-icon">P</span>
+        Physics Logic
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../lectures.html" class="active">Lectures</a>
+        <a href="../about.html">About</a>
+      </div>
+      <div class="nav-search">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" placeholder="Search lectures...">
+        <div class="search-results"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- Lecture Hero -->
+    <section class="lecture-hero">
+      <div class="lecture-hero-inner">
+        <div class="breadcrumb animate-in">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="../lectures.html">Lectures</a>
+          <span class="sep">/</span>
+          Lecture 2
+        </div>
+        <div class="lecture-number animate-in">Lecture 2</div>
+        <h1 class="animate-in">Units, Dimensions, and <em>Measurement</em></h1>
+        <div class="lecture-meta animate-in">
+          <span>Foundations</span>
+          <span>Beginner</span>
+          <span>30 min read</span>
+        </div>
+      </div>
+      <div class="hero-decoration">02</div>
+    </section>
+
+    <!-- Two-column Layout: TOC + Article -->
+    <div class="lecture-layout">
+
+      <!-- Sidebar: Table of Contents -->
+      <aside class="lecture-toc">
+        <h3>Contents</h3>
+        <ul class="toc-list">
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#need-for-units">The Need for Units</a></li>
+          <li><a href="#si-units">SI Units</a></li>
+          <li><a href="#base-derived-units">Base and Derived Units</a></li>
+          <li><a href="#dimensional-analysis">Dimensional Analysis</a></li>
+          <li><a href="#precision-accuracy">Precision and Accuracy</a></li>
+          <li><a href="#uncertainty">Uncertainty</a></li>
+          <li><a href="#significant-figures">Significant Figures</a></li>
+          <li><a href="#scientific-notation">Scientific Notation</a></li>
+          <li><a href="#common-misconceptions">Common Misconceptions</a></li>
+          <li><a href="#interactive">Interactive Simulation</a></li>
+          <li><a href="#key-takeaways">Key Takeaways</a></li>
+        </ul>
+      </aside>
+
+      <!-- Main Article -->
+      <article class="lecture-article">
+
+        <!-- Learning Goals -->
+        <div class="learning-goals reveal">
+          <h3>Learning Goals</h3>
+          <ul>
+            <li>Understand why standardized units are essential to science and engineering</li>
+            <li>Master the seven SI base units and how derived units are formed from them</li>
+            <li>Use dimensional analysis to verify equations and solve problems</li>
+            <li>Distinguish between precision and accuracy in experimental measurement</li>
+            <li>Express measurements with appropriate uncertainty and significant figures</li>
+            <li>Use scientific notation effectively for very large and very small quantities</li>
+          </ul>
+        </div>
+
+        <!-- ======================== OVERVIEW ======================== -->
+        <section id="overview" class="lecture-section reveal">
+          <h2>Overview</h2>
+
+          <p>
+            Physics is, at its core, a quantitative science. It is not enough to say that an object is "heavy" or
+            that a star is "far away." Physics demands that we say <em>how</em> heavy, <em>how</em> far, and
+            with <em>what confidence</em> we know those values. This insistence on quantitative precision is
+            not pedantry — it is the very mechanism by which physics makes predictions that can be tested,
+            compared, and built upon. Without measurement, there is no physics. There are only stories.
+          </p>
+
+          <p>
+            Consider the difference between ancient mythological explanations of the cosmos and the modern
+            scientific understanding. Both attempt to answer the same questions: Why do objects fall? What are
+            stars made of? How old is the universe? The mythological answers are narrative and qualitative —
+            they speak of gods and purpose. The scientific answers are numerical and testable — they speak of
+            9.81 m/s², hydrogen fusion, and 13.8 billion years. The bridge between these two modes of
+            understanding is measurement.
+          </p>
+
+          <p>
+            But measurement itself is not as simple as it appears. Every measurement carries with it a set of
+            assumptions about what units we are using, how precise our instruments are, and how we express
+            our confidence in the result. This lecture explores the foundations of measurement: the system of
+            units that physicists use worldwide, the powerful technique of dimensional analysis, and the
+            careful treatment of uncertainty that separates scientific measurement from casual observation.
+          </p>
+
+          <div class="key-concept">
+            <div class="concept-label">Core Principle</div>
+            <p>
+              A physical quantity is meaningless without its unit. The number 42 tells us nothing until we
+              know whether it represents 42 meters, 42 seconds, or 42 kilograms. In physics, numbers and
+              units are inseparable — they form a single entity that describes the physical world.
+            </p>
+          </div>
+        </section>
+
+        <!-- ======================== THE NEED FOR UNITS ======================== -->
+        <section id="need-for-units" class="lecture-section reveal">
+          <h2>The Need for Units</h2>
+
+          <h3>A World Without Standards</h3>
+
+          <p>
+            For most of human history, measurement was local. A "foot" was literally the length of the local
+            king's foot. A "cubit" was the distance from a person's elbow to the tip of their middle finger.
+            A "stone" of weight differed from village to village. This worked passably well when trade was
+            local and construction was modest — if everyone in your village knew that "one cubit" meant the
+            chief's forearm, buildings could be constructed and grain could be traded.
+          </p>
+
+          <p>
+            But as civilizations expanded and began trading with distant peoples, the chaos of non-standard
+            units became a serious problem. A merchant buying "100 cubits" of silk in Egypt would receive a
+            different amount than if he had ordered "100 cubits" in Mesopotamia, because the two civilizations
+            used different reference arms. Wars were fought, contracts were violated, and fortunes were lost —
+            all because two parties could not agree on what a "unit" actually meant.
+          </p>
+
+          <p>
+            Even within a single country, the situation was often absurd. Pre-revolutionary France had over
+            250,000 different units of weight and measure in use across its provinces. A "livre" of bread in
+            Paris was not the same as a "livre" of bread in Lyon. This caused commercial disputes, enabled
+            fraud, and created an administrative nightmare. It was partly to address this chaos that the French
+            Revolution spawned the metric system in the 1790s — a system of measurement based not on
+            the anatomy of any king, but on the physical properties of the Earth itself.
+          </p>
+
+          <h3>The Mars Climate Orbiter Disaster</h3>
+
+          <p>
+            If you think unit consistency is a trivial matter, consider the fate of the Mars Climate Orbiter.
+            In September 1999, NASA lost a $327.6 million spacecraft because one engineering team used
+            metric units (newton-seconds) while another team used imperial units (pound-force-seconds) for
+            a crucial thruster parameter. The navigation software expected metric inputs, but received imperial
+            ones. The discrepancy was small enough to go unnoticed during routine checks, but over the
+            months-long journey to Mars, the accumulated error pushed the spacecraft 170 kilometers off
+            course. Instead of entering a stable orbit, it plunged into the Martian atmosphere and was
+            destroyed.
+          </p>
+
+          <p>
+            This was not a failure of physics, or of engineering talent, or of computational power. It was a
+            failure of units — one of the most fundamental and supposedly simplest aspects of measurement.
+            The lesson was devastating in its simplicity: units matter. They matter more than almost anything
+            else, because if your units are wrong, every calculation built upon them is wrong, no matter how
+            sophisticated the mathematics.
+          </p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>
+              Units are the language of measurement. Just as human languages require shared vocabulary for
+              communication, science requires shared units for meaningful exchange of quantitative
+              information. A measurement without a unit is like a sentence without a verb — grammatically
+              incomplete and functionally useless.
+            </p>
+          </div>
+        </section>
+
+        <!-- ======================== SI UNITS ======================== -->
+        <section id="si-units" class="lecture-section reveal">
+          <h2>SI Units</h2>
+
+          <h3>The International System</h3>
+
+          <p>
+            The International System of Units, universally abbreviated as SI (from the French
+            <em>Systeme International d'Unites</em>), is the modern form of the metric system and the
+            world's most widely used system of measurement. Adopted by the General Conference on Weights
+            and Measures (CGPM) in 1960, SI provides a coherent framework of seven base units from which
+            all other physical quantities can be derived. It is used by every country in the world for scientific
+            work, and by all but a handful of countries for everyday commerce.
+          </p>
+
+          <p>
+            The genius of SI lies in its logical structure. Rather than having independent, unrelated units for
+            every physical quantity — as was the case with the various imperial and customary systems — SI
+            builds everything from just seven carefully chosen base quantities. Speed, force, energy, pressure,
+            electrical resistance, and hundreds of other quantities are all expressed as combinations of these
+            seven bases. This means that if you truly understand the seven base units, you implicitly understand
+            the structure of every unit in physics.
+          </p>
+
+          <h3>The Seven Base Units</h3>
+
+          <p>
+            Each SI base unit corresponds to a fundamental physical quantity. These seven quantities were
+            chosen because they are independent of one another (no base quantity can be expressed as a
+            combination of the others) and because they span the full range of physical measurement.
+          </p>
+
+          <div class="definition-box">
+            <div class="def-term">Meter (m) — Length</div>
+            <div class="def-text">
+              Originally defined in 1793 as one ten-millionth of the distance from the North Pole to the
+              equator along a meridian through Paris. After several redefinitions — including reference to a
+              platinum-iridium bar kept in a vault near Paris — the meter was redefined in 1983 in terms of
+              the speed of light: one meter is the distance light travels in vacuum in exactly
+              1/299,792,458 of a second. This definition ties length to the fundamental constant <em>c</em>,
+              ensuring that the meter can be reproduced with extraordinary precision in any laboratory in the
+              world, without reference to any physical artifact.
+            </div>
+          </div>
+
+          <div class="definition-box">
+            <div class="def-term">Kilogram (kg) — Mass</div>
+            <div class="def-text">
+              The kilogram has the most dramatic history of any SI unit. For over a century, it was defined
+              by a single physical object: the International Prototype of the Kilogram (IPK), a
+              platinum-iridium cylinder kept under three nested glass bells in a vault at the International
+              Bureau of Weights and Measures (BIPM) near Paris. The problem was that physical objects
+              change — atoms adsorb onto surfaces, cleaning removes atoms, and even the IPK was found to
+              be drifting in mass relative to its copies. In 2019, the kilogram was redefined in terms of the
+              Planck constant (<em>h</em> = 6.62607015 x 10<sup>-34</sup> J s), using a device called a
+              Kibble balance. This was a landmark moment in metrology: the last SI unit defined by a
+              physical artifact was finally tied to a fundamental constant of nature.
+            </div>
+          </div>
+
+          <div class="definition-box">
+            <div class="def-term">Second (s) — Time</div>
+            <div class="def-text">
+              Originally defined as 1/86,400 of a mean solar day, but the Earth's rotation is not perfectly
+              uniform — it is gradually slowing due to tidal friction. Since 1967, the second has been defined
+              as the duration of 9,192,631,770 periods of the radiation corresponding to the transition
+              between two hyperfine levels of the ground state of the caesium-133 atom. Atomic clocks based
+              on this transition are accurate to about one second in 300 million years.
+            </div>
+          </div>
+
+          <div class="definition-box">
+            <div class="def-term">Ampere (A) — Electric Current</div>
+            <div class="def-text">
+              The ampere measures the flow of electric charge. Since 2019, it is defined by fixing the
+              elementary charge <em>e</em> = 1.602176634 x 10<sup>-19</sup> coulombs. One ampere is
+              then one coulomb of charge flowing per second. The older definition — based on the force
+              between two parallel conductors — was elegant but impractical to realize with high precision.
+            </div>
+          </div>
+
+          <div class="definition-box">
+            <div class="def-term">Kelvin (K) — Thermodynamic Temperature</div>
+            <div class="def-text">
+              The kelvin is the SI unit of thermodynamic temperature. Since 2019, it is defined by fixing the
+              Boltzmann constant <em>k</em> = 1.380649 x 10<sup>-23</sup> J/K. Zero kelvin (0 K) is
+              absolute zero — the theoretical point at which all thermal motion ceases. The kelvin scale uses
+              the same increment as the Celsius scale, but its zero point is absolute zero rather than the
+              freezing point of water. Thus 0 degrees C = 273.15 K.
+            </div>
+          </div>
+
+          <div class="definition-box">
+            <div class="def-term">Mole (mol) — Amount of Substance</div>
+            <div class="def-text">
+              The mole is a counting unit for atoms, molecules, or other entities. Since 2019, one mole
+              contains exactly 6.02214076 x 10<sup>23</sup> elementary entities (the Avogadro number).
+              This enormous number bridges the gap between the atomic scale and the macroscopic scale. One
+              mole of carbon-12 atoms has a mass of approximately 12 grams; one mole of water molecules
+              has a mass of approximately 18 grams.
+            </div>
+          </div>
+
+          <div class="definition-box">
+            <div class="def-term">Candela (cd) — Luminous Intensity</div>
+            <div class="def-text">
+              The candela measures the luminous intensity of a light source in a given direction. It is defined
+              by fixing the luminous efficacy of monochromatic radiation at a frequency of 540 x 10<sup>12</sup>
+              Hz (green light) to be 683 lumens per watt. The candela is unique among SI base units in that
+              it incorporates a model of human vision — it measures not just electromagnetic power, but
+              power as perceived by the human eye.
+            </div>
+          </div>
+
+          <h3>The 2019 Redefinition</h3>
+
+          <p>
+            The 2019 revision of the SI was one of the most significant events in the history of measurement.
+            Prior to 2019, several base units were defined in terms of physical artifacts or specific
+            experimental setups. After the revision, all seven base units are defined in terms of fixed numerical
+            values of fundamental physical constants: the speed of light <em>c</em>, the Planck constant
+            <em>h</em>, the elementary charge <em>e</em>, the Boltzmann constant <em>k</em>, the Avogadro
+            constant <em>N<sub>A</sub></em>, and the luminous efficacy <em>K<sub>cd</sub></em>. The
+            second continues to be defined by the caesium-133 hyperfine transition frequency.
+          </p>
+
+          <p>
+            This may seem like an abstract bureaucratic exercise, but it has profound practical implications.
+            By tying every unit to unchanging constants of nature, we ensure that the SI can be realized with
+            equal precision anywhere in the universe. If humanity ever establishes laboratories on Mars or
+            beyond, they will not need to transport platinum cylinders or caesium fountains — they will need
+            only the laws of physics themselves.
+          </p>
+        </section>
+
+        <!-- ======================== BASE AND DERIVED UNITS ======================== -->
+        <section id="base-derived-units" class="lecture-section reveal">
+          <h2>Base and Derived Units</h2>
+
+          <h3>Building Complex Quantities</h3>
+
+          <p>
+            The seven SI base units — meter, kilogram, second, ampere, kelvin, mole, and candela — are
+            the atoms of the measurement system. Just as a vast diversity of matter is built from about 100
+            chemical elements, an even vaster diversity of physical quantities is built from just these seven
+            units through multiplication, division, and exponentiation. The units formed through such
+            combinations are called <strong>derived units</strong>.
+          </p>
+
+          <p>
+            The process is straightforward: you take the defining equation for a physical quantity and substitute
+            the base units for each symbol. For example, speed is defined as distance divided by time. The
+            SI unit of distance is the meter, and the SI unit of time is the second, so the SI unit of speed is
+            meters per second (m/s). There is no separate, independently defined "unit of speed" — it arises
+            naturally from the base units.
+          </p>
+
+          <h3>Common Derived Units</h3>
+
+          <div class="formula">
+            <span class="formula-name">Velocity</span>
+            v = distance / time &rarr; m/s
+          </div>
+
+          <div class="formula">
+            <span class="formula-name">Acceleration</span>
+            a = velocity / time &rarr; m/s&sup2;
+          </div>
+
+          <div class="formula">
+            <span class="formula-name">Force (Newton)</span>
+            F = mass &times; acceleration &rarr; kg &middot; m/s&sup2; = N
+          </div>
+
+          <div class="formula">
+            <span class="formula-name">Energy (Joule)</span>
+            E = force &times; distance &rarr; kg &middot; m&sup2;/s&sup2; = J
+          </div>
+
+          <div class="formula">
+            <span class="formula-name">Power (Watt)</span>
+            P = energy / time &rarr; kg &middot; m&sup2;/s&sup3; = W
+          </div>
+
+          <div class="formula">
+            <span class="formula-name">Pressure (Pascal)</span>
+            p = force / area &rarr; kg / (m &middot; s&sup2;) = Pa
+          </div>
+
+          <div class="formula">
+            <span class="formula-name">Electric Charge (Coulomb)</span>
+            Q = current &times; time &rarr; A &middot; s = C
+          </div>
+
+          <p>
+            Many of these derived units have been given special names — Newton, Joule, Watt, Pascal,
+            Coulomb — in honor of scientists who made foundational contributions to the corresponding
+            branches of physics. But it is crucial to remember that these names are merely shorthand. A
+            Newton <em>is</em> a kg m/s²; a Joule <em>is</em> a kg m²/s². Understanding this equivalence
+            is the key to dimensional analysis, the most powerful error-checking tool available to a physicist.
+          </p>
+
+          <h3>Why This Structure Matters</h3>
+
+          <p>
+            The derivation structure of SI units is not just an organizational convenience. It reflects deep
+            physical relationships. The fact that energy (Joule) and torque (Newton-meter) have the same
+            units (kg m²/s²) is not a coincidence — it tells us that energy and torque are fundamentally related
+            quantities, distinguished only by the physical context in which they arise. Similarly, the fact that
+            pressure and energy density have the same units (kg / (m s²)) reveals a deep connection between
+            force per area and energy per volume.
+          </p>
+
+          <p>
+            When you see that two apparently different physical quantities share the same units, pay attention.
+            Nature is trying to tell you something about the underlying structure of the physical world. The
+            unit system is not merely a bookkeeping device — it is a map of the relationships between
+            physical quantities.
+          </p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>
+              Every physical quantity in SI can be expressed as a product of powers of the seven base units.
+              This means that the dimensional "fingerprint" of any quantity — the specific combination
+              of base units it requires — is unique and revealing. If two quantities have different dimensional
+              fingerprints, they cannot be equal, added, or directly compared. This principle is the foundation
+              of dimensional analysis.
+            </p>
+          </div>
+        </section>
+
+        <!-- ======================== DIMENSIONAL ANALYSIS ======================== -->
+        <section id="dimensional-analysis" class="lecture-section reveal">
+          <h2>Dimensional Analysis</h2>
+
+          <h3>The Physicist's Secret Weapon</h3>
+
+          <p>
+            Dimensional analysis is arguably the single most powerful tool available to a beginning physicist,
+            yet it is often underappreciated. At its simplest, dimensional analysis is the practice of checking
+            that the units on both sides of an equation match. But at its most powerful, it can be used to
+            <em>derive</em> physical relationships from scratch, with almost no knowledge of the underlying
+            physics — a feat that seems almost magical the first time you see it done.
+          </p>
+
+          <p>
+            The fundamental principle is this: in any valid physical equation, the dimensions on the left side
+            must equal the dimensions on the right side. You cannot add meters to seconds. You cannot set
+            a force equal to a velocity. If your calculation produces an equation where the dimensions don't
+            match, something has gone wrong — guaranteed. This is not a matter of convention or approximation.
+            It is as absolute as a mathematical proof.
+          </p>
+
+          <p>
+            We use the notation [X] to denote "the dimensions of X." The dimensions of the base quantities
+            are written as: [length] = L, [mass] = M, [time] = T, [electric current] = I, [temperature] = Theta,
+            [amount of substance] = N, and [luminous intensity] = J. Every physical quantity has a unique
+            dimensional formula. For example:
+          </p>
+
+          <ul>
+            <li>[velocity] = L T<sup>-1</sup></li>
+            <li>[acceleration] = L T<sup>-2</sup></li>
+            <li>[force] = M L T<sup>-2</sup></li>
+            <li>[energy] = M L<sup>2</sup> T<sup>-2</sup></li>
+            <li>[pressure] = M L<sup>-1</sup> T<sup>-2</sup></li>
+          </ul>
+
+          <h3>Checking Equations</h3>
+
+          <p>
+            The most common use of dimensional analysis is to verify that a formula is dimensionally
+            consistent. Let us work through an example. Consider the kinematic equation:
+          </p>
+
+          <div class="formula">
+            <span class="formula-name">Kinematic Equation</span>
+            v&sup2; = v&#8320;&sup2; + 2as
+          </div>
+
+          <div class="example">
+            <div class="example-label">Worked Example: Checking v&sup2; = 2as</div>
+            <p>
+              <strong>Question:</strong> Is the equation v&sup2; = 2as dimensionally consistent?
+            </p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>
+                <strong>Left side:</strong> [v&sup2;] = (L T<sup>-1</sup>)&sup2; = L&sup2; T<sup>-2</sup>
+              </p>
+              <p>
+                <strong>Right side:</strong> [2as] = [a][s] = (L T<sup>-2</sup>)(L) = L&sup2; T<sup>-2</sup>
+              </p>
+              <p>
+                The constant 2 is dimensionless and does not affect the dimensions. Both sides give
+                L&sup2; T<sup>-2</sup>, so the equation is <strong>dimensionally consistent</strong>.
+                This does not prove the equation is correct (there could be a wrong numerical factor), but
+                it confirms that the structure of the equation is physically plausible.
+              </p>
+            </div>
+          </div>
+
+          <h3>Deriving Relationships</h3>
+
+          <p>
+            The truly remarkable power of dimensional analysis lies in its ability to derive physical
+            relationships even when you do not know the underlying physics. The method works as follows:
+            identify all the physical quantities that a result could depend on, write the result as a product of
+            powers of those quantities, and then solve for the exponents by requiring dimensional consistency.
+          </p>
+
+          <div class="example">
+            <div class="example-label">Worked Example: Period of a Simple Pendulum</div>
+            <p>
+              <strong>Question:</strong> A simple pendulum consists of a mass <em>m</em> on a string of
+              length <em>L</em>, swinging under gravity <em>g</em>. Use dimensional analysis to determine
+              how the period <em>T</em> depends on these quantities.
+            </p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>
+                <strong>Step 1:</strong> Assume the period depends on <em>m</em>, <em>L</em>, and
+                <em>g</em>:
+              </p>
+              <p style="text-align: center; font-family: var(--font-display); font-style: italic;">
+                T = C &middot; m<sup>a</sup> &middot; L<sup>b</sup> &middot; g<sup>c</sup>
+              </p>
+              <p>
+                where C is a dimensionless constant and a, b, c are unknown exponents.
+              </p>
+              <p>
+                <strong>Step 2:</strong> Write the dimensions of each quantity:
+              </p>
+              <ul>
+                <li>[T] = T</li>
+                <li>[m] = M</li>
+                <li>[L] = L</li>
+                <li>[g] = L T<sup>-2</sup></li>
+              </ul>
+              <p>
+                <strong>Step 3:</strong> Substitute into the dimensional equation:
+              </p>
+              <p style="text-align: center; font-family: var(--font-display); font-style: italic;">
+                T = M<sup>a</sup> &middot; L<sup>b</sup> &middot; (L T<sup>-2</sup>)<sup>c</sup>
+                = M<sup>a</sup> &middot; L<sup>b+c</sup> &middot; T<sup>-2c</sup>
+              </p>
+              <p>
+                <strong>Step 4:</strong> Match exponents on both sides:
+              </p>
+              <ul>
+                <li>Mass: a = 0 (there is no M on the left side)</li>
+                <li>Length: b + c = 0</li>
+                <li>Time: -2c = 1, so c = -1/2</li>
+              </ul>
+              <p>
+                From c = -1/2 and b + c = 0, we get b = 1/2.
+              </p>
+              <p>
+                <strong>Result:</strong>
+              </p>
+              <p style="text-align: center; font-family: var(--font-display); font-style: italic; font-size: var(--text-lg);">
+                T = C &middot; &radic;(L / g)
+              </p>
+              <p>
+                Dimensional analysis tells us that the period does <em>not</em> depend on the mass (a = 0),
+                and that it is proportional to the square root of L/g. The exact result (from solving the
+                differential equation of motion) is T = 2&pi;&radic;(L/g), so the dimensionless constant
+                C = 2&pi;. Dimensional analysis found the correct functional form using only the requirement
+                of dimensional consistency — no calculus, no differential equations, no Newton's laws.
+              </p>
+            </div>
+          </div>
+
+          <h3>Limitations</h3>
+
+          <p>
+            Dimensional analysis is extraordinarily powerful, but it has limitations. It cannot determine
+            dimensionless constants (like the 2&pi; in the pendulum formula). It cannot distinguish between
+            quantities that have the same dimensions (energy and torque, for example). And it requires that
+            you correctly identify <em>all</em> the relevant variables — if you leave one out, the analysis
+            will fail or give misleading results. Despite these limitations, it remains one of the most
+            cost-effective tools in a physicist's arsenal: it takes seconds to apply, and it catches errors that
+            might otherwise go undetected through pages of algebra.
+          </p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>
+              Dimensional analysis is not merely a checking tool — it is a discovery tool. By requiring that
+              physical equations be dimensionally consistent, we can often determine the <em>form</em> of
+              physical laws before we know the detailed physics. This makes it an invaluable first step in
+              approaching any new problem.
+            </p>
+          </div>
+        </section>
+
+        <!-- ======================== PRECISION AND ACCURACY ======================== -->
+        <section id="precision-accuracy" class="lecture-section reveal">
+          <h2>Precision and Accuracy</h2>
+
+          <h3>Two Different Virtues</h3>
+
+          <p>
+            In everyday language, "precise" and "accurate" are often used interchangeably. In physics, they
+            mean very different things, and confusing them can lead to serious experimental errors. The
+            distinction is best understood through the dartboard analogy.
+          </p>
+
+          <p>
+            Imagine throwing darts at a board. <strong>Accuracy</strong> describes how close your darts land
+            to the bullseye (the true value). <strong>Precision</strong> describes how close your darts land
+            to each other (the consistency of your throws). Four outcomes are possible:
+          </p>
+
+          <ul>
+            <li><strong>Accurate and precise:</strong> Darts clustered tightly around the bullseye. This is the ideal — your measurements are both consistent and close to the true value.</li>
+            <li><strong>Accurate but not precise:</strong> Darts scattered widely, but their average is near the bullseye. Your individual measurements vary a lot, but they are not systematically biased.</li>
+            <li><strong>Precise but not accurate:</strong> Darts clustered tightly, but in the wrong place. Your measurements are very consistent, but they are all shifted away from the true value by a systematic error.</li>
+            <li><strong>Neither accurate nor precise:</strong> Darts scattered widely and nowhere near the bullseye. Both random and systematic errors are large.</li>
+          </ul>
+
+          <h3>Random vs. Systematic Errors</h3>
+
+          <p>
+            <strong>Random errors</strong> are unpredictable fluctuations that affect precision. They arise
+            from limitations of instruments, environmental fluctuations, and human variability. If you measure
+            the length of a table five times, you might get slightly different values each time due to how you
+            align the ruler, minor temperature changes expanding the ruler, or parallax in reading the scale.
+            Random errors can be reduced (though never entirely eliminated) by taking multiple measurements
+            and averaging them. The statistical theory of random errors tells us that the uncertainty in the mean
+            decreases as 1/&radic;N, where N is the number of measurements.
+          </p>
+
+          <p>
+            <strong>Systematic errors</strong> are consistent, repeatable biases that affect accuracy. They
+            shift all measurements in the same direction by approximately the same amount. Examples include:
+            a scale that reads 0.3 grams too high because it was not properly zeroed; a clock that runs 2%
+            fast; a thermometer with a shifted scale. Systematic errors are insidious because they cannot be
+            reduced by taking more measurements — if your scale is biased by 0.3 grams, the average of
+            1000 measurements will still be biased by 0.3 grams. They can only be found by calibrating your
+            instruments against known standards, or by using completely different measurement methods and
+            comparing results.
+          </p>
+
+          <p>
+            In experimental physics, both types of error must be identified and controlled. A measurement
+            is only as good as the weakest link in its error chain.
+          </p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>
+              Precision without accuracy is misleading. An instrument that consistently gives the wrong
+              answer to many decimal places creates a false sense of confidence. Always ask: "Is my
+              instrument calibrated?" before asking "How many decimal places can I read?"
+            </p>
+          </div>
+        </section>
+
+        <!-- ======================== UNCERTAINTY ======================== -->
+        <section id="uncertainty" class="lecture-section reveal">
+          <h2>Uncertainty</h2>
+
+          <h3>No Measurement Is Exact</h3>
+
+          <p>
+            Every measurement in physics carries an uncertainty — an honest admission of the range within
+            which the true value is believed to lie. Writing a measurement as 4.56 m without any indication
+            of uncertainty is, strictly speaking, incomplete. A scientist should write 4.56 &plusmn; 0.02 m,
+            meaning "we believe the true value lies between 4.54 m and 4.58 m." The &plusmn; 0.02 m is
+            the <strong>absolute uncertainty</strong>.
+          </p>
+
+          <p>
+            Why must every measurement have an uncertainty? Because every measuring instrument has a
+            finite resolution. A ruler marked in millimeters cannot reliably distinguish between 4.563 m and
+            4.564 m. A digital scale that displays to the nearest 0.1 gram cannot tell you whether the true
+            mass is 12.34 g or 12.36 g. And beyond the instrument, the quantity being measured may itself
+            fluctuate — the width of a table depends on temperature, the weight of a sample depends on
+            humidity, and so on. Uncertainty is not a sign of poor technique; it is a fundamental feature of
+            measurement.
+          </p>
+
+          <h3>Absolute and Relative Uncertainty</h3>
+
+          <p>
+            <strong>Absolute uncertainty</strong> is expressed in the same units as the measurement itself.
+            If a length is 2.50 &plusmn; 0.05 m, the absolute uncertainty is 0.05 m.
+          </p>
+
+          <p>
+            <strong>Relative uncertainty</strong> (also called fractional uncertainty or percentage uncertainty)
+            is the absolute uncertainty divided by the measured value. For our example:
+          </p>
+
+          <div class="formula">
+            <span class="formula-name">Relative Uncertainty</span>
+            Relative uncertainty = 0.05 / 2.50 = 0.02 = 2%
+          </div>
+
+          <p>
+            Relative uncertainty is often more informative than absolute uncertainty because it tells you
+            the <em>proportion</em> of the value that is uncertain. An absolute uncertainty of 1 cm is
+            excellent for a football field (relative uncertainty of 0.01%) but terrible for a postage stamp
+            (relative uncertainty of perhaps 30%).
+          </p>
+
+          <h3>Propagation of Uncertainty</h3>
+
+          <p>
+            When you combine measurements through calculations, the uncertainties propagate — they
+            combine and grow. The rules depend on the mathematical operation:
+          </p>
+
+          <p>
+            <strong>Addition and Subtraction:</strong> When quantities are added or subtracted, the
+            absolute uncertainties add in quadrature (the square root of the sum of squares):
+          </p>
+
+          <div class="formula">
+            <span class="formula-name">Uncertainty in Addition/Subtraction</span>
+            &delta;(A &plusmn; B) = &radic;( (&delta;A)&sup2; + (&delta;B)&sup2; )
+          </div>
+
+          <p>
+            <strong>Multiplication and Division:</strong> When quantities are multiplied or divided, the
+            relative uncertainties add in quadrature:
+          </p>
+
+          <div class="formula">
+            <span class="formula-name">Uncertainty in Multiplication/Division</span>
+            &delta;(AB) / |AB| = &radic;( (&delta;A/A)&sup2; + (&delta;B/B)&sup2; )
+          </div>
+
+          <div class="example">
+            <div class="example-label">Worked Example: Propagation of Uncertainty</div>
+            <p>
+              <strong>Question:</strong> A rectangular plate has measured dimensions
+              L = 5.20 &plusmn; 0.05 m and W = 3.10 &plusmn; 0.04 m. What is the area and its uncertainty?
+            </p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>
+                <strong>Area:</strong> A = L &times; W = 5.20 &times; 3.10 = 16.12 m&sup2;
+              </p>
+              <p>
+                Since this is multiplication, we use relative uncertainties:
+              </p>
+              <p>
+                Relative uncertainty in L: &delta;L/L = 0.05/5.20 = 0.00962
+              </p>
+              <p>
+                Relative uncertainty in W: &delta;W/W = 0.04/3.10 = 0.01290
+              </p>
+              <p>
+                Combined relative uncertainty:
+                &radic;(0.00962&sup2; + 0.01290&sup2;) = &radic;(0.0000926 + 0.0001664)
+                = &radic;0.0002590 = 0.01609
+              </p>
+              <p>
+                Absolute uncertainty in area:
+                &delta;A = 0.01609 &times; 16.12 = 0.26 m&sup2;
+              </p>
+              <p>
+                <strong>Result:</strong> A = 16.1 &plusmn; 0.3 m&sup2;
+              </p>
+              <p>
+                (We round the uncertainty to one significant figure and the result to match.)
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================== SIGNIFICANT FIGURES ======================== -->
+        <section id="significant-figures" class="lecture-section reveal">
+          <h2>Significant Figures</h2>
+
+          <h3>What Significant Figures Tell Us</h3>
+
+          <p>
+            Significant figures are a shorthand way of communicating the precision of a measurement without
+            writing out the full uncertainty. When a physicist writes a measurement as 3.042 m, the four digits
+            imply that the measurement is reliable to the nearest millimeter — the last digit might be off by
+            one or two, but the preceding digits are trustworthy. When a physicist writes 3.0 m, the two
+            significant figures imply that the measurement is only reliable to the nearest tenth of a meter.
+          </p>
+
+          <p>
+            The rules for counting significant figures are straightforward but require attention to detail:
+          </p>
+
+          <ol>
+            <li><strong>All non-zero digits are significant.</strong> In 7,284, there are four significant figures.</li>
+            <li><strong>Zeros between non-zero digits are significant.</strong> In 1,003, there are four significant figures.</li>
+            <li><strong>Leading zeros are not significant.</strong> In 0.0042, there are only two significant figures (the 4 and the 2). The leading zeros merely indicate the position of the decimal point.</li>
+            <li><strong>Trailing zeros after a decimal point are significant.</strong> In 2.500, there are four significant figures. The trailing zeros indicate that the measurement was made to the nearest thousandth.</li>
+            <li><strong>Trailing zeros in a whole number without a decimal point are ambiguous.</strong> Does 1500 have two significant figures or four? Without additional context (such as scientific notation or an explicit uncertainty), it is unclear. This is one reason why scientific notation is so valuable.</li>
+          </ol>
+
+          <h3>Operations with Significant Figures</h3>
+
+          <p>
+            When performing calculations with measured quantities, the result should not claim more precision
+            than the input measurements justify. Two rules govern this:
+          </p>
+
+          <p>
+            <strong>Addition and subtraction:</strong> The result should have the same number of decimal
+            places as the measurement with the <em>fewest</em> decimal places. For example,
+            12.51 + 3.2 = 15.7 (not 15.71), because 3.2 is only reliable to the tenths place.
+          </p>
+
+          <p>
+            <strong>Multiplication and division:</strong> The result should have the same number of
+            significant figures as the measurement with the <em>fewest</em> significant figures. For example,
+            4.56 &times; 1.4 = 6.4 (not 6.384), because 1.4 has only two significant figures.
+          </p>
+
+          <h3>Why Trailing Zeros Matter</h3>
+
+          <p>
+            Students often ask: "Why does it matter whether I write 2.5 or 2.50?" The answer is that these
+            communicate different levels of precision. Writing 2.5 m says "I measured this to the nearest
+            tenth of a meter." Writing 2.50 m says "I measured this to the nearest hundredth of a meter."
+            The extra zero is not decoration — it is information. It tells the reader that you had a more
+            precise instrument and a more reliable measurement. Omitting meaningful trailing zeros is just
+            as dishonest as adding digits you did not measure.
+          </p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>
+              Significant figures are a communication tool. They tell the reader how much of your number
+              is meaningful. Never report more significant figures than your measurement justifies, and
+              never report fewer than your measurement supports. Both are forms of misrepresentation.
+            </p>
+          </div>
+        </section>
+
+        <!-- ======================== SCIENTIFIC NOTATION ======================== -->
+        <section id="scientific-notation" class="lecture-section reveal">
+          <h2>Scientific Notation</h2>
+
+          <h3>Taming the Very Large and Very Small</h3>
+
+          <p>
+            Physics deals with quantities that span an almost incomprehensible range of magnitudes. The
+            observable universe is about 880,000,000,000,000,000,000,000,000 meters across. A proton has
+            a radius of about 0.00000000000000088 meters. Writing these numbers out in full is not only
+            tedious but actively harmful — it is almost impossible to compare them at a glance, and the risk
+            of miscounting zeros is enormous.
+          </p>
+
+          <p>
+            Scientific notation solves this problem by expressing every number in the form:
+          </p>
+
+          <div class="formula">
+            <span class="formula-name">Scientific Notation</span>
+            a &times; 10<sup>n</sup>
+          </div>
+
+          <p>
+            where <em>a</em> (the coefficient or mantissa) is a number between 1 and 10 (including 1,
+            excluding 10), and <em>n</em> (the exponent) is an integer that indicates how many places the
+            decimal point has been shifted. A positive exponent means the number is large; a negative
+            exponent means it is small.
+          </p>
+
+          <h3>Converting to Scientific Notation</h3>
+
+          <p>
+            To express 299,792,458 in scientific notation, move the decimal point eight places to the left:
+            2.99792458 &times; 10<sup>8</sup>. To express 0.00000000162 in scientific notation, move the
+            decimal point nine places to the right: 1.62 &times; 10<sup>-9</sup>.
+          </p>
+
+          <h3>Orders of Magnitude</h3>
+
+          <p>
+            Scientific notation naturally introduces the concept of <strong>orders of magnitude</strong>.
+            Two quantities differ by one order of magnitude if one is about ten times larger than the other.
+            The diameter of an atom (about 10<sup>-10</sup> m) and the diameter of a cell nucleus
+            (about 10<sup>-15</sup> m) differ by five orders of magnitude. The mass of the Earth
+            (about 6 &times; 10<sup>24</sup> kg) and the mass of the Sun (about 2 &times; 10<sup>30</sup>
+            kg) differ by about six orders of magnitude.
+          </p>
+
+          <p>
+            Thinking in orders of magnitude is a powerful habit for a physicist. It allows rapid estimation
+            and sanity-checking of results. If your calculation for the speed of a car gives
+            3 &times; 10<sup>6</sup> m/s (about 1% the speed of light), you know immediately that
+            something is wrong, even before checking the algebra. Order-of-magnitude reasoning is the
+            physicist's first line of defense against computational errors.
+          </p>
+
+          <div class="example">
+            <div class="example-label">Worked Example: Scientific Notation and Sig Figs</div>
+            <p>
+              <strong>Question:</strong> Express the measurement 0.003070 m in scientific notation. How
+              many significant figures does it have?
+            </p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>
+                Moving the decimal point three places to the right:
+                0.003070 = 3.070 &times; 10<sup>-3</sup> m
+              </p>
+              <p>
+                <strong>Significant figures:</strong> The leading zeros (0.00) are not significant. The
+                digits 3, 0, 7, and the trailing 0 are all significant. Therefore, this measurement has
+                <strong>four significant figures</strong>. Writing it in scientific notation makes this
+                immediately clear: the coefficient 3.070 has four digits, all of which are meaningful.
+              </p>
+            </div>
+          </div>
+
+          <h3>Scientific Notation Resolves Ambiguity</h3>
+
+          <p>
+            Recall the problem with trailing zeros: does "1500 m" have two, three, or four significant
+            figures? Scientific notation eliminates this ambiguity entirely:
+          </p>
+
+          <ul>
+            <li>1.5 &times; 10<sup>3</sup> m — two significant figures</li>
+            <li>1.50 &times; 10<sup>3</sup> m — three significant figures</li>
+            <li>1.500 &times; 10<sup>3</sup> m — four significant figures</li>
+          </ul>
+
+          <p>
+            This is one of the practical reasons why scientists prefer scientific notation even when the numbers
+            involved are not extremely large or small. It is simply a more honest and unambiguous way to
+            communicate the precision of a measurement.
+          </p>
+        </section>
+
+        <!-- ======================== COMMON MISCONCEPTIONS ======================== -->
+        <section id="common-misconceptions" class="lecture-section reveal">
+          <h2>Common Misconceptions</h2>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p>
+              <strong>"Units don't matter as long as the number is right."</strong>
+              This is flatly false and dangerously so. The number 42 is meaningless without a unit.
+              42 meters, 42 kilograms, and 42 seconds describe completely different physical realities.
+              As the Mars Climate Orbiter disaster demonstrated, ignoring unit consistency can have
+              catastrophic consequences. In physics, the unit is as much a part of the answer as the number.
+              An answer of "42" to a physics problem is always wrong if it lacks a unit (unless the quantity
+              is genuinely dimensionless, like a ratio or an angle in radians).
+            </p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p>
+              <strong>"More decimal places means better accuracy."</strong>
+              Precision and accuracy are independent properties. A measurement of 9.8742 m/s&sup2; for
+              gravitational acceleration is more <em>precise</em> than 9.8 m/s&sup2;, but if the instrument
+              was systematically miscalibrated and the true value is 9.81 m/s&sup2;, then 9.8 m/s&sup2; is
+              actually more <em>accurate</em> than 9.8742 m/s&sup2; (which is off by 0.06). Extra decimal
+              places can create a false sense of confidence. A precise but inaccurate measurement is one of the
+              most dangerous things in experimental science, because it looks right while being wrong.
+            </p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p>
+              <strong>"Dimensional analysis can only check equations, not derive them."</strong>
+              As we showed with the pendulum example, dimensional analysis can be used to derive the
+              functional form of physical relationships. It determined that T is proportional to
+              &radic;(L/g) and independent of mass — a nontrivial physical result obtained purely
+              from the requirement of dimensional consistency. While dimensional analysis cannot determine
+              dimensionless constants, it is a powerful discovery tool that has been used by physicists from
+              Lord Rayleigh to modern researchers studying turbulence, scaling laws, and astrophysical
+              phenomena.
+            </p>
+          </div>
+        </section>
+
+        <!-- ==================== INTERACTIVE SIMULATION ==================== -->
+        <section id="interactive" class="lecture-section reveal">
+          <h2>Interactive: Dimensional Analysis Checker</h2>
+          <p>
+            Select a physics equation to see its dimensional breakdown. Each side is
+            decomposed into base dimensions <strong>[M]</strong>, <strong>[L]</strong>,
+            <strong>[T]</strong> and checked for consistency. Then try the unit converter below.
+          </p>
+
+          <div class="sim-container">
+            <div class="sim-controls">
+              <div class="sim-control">
+                <label>Select Equation</label>
+                <select class="dim-select" id="eqSelect">
+                  <option value="0">v = d / t</option>
+                  <option value="1">F = m a</option>
+                  <option value="2">E = 1/2 m v^2</option>
+                  <option value="3">KE = 1/2 m v^2</option>
+                  <option value="4">T = 2 pi sqrt(L / g)</option>
+                  <option value="5">F = G M m / r^2</option>
+                </select>
+              </div>
+              <button class="sim-btn" id="btnAnimate">Animate</button>
+            </div>
+
+            <div class="sim-canvas-wrap">
+              <canvas id="dimCanvas" width="800" height="360"></canvas>
+            </div>
+
+            <div class="sim-data" id="dimResult">
+              <div class="sim-datum">
+                <div class="datum-value" id="lhsDim">--</div>
+                <div class="datum-label">Left Side</div>
+              </div>
+              <div class="sim-datum">
+                <div class="datum-value" id="rhsDim">--</div>
+                <div class="datum-label">Right Side</div>
+              </div>
+              <div class="sim-datum">
+                <div class="datum-value" id="dimVerdict">--</div>
+                <div class="datum-label">Verdict</div>
+              </div>
+            </div>
+
+            <div class="sim-explanation" id="dimExplanation">
+              Choose an equation above to see how dimensional analysis verifies its consistency.
+              Each variable is expanded into its fundamental SI dimensions.
+            </div>
+          </div>
+
+          <!-- Unit Converter Sub-section -->
+          <div class="sim-container" style="margin-top: 1.5rem;">
+            <h3 style="color: #a0a4b8; font-family: 'Space Grotesk', sans-serif; font-size: 1rem; margin-bottom: 12px;">Unit Converter</h3>
+
+            <div class="sim-controls">
+              <div class="sim-control">
+                <label>Quantity Type</label>
+                <select class="dim-select" id="convType">
+                  <option value="length">Length</option>
+                  <option value="mass">Mass</option>
+                  <option value="time">Time</option>
+                  <option value="speed">Speed</option>
+                  <option value="force">Force</option>
+                  <option value="energy">Energy</option>
+                </select>
+              </div>
+              <div class="sim-control">
+                <label>From</label>
+                <select class="dim-select" id="convFrom"></select>
+              </div>
+              <div class="sim-control">
+                <label>To</label>
+                <select class="dim-select" id="convTo"></select>
+              </div>
+            </div>
+
+            <div class="converter-row">
+              <div class="sim-control">
+                <label>Value</label>
+                <input type="number" id="convInput" value="1" step="any">
+              </div>
+              <div class="converter-result" id="convResult">--</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================== KEY TAKEAWAYS ======================== -->
+        <section id="key-takeaways" class="lecture-section reveal">
+          <h2>Key Takeaways</h2>
+
+          <div class="takeaways">
+            <h3>Summary</h3>
+            <ul>
+              <li>A measurement without a unit is meaningless. Units are the language through which physics communicates quantitative information about the natural world.</li>
+              <li>The SI system is built on seven base units (meter, kilogram, second, ampere, kelvin, mole, candela), and all other physical quantities are derived from these through multiplication, division, and exponentiation.</li>
+              <li>Since 2019, all SI base units are defined in terms of fixed fundamental constants of nature, freeing metrology from dependence on physical artifacts.</li>
+              <li>Dimensional analysis can both verify existing equations and derive new relationships by requiring that the dimensions on both sides of an equation match.</li>
+              <li>Accuracy (closeness to the true value) and precision (consistency of repeated measurements) are independent qualities. Good science requires both, and confusing them leads to error.</li>
+              <li>Every measurement must be accompanied by an uncertainty, and uncertainties propagate through calculations according to well-defined rules (quadrature addition for both absolute and relative uncertainties).</li>
+              <li>Significant figures communicate the precision of a measurement. Never report more figures than your instruments justify, and never suppress meaningful trailing zeros.</li>
+              <li>Scientific notation provides a clear, unambiguous way to express very large and very small numbers, and naturally resolves the ambiguity of trailing zeros in whole numbers.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Lecture Navigation -->
+        <div class="lecture-nav">
+          <a href="01-introduction.html" class="nav-prev">
+            <div class="nav-direction">&larr; Previous</div>
+            <div class="nav-title">Lecture 1: Introduction to Physics</div>
+          </a>
+          <a href="03-vectors-motion.html" class="nav-next">
+            <div class="nav-direction">Next &rarr;</div>
+            <div class="nav-title">Lecture 3: Vectors and Motion</div>
+          </a>
+        </div>
+
+      </article>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">Physics Logic</div>
+          <p class="footer-desc">
+            A structured lecture series that builds physical intuition through logical reasoning,
+            dimensional thinking, and careful problem solving.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h5>Lectures</h5>
+          <a href="../lectures.html">All Lectures</a>
+          <a href="01-introduction.html">Introduction</a>
+          <a href="02-units-dimensions.html">Units &amp; Dimensions</a>
+          <a href="03-vectors-motion.html">Vectors &amp; Motion</a>
+        </div>
+        <div class="footer-col">
+          <h5>Resources</h5>
+          <a href="../about.html">About</a>
+          <a href="../lectures.html">Lecture Index</a>
+        </div>
+        <div class="footer-col">
+          <h5>Meta</h5>
+          <a href="../about.html">Philosophy</a>
+          <a href="../about.html">For Instructors</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Physics Logic Lectures</span>
+        <span>Built for learners who think deeply.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+
+  <script>
+  (function() {
+    /* ============================================================
+       PART 1: Dimensional Analysis Checker
+       ============================================================ */
+    const canvas = document.getElementById('dimCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const eqSelect = document.getElementById('eqSelect');
+    const btnAnimate = document.getElementById('btnAnimate');
+    const lhsDimEl = document.getElementById('lhsDim');
+    const rhsDimEl = document.getElementById('rhsDim');
+    const verdictEl = document.getElementById('dimVerdict');
+    const explanationEl = document.getElementById('dimExplanation');
+
+    const dpr = window.devicePixelRatio || 1;
+    let W, H;
+
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      W = rect.width;
+      H = 360;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resizeCanvas();
+
+    const equations = [
+      {
+        label: 'v = d / t',
+        lhsVars: [{ symbol: 'v', dim: 'L T\u207B\u00B9' }],
+        rhsVars: [{ symbol: 'd', dim: 'L' }, { symbol: '/', dim: '' }, { symbol: 't', dim: 'T' }],
+        lhsDim: '[L T\u207B\u00B9]',
+        rhsDim: '[L] / [T] = [L T\u207B\u00B9]',
+        finalLHS: 'L T\u207B\u00B9',
+        finalRHS: 'L T\u207B\u00B9',
+        match: true,
+        explanation: 'Velocity (v) has dimensions of length per time. The right side, distance divided by time, gives the same dimensions. The equation is dimensionally consistent.'
+      },
+      {
+        label: 'F = m a',
+        lhsVars: [{ symbol: 'F', dim: 'M L T\u207B\u00B2' }],
+        rhsVars: [{ symbol: 'm', dim: 'M' }, { symbol: '\u00D7', dim: '' }, { symbol: 'a', dim: 'L T\u207B\u00B2' }],
+        lhsDim: '[M L T\u207B\u00B2]',
+        rhsDim: '[M] \u00D7 [L T\u207B\u00B2] = [M L T\u207B\u00B2]',
+        finalLHS: 'M L T\u207B\u00B2',
+        finalRHS: 'M L T\u207B\u00B2',
+        match: true,
+        explanation: 'Force has dimensions of mass times acceleration (M L T\u207B\u00B2). Newton\'s second law is dimensionally consistent: both sides reduce to kg m s\u207B\u00B2.'
+      },
+      {
+        label: 'E = \u00BD m v\u00B2',
+        lhsVars: [{ symbol: 'E', dim: 'M L\u00B2 T\u207B\u00B2' }],
+        rhsVars: [{ symbol: '\u00BD', dim: '1' }, { symbol: 'm', dim: 'M' }, { symbol: 'v\u00B2', dim: 'L\u00B2 T\u207B\u00B2' }],
+        lhsDim: '[M L\u00B2 T\u207B\u00B2]',
+        rhsDim: '[1] \u00D7 [M] \u00D7 [L\u00B2 T\u207B\u00B2] = [M L\u00B2 T\u207B\u00B2]',
+        finalLHS: 'M L\u00B2 T\u207B\u00B2',
+        finalRHS: 'M L\u00B2 T\u207B\u00B2',
+        match: true,
+        explanation: 'Energy has dimensions M L\u00B2 T\u207B\u00B2. The \u00BD is dimensionless. Mass times velocity squared gives M \u00D7 (L T\u207B\u00B9)\u00B2 = M L\u00B2 T\u207B\u00B2. Consistent!'
+      },
+      {
+        label: 'KE = \u00BD m v\u00B2',
+        lhsVars: [{ symbol: 'KE', dim: 'M L\u00B2 T\u207B\u00B2' }],
+        rhsVars: [{ symbol: '\u00BD', dim: '1' }, { symbol: 'm', dim: 'M' }, { symbol: 'v\u00B2', dim: 'L\u00B2 T\u207B\u00B2' }],
+        lhsDim: '[M L\u00B2 T\u207B\u00B2]',
+        rhsDim: '[1] \u00D7 [M] \u00D7 [L\u00B2 T\u207B\u00B2] = [M L\u00B2 T\u207B\u00B2]',
+        finalLHS: 'M L\u00B2 T\u207B\u00B2',
+        finalRHS: 'M L\u00B2 T\u207B\u00B2',
+        match: true,
+        explanation: 'Kinetic energy is identical in dimensional form to energy above. KE = \u00BD m v\u00B2 reduces to M L\u00B2 T\u207B\u00B2 on both sides.'
+      },
+      {
+        label: 'T = 2\u03C0 \u221A(L / g)',
+        lhsVars: [{ symbol: 'T', dim: 'T' }],
+        rhsVars: [{ symbol: '2\u03C0', dim: '1' }, { symbol: '\u221A(', dim: '' }, { symbol: 'L', dim: 'L' }, { symbol: '/', dim: '' }, { symbol: 'g', dim: 'L T\u207B\u00B2' }, { symbol: ')', dim: '' }],
+        lhsDim: '[T]',
+        rhsDim: '\u221A([L] / [L T\u207B\u00B2]) = \u221A([T\u00B2]) = [T]',
+        finalLHS: 'T',
+        finalRHS: 'T',
+        match: true,
+        explanation: 'The pendulum period has dimension of time [T]. Inside the square root, L / (L T\u207B\u00B2) = T\u00B2, and \u221A(T\u00B2) = T. The 2\u03C0 is dimensionless. Both sides are [T].'
+      },
+      {
+        label: 'F = G M m / r\u00B2',
+        lhsVars: [{ symbol: 'F', dim: 'M L T\u207B\u00B2' }],
+        rhsVars: [{ symbol: 'G', dim: 'M\u207B\u00B9 L\u00B3 T\u207B\u00B2' }, { symbol: 'M', dim: 'M' }, { symbol: 'm', dim: 'M' }, { symbol: '/', dim: '' }, { symbol: 'r\u00B2', dim: 'L\u00B2' }],
+        lhsDim: '[M L T\u207B\u00B2]',
+        rhsDim: '[M\u207B\u00B9 L\u00B3 T\u207B\u00B2][M][M] / [L\u00B2] = [M L T\u207B\u00B2]',
+        finalLHS: 'M L T\u207B\u00B2',
+        finalRHS: 'M L T\u207B\u00B2',
+        match: true,
+        explanation: 'Newton\'s law of gravitation: G has dimensions M\u207B\u00B9 L\u00B3 T\u207B\u00B2. Multiplying by M\u00B2 and dividing by L\u00B2 gives M L T\u207B\u00B2 = force. Dimensionally consistent.'
+      }
+    ];
+
+    let currentEq = 0;
+    let animProgress = 0;
+    let animating = false;
+    let animFrame = null;
+
+    function drawEquation() {
+      ctx.clearRect(0, 0, W, H);
+      const eq = equations[currentEq];
+      const midX = W / 2;
+
+      // Title
+      ctx.fillStyle = '#636780';
+      ctx.font = '600 13px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('DIMENSIONAL BREAKDOWN', midX, 30);
+
+      // Equation label
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '700 22px "Space Grotesk", sans-serif';
+      ctx.fillText(eq.label, midX, 65);
+
+      // Equals sign
+      ctx.fillStyle = '#636780';
+      ctx.font = '700 28px "Space Grotesk", sans-serif';
+      ctx.fillText('=', midX, 140);
+
+      // LHS variables
+      const lhsX = midX - 120;
+      const rhsX = midX + 120;
+      const varY = 130;
+
+      // Draw LHS
+      const lhsVars = eq.lhsVars;
+      for (let i = 0; i < lhsVars.length; i++) {
+        const v = lhsVars[i];
+        const x = lhsX;
+
+        // Variable box
+        const alpha = Math.min(1, animProgress * 2);
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = 'rgba(0,212,255,0.08)';
+        roundRect(ctx, x - 45, varY - 22, 90, 44, 8);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(0,212,255,0.3)';
+        ctx.lineWidth = 1;
+        roundRect(ctx, x - 45, varY - 22, 90, 44, 8);
+        ctx.stroke();
+
+        ctx.fillStyle = '#00d4ff';
+        ctx.font = '700 16px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(v.symbol, x, varY - 2);
+
+        // Dimension below
+        if (animProgress > 0.3) {
+          const dimAlpha = Math.min(1, (animProgress - 0.3) * 3);
+          ctx.globalAlpha = dimAlpha;
+          ctx.fillStyle = '#a0a4b8';
+          ctx.font = '500 12px "Space Grotesk", sans-serif';
+          ctx.fillText('[' + v.dim + ']', x, varY + 16);
+        }
+        ctx.globalAlpha = 1;
+      }
+
+      // Draw RHS variables
+      const rhsVarCount = eq.rhsVars.filter(v => v.dim !== '').length;
+      const rhsSpacing = Math.min(80, (W * 0.4) / Math.max(rhsVarCount, 1));
+      let rhsStartX = rhsX - ((eq.rhsVars.length - 1) * rhsSpacing) / 2;
+
+      for (let i = 0; i < eq.rhsVars.length; i++) {
+        const v = eq.rhsVars[i];
+        const x = rhsStartX + i * rhsSpacing;
+
+        const alpha = Math.min(1, animProgress * 2);
+        ctx.globalAlpha = alpha;
+
+        if (v.dim === '') {
+          // Operator
+          ctx.fillStyle = '#636780';
+          ctx.font = '500 14px "Space Grotesk", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(v.symbol, x, varY);
+        } else {
+          // Variable box
+          ctx.fillStyle = 'rgba(138,92,255,0.08)';
+          roundRect(ctx, x - 40, varY - 22, 80, 44, 8);
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(138,92,255,0.3)';
+          ctx.lineWidth = 1;
+          roundRect(ctx, x - 40, varY - 22, 80, 44, 8);
+          ctx.stroke();
+
+          ctx.fillStyle = '#8a5cff';
+          ctx.font = '700 14px "Space Grotesk", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(v.symbol, x, varY - 2);
+
+          // Dimension below
+          if (animProgress > 0.3) {
+            const dimAlpha = Math.min(1, (animProgress - 0.3) * 3);
+            ctx.globalAlpha = dimAlpha;
+            ctx.fillStyle = '#a0a4b8';
+            ctx.font = '500 11px "Space Grotesk", sans-serif';
+            ctx.fillText('[' + v.dim + ']', x, varY + 16);
+          }
+        }
+        ctx.globalAlpha = 1;
+      }
+
+      // Result row
+      if (animProgress > 0.6) {
+        const resAlpha = Math.min(1, (animProgress - 0.6) * 2.5);
+        ctx.globalAlpha = resAlpha;
+
+        const resY = 220;
+        // LHS result
+        ctx.fillStyle = '#00d4ff';
+        ctx.font = '600 14px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(eq.lhsDim, lhsX, resY);
+
+        // RHS result
+        ctx.fillStyle = '#8a5cff';
+        ctx.fillText(eq.rhsDim, rhsX, resY);
+
+        // Arrow down from each
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(lhsX, varY + 26);
+        ctx.lineTo(lhsX, resY - 16);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(rhsX, varY + 26);
+        ctx.lineTo(rhsX, resY - 16);
+        ctx.stroke();
+      }
+
+      // Verdict
+      if (animProgress > 0.85) {
+        const vAlpha = Math.min(1, (animProgress - 0.85) * 6);
+        ctx.globalAlpha = vAlpha;
+
+        const verdY = 290;
+        ctx.font = '700 18px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'center';
+
+        if (eq.match) {
+          ctx.fillStyle = '#00ff88';
+          ctx.fillText('\u2713  Dimensionally Consistent', midX, verdY);
+        } else {
+          ctx.fillStyle = '#ff4466';
+          ctx.fillText('\u2717  Dimensionally Inconsistent', midX, verdY);
+        }
+
+        // Final dimensions side by side
+        ctx.font = '500 13px "Space Grotesk", sans-serif';
+        ctx.fillStyle = '#a0a4b8';
+        ctx.fillText('[' + eq.finalLHS + ']  =  [' + eq.finalRHS + ']', midX, verdY + 28);
+      }
+
+      ctx.globalAlpha = 1;
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function updateInfo() {
+      const eq = equations[currentEq];
+      lhsDimEl.textContent = eq.lhsDim;
+      rhsDimEl.textContent = '[' + eq.finalRHS + ']';
+      verdictEl.textContent = eq.match ? '\u2713 Consistent' : '\u2717 Inconsistent';
+      verdictEl.style.color = eq.match ? '#00ff88' : '#ff4466';
+      explanationEl.textContent = eq.explanation;
+    }
+
+    function runAnimation() {
+      if (animating) return;
+      animating = true;
+      animProgress = 0;
+      btnAnimate.classList.add('active');
+      btnAnimate.textContent = 'Animating...';
+
+      function step() {
+        animProgress += 0.012;
+        drawEquation();
+        if (animProgress >= 1) {
+          animProgress = 1;
+          drawEquation();
+          animating = false;
+          btnAnimate.classList.remove('active');
+          btnAnimate.textContent = 'Animate';
+          updateInfo();
+          return;
+        }
+        animFrame = requestAnimationFrame(step);
+      }
+      step();
+    }
+
+    eqSelect.addEventListener('change', function() {
+      currentEq = parseInt(this.value);
+      if (animFrame) cancelAnimationFrame(animFrame);
+      animating = false;
+      animProgress = 1;
+      btnAnimate.classList.remove('active');
+      btnAnimate.textContent = 'Animate';
+      drawEquation();
+      updateInfo();
+    });
+
+    btnAnimate.addEventListener('click', function() {
+      if (animFrame) cancelAnimationFrame(animFrame);
+      animating = false;
+      runAnimation();
+    });
+
+    window.addEventListener('resize', function() {
+      resizeCanvas();
+      drawEquation();
+    });
+
+    // Initial draw
+    animProgress = 1;
+    drawEquation();
+    updateInfo();
+
+    /* ============================================================
+       PART 2: Unit Converter
+       ============================================================ */
+    const convType = document.getElementById('convType');
+    const convFrom = document.getElementById('convFrom');
+    const convTo = document.getElementById('convTo');
+    const convInput = document.getElementById('convInput');
+    const convResult = document.getElementById('convResult');
+
+    const unitData = {
+      length: {
+        units: ['m', 'km', 'cm', 'mm', 'in', 'ft', 'mi'],
+        toBase: { m: 1, km: 1000, cm: 0.01, mm: 0.001, 'in': 0.0254, ft: 0.3048, mi: 1609.344 }
+      },
+      mass: {
+        units: ['kg', 'g', 'mg', 'lb', 'oz', 'tonne'],
+        toBase: { kg: 1, g: 0.001, mg: 1e-6, lb: 0.453592, oz: 0.0283495, tonne: 1000 }
+      },
+      time: {
+        units: ['s', 'ms', 'min', 'hr', 'day', 'yr'],
+        toBase: { s: 1, ms: 0.001, min: 60, hr: 3600, day: 86400, yr: 31557600 }
+      },
+      speed: {
+        units: ['m/s', 'km/h', 'mph', 'ft/s', 'knot'],
+        toBase: { 'm/s': 1, 'km/h': 1/3.6, mph: 0.44704, 'ft/s': 0.3048, knot: 0.514444 }
+      },
+      force: {
+        units: ['N', 'kN', 'dyn', 'lbf', 'kgf'],
+        toBase: { N: 1, kN: 1000, dyn: 1e-5, lbf: 4.44822, kgf: 9.80665 }
+      },
+      energy: {
+        units: ['J', 'kJ', 'cal', 'kcal', 'eV', 'kWh'],
+        toBase: { J: 1, kJ: 1000, cal: 4.184, kcal: 4184, eV: 1.602176634e-19, kWh: 3600000 }
+      }
+    };
+
+    function populateUnits() {
+      const type = convType.value;
+      const units = unitData[type].units;
+      convFrom.innerHTML = '';
+      convTo.innerHTML = '';
+      units.forEach(function(u, i) {
+        const o1 = document.createElement('option');
+        o1.value = u; o1.textContent = u;
+        convFrom.appendChild(o1);
+        const o2 = document.createElement('option');
+        o2.value = u; o2.textContent = u;
+        convTo.appendChild(o2);
+      });
+      if (units.length > 1) convTo.value = units[1];
+      convert();
+    }
+
+    function convert() {
+      const type = convType.value;
+      const from = convFrom.value;
+      const to = convTo.value;
+      const val = parseFloat(convInput.value);
+      if (isNaN(val)) { convResult.textContent = '--'; return; }
+      const base = unitData[type].toBase;
+      const result = val * base[from] / base[to];
+      // Smart formatting
+      let formatted;
+      if (Math.abs(result) >= 1e6 || (Math.abs(result) < 0.001 && result !== 0)) {
+        formatted = result.toExponential(4);
+      } else {
+        formatted = parseFloat(result.toPrecision(6)).toString();
+      }
+      convResult.textContent = formatted + ' ' + to;
+    }
+
+    convType.addEventListener('change', populateUnits);
+    convFrom.addEventListener('change', convert);
+    convTo.addEventListener('change', convert);
+    convInput.addEventListener('input', convert);
+    populateUnits();
+  })();
+  </script>
+</body>
+</html>

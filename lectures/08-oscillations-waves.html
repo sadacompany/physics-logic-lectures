@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lecture 8: Oscillations and Waves — Physics Logic</title>
+  <meta name="description" content="Understand simple harmonic motion, spring-mass systems, pendulums, wave properties, superposition, interference, standing waves, and resonance through logical reasoning.">
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .sim-container { background: #101020; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 24px; margin: 2rem 0; }
+    .sim-canvas-wrap { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,212,255,0.15); }
+    .sim-canvas-wrap canvas { display: block; width: 100%; background: #0a0a14; }
+    .sim-controls { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px; align-items: center; }
+    .sim-control { display: flex; flex-direction: column; gap: 4px; }
+    .sim-control label { font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; color: #636780; text-transform: uppercase; letter-spacing: 0.1em; }
+    .sim-control input[type="range"] { -webkit-appearance: none; width: 160px; height: 4px; background: #222244; border-radius: 2px; outline: none; }
+    .sim-control input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #00d4ff; cursor: pointer; box-shadow: 0 0 8px rgba(0,212,255,0.4); }
+    .sim-btn { font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 600; padding: 8px 20px; border-radius: 20px; border: 1px solid rgba(0,212,255,0.3); background: rgba(0,212,255,0.08); color: #00d4ff; cursor: pointer; transition: all 0.15s; }
+    .sim-btn:hover { background: rgba(0,212,255,0.15); box-shadow: 0 0 12px rgba(0,212,255,0.2); }
+    .sim-btn.active { background: #00d4ff; color: #06060c; }
+    .sim-data { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-top: 16px; }
+    .sim-datum { background: #16162a; border-radius: 8px; padding: 12px; text-align: center; }
+    .sim-datum .datum-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; color: #00d4ff; }
+    .sim-datum .datum-label { font-size: 0.7rem; color: #636780; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+    .sim-explanation { margin-top: 16px; padding: 16px; background: rgba(0,212,255,0.04); border-left: 2px solid #00d4ff; border-radius: 0 8px 8px 0; font-size: 0.9rem; color: #a0a4b8; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress"></div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand"><span class="brand-icon">&phi;</span> Physics Logic</a>
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../lectures.html" class="active">Lectures</a>
+        <a href="../faq.html">FAQ</a>
+      </div>
+      <div class="nav-search">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" placeholder="Search lectures...">
+        <div class="search-results"></div>
+      </div>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Lecture Hero -->
+  <section class="lecture-hero">
+    <div class="lecture-hero-inner">
+      <div class="breadcrumb">
+        <a href="../index.html">Home</a><span class="sep">/</span>
+        <a href="../lectures.html">Lectures</a><span class="sep">/</span>
+        Lecture 8
+      </div>
+      <div class="lecture-number">Lecture 08</div>
+      <h1>Oscillations and <em>Waves</em></h1>
+      <div class="lecture-meta">
+        <span>Waves</span>
+        <span>Intermediate</span>
+        <span>45 min read</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lecture Layout: Sidebar + Article -->
+  <div class="lecture-layout">
+
+    <!-- Sticky Table of Contents Sidebar -->
+    <aside class="lecture-toc">
+      <h3>Contents</h3>
+      <div class="toc-list">
+        <a href="#overview">Overview</a>
+        <a href="#simple-harmonic-motion">Simple Harmonic Motion</a>
+        <a href="#spring-mass-system">The Spring-Mass System</a>
+        <a href="#simple-pendulum">The Simple Pendulum</a>
+        <a href="#energy-in-shm">Energy in SHM</a>
+        <a href="#damped-oscillations">Damped Oscillations</a>
+        <a href="#wave-basics">Wave Basics</a>
+        <a href="#types-of-waves">Types of Waves</a>
+        <a href="#wave-properties">Wave Properties</a>
+        <a href="#superposition-interference">Superposition and Interference</a>
+        <a href="#standing-waves">Standing Waves</a>
+        <a href="#resonance">Resonance</a>
+        <a href="#misconceptions">Common Misconceptions</a>
+        <a href="#wave-superposition-lab">Interactive: Wave Superposition Lab</a>
+        <a href="#takeaways">Key Takeaways</a>
+      </div>
+    </aside>
+
+    <!-- Main Article Content -->
+    <article class="lecture-article">
+
+      <!-- Learning Goals -->
+      <div class="learning-goals">
+        <h3>Learning Goals</h3>
+        <ul>
+          <li>Understand simple harmonic motion and the conditions that produce it</li>
+          <li>Derive the motion of spring-mass and simple pendulum systems from first principles</li>
+          <li>Analyze the energy transformations in oscillating systems</li>
+          <li>Distinguish between transverse and longitudinal waves</li>
+          <li>Apply the fundamental wave equation v = f&lambda; and understand wave properties</li>
+          <li>Understand the principle of superposition and the phenomena of constructive and destructive interference</li>
+          <li>Explain standing waves, harmonics, and the phenomenon of resonance</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: Overview -->
+      <section class="lecture-section" id="overview">
+        <h2>Overview</h2>
+        <p>Oscillations and waves are everywhere. A child pumping a swing, the beating of your heart, the vibration of a guitar string, the ripples on a pond, the sound that reaches your ear, the light that reaches your eye, the radio signals carrying information across the globe — all of these are manifestations of periodic, repetitive motion and the disturbances that travel through space carrying energy.</p>
+        <p>This lecture bridges the mechanics we have developed in earlier lectures with a new domain: wave physics. We begin with oscillations, the back-and-forth motion of a single object around an equilibrium position. We will see that a special kind of oscillation, called simple harmonic motion, arises whenever a restoring force is proportional to displacement. This pattern appears in springs, pendulums, molecules, electrical circuits, and countless other systems.</p>
+        <p>From there, we extend to waves, which are oscillations that propagate through space. A wave carries energy from one place to another without transporting matter. Understanding waves unlocks an enormous range of physical phenomena, from the music you hear to the colors you see to the medical imaging technologies that save lives. The principles of superposition, interference, and resonance that we develop here will recur in electromagnetism, optics, quantum mechanics, and virtually every branch of physics that follows.</p>
+      </section>
+
+      <!-- Section 2: Simple Harmonic Motion -->
+      <section class="lecture-section" id="simple-harmonic-motion">
+        <h2>Simple Harmonic Motion</h2>
+        <p>Simple harmonic motion, abbreviated SHM, is the most fundamental type of oscillation. It occurs whenever an object is displaced from a stable equilibrium position and experiences a restoring force that is directly proportional to the displacement and directed opposite to it.</p>
+
+        <div class="formula">
+          <span class="formula-name">Restoring Force in SHM</span>
+          F = &minus;kx
+        </div>
+
+        <p>Here, x is the displacement from equilibrium, k is a constant that characterizes the stiffness or strength of the restoring force, and the negative sign is crucial. It means the force always opposes the displacement. If the object is displaced to the right (positive x), the force pulls it to the left (negative direction). If displaced to the left (negative x), the force pushes it to the right (positive direction). The force always drives the object back toward equilibrium.</p>
+
+        <div class="definition-box">
+          <div class="def-term">Simple Harmonic Motion</div>
+          <div class="def-text">A type of periodic motion in which the restoring force is directly proportional to the displacement from equilibrium and always directed toward the equilibrium position. The resulting motion is sinusoidal in time, with constant amplitude, period, and frequency in the absence of friction or external forces.</div>
+        </div>
+
+        <h3>Why Sinusoidal?</h3>
+        <p>When we combine F = -kx with Newton's second law (F = ma), we get ma = -kx, or equivalently:</p>
+        <p>a = -(k/m)x</p>
+        <p>This equation says the acceleration is proportional to the displacement but in the opposite direction. Mathematically, this is a differential equation: the second derivative of x with respect to time is proportional to -x itself. The only functions whose second derivative is a negative multiple of themselves are sines and cosines. Therefore, the solution must be sinusoidal:</p>
+
+        <div class="formula">
+          <span class="formula-name">Position in SHM</span>
+          x(t) = A cos(&omega;t + &phi;)
+        </div>
+
+        <p>Here, A is the amplitude (the maximum displacement from equilibrium), &omega; is the angular frequency (how rapidly the oscillation cycles, in radians per second), t is time, and &phi; is the phase constant (which depends on the initial conditions, that is, where the object is and how fast it is moving at t = 0).</p>
+
+        <h3>Amplitude, Period, Frequency, and Angular Frequency</h3>
+        <p>The amplitude A is the maximum displacement from equilibrium. The object oscillates between +A and -A. The amplitude is determined by how far you initially displace the object or how much initial velocity you give it. It is not determined by the spring constant or the mass.</p>
+        <p>The period T is the time for one complete oscillation cycle, returning to the same position moving in the same direction. The frequency f is the number of complete cycles per second, measured in hertz (Hz). The angular frequency &omega; = 2&pi;f = 2&pi;/T measures the rate of oscillation in radians per second.</p>
+        <p>Crucially, in SHM the period and frequency do not depend on the amplitude. Whether you pull a spring a little or a lot, the oscillation takes the same amount of time. This is a special property of SHM and does not hold for all types of oscillation. It is called isochronism, and it is one of the features that makes SHM so important and useful, for example, in timekeeping.</p>
+      </section>
+
+      <!-- Section 3: The Spring-Mass System -->
+      <section class="lecture-section" id="spring-mass-system">
+        <h2>The Spring-Mass System</h2>
+        <p>The most concrete realization of SHM is a mass attached to a spring on a frictionless surface. The spring exerts a force F = -kx where k is the spring constant (measured in N/m) and x is the displacement from the natural (unstretched) length. Newton's second law gives:</p>
+        <p>ma = -kx &nbsp; &rarr; &nbsp; a = -(k/m)x</p>
+        <p>Comparing this with the general SHM equation a = -&omega;&sup2;x, we identify &omega;&sup2; = k/m, and therefore:</p>
+
+        <div class="formula">
+          <span class="formula-name">Period of a Spring-Mass System</span>
+          T = 2&pi; &radic;(m / k)
+        </div>
+
+        <h3>Physical Intuition: Why This Formula Makes Sense</h3>
+        <p>Consider what happens when you increase the mass. A heavier mass has more inertia, so it is harder to accelerate. It responds more sluggishly to the spring's pull, taking longer to complete each oscillation. Therefore, a larger m leads to a longer period T. The formula confirms this: m is in the numerator under the square root.</p>
+        <p>Now consider increasing the spring constant k. A stiffer spring exerts a larger restoring force for the same displacement, so it accelerates the mass more vigorously and drives it back to equilibrium more quickly. The oscillation is faster, so the period is shorter. The formula confirms this: k is in the denominator.</p>
+        <p>Notice also that the period does not depend on the amplitude. Whether you stretch the spring 1 cm or 10 cm from equilibrium, the period is the same. This may seem counterintuitive — a larger displacement means a longer distance to travel — but it also means a larger restoring force and therefore a larger acceleration. These two effects cancel perfectly, and the round-trip time remains unchanged.</p>
+
+        <h3>Dimensional Check</h3>
+        <p>Let us verify the dimensions. The quantity under the square root is m/k, which has units of kg/(N/m) = kg/(kg&middot;m/s&sup2;/m) = kg&middot;s&sup2;/kg = s&sup2;. The square root gives seconds, and multiplying by the dimensionless constant 2&pi; still gives seconds. The dimensions are correct.</p>
+
+        <div class="example">
+          <div class="example-label">Worked Example</div>
+          <p>A 0.40 kg block is attached to a spring with spring constant k = 160 N/m on a frictionless surface. The block is pulled 0.05 m from equilibrium and released from rest. Find the period, frequency, and maximum speed of the block.</p>
+          <div class="solution">
+            <div class="solution-label">Solution</div>
+            <p>Period: T = 2&pi;&radic;(m/k) = 2&pi;&radic;(0.40/160) = 2&pi;&radic;(0.0025) = 2&pi;(0.05) = 0.314 s</p>
+            <p>Frequency: f = 1/T = 1/0.314 = 3.18 Hz</p>
+            <p>Angular frequency: &omega; = 2&pi;f = 2&pi;(3.18) = 20.0 rad/s</p>
+            <p>Maximum speed occurs at equilibrium (x = 0), where all energy is kinetic: v<sub>max</sub> = &omega;A = (20.0)(0.05) = 1.0 m/s</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: The Simple Pendulum -->
+      <section class="lecture-section" id="simple-pendulum">
+        <h2>The Simple Pendulum</h2>
+        <p>A simple pendulum consists of a point mass (the bob) suspended from a fixed point by a massless, inextensible string of length L. When displaced from vertical and released, the bob swings back and forth. For small displacement angles, this motion is approximately simple harmonic.</p>
+        <p>The restoring force is the component of gravity tangent to the arc of the pendulum's swing. If &theta; is the angle from the vertical, this tangential component is:</p>
+        <p>F<sub>tangential</sub> = -mg sin&theta;</p>
+        <p>This is not of the form F = -kx, because sin&theta; is not proportional to &theta; in general. However, for small angles (measured in radians), sin&theta; &approx; &theta;. This is the famous small-angle approximation. When &theta; is less than about 15 degrees, the error from this approximation is less than 1%.</p>
+        <p>Using the small-angle approximation and the arc length relation x = L&theta;:</p>
+        <p>F &approx; -mg&theta; = -mg(x/L) = -(mg/L)x</p>
+        <p>This is now in the form F = -kx with an effective spring constant k<sub>eff</sub> = mg/L. Substituting into the period formula for SHM:</p>
+
+        <div class="formula">
+          <span class="formula-name">Period of a Simple Pendulum</span>
+          T = 2&pi; &radic;(L / g)
+        </div>
+
+        <p>This result has two remarkable features. First, the period is independent of the mass of the bob. A lead pendulum and an aluminum pendulum of the same length swing with the same period. This is because gravity provides both the restoring force (proportional to m) and the inertia (also proportional to m), and the mass cancels. It is the same reason all objects fall with the same acceleration in a gravitational field.</p>
+        <p>Second, the period is independent of the amplitude (for small oscillations). Whether the pendulum swings through 2 degrees or 10 degrees, the period is the same. Galileo is said to have noticed this while watching a chandelier swing in the Pisa Cathedral. He timed the swings using his pulse and realized that even as the amplitude decreased, the period remained constant. This observation eventually led to the use of pendulums in clocks, which dominated timekeeping for over three centuries.</p>
+
+        <h3>Why the Small-Angle Approximation Matters</h3>
+        <p>At large angles, the restoring force is proportional to sin&theta;, not &theta;, and the motion is no longer simple harmonic. The period depends on the amplitude and is longer than 2&pi;&radic;(L/g). The pendulum takes more time per swing when displaced to large angles because the restoring force grows more slowly than it would in true SHM. For precise calculations at large angles, you need elliptic integrals, which are beyond our scope here. But for most practical purposes, the small-angle formula is an excellent approximation.</p>
+      </section>
+
+      <!-- Section 5: Energy in SHM -->
+      <section class="lecture-section" id="energy-in-shm">
+        <h2>Energy in SHM</h2>
+        <p>Energy provides one of the most elegant perspectives on simple harmonic motion. In the absence of friction, the total mechanical energy of an oscillating system is conserved, but it continually transforms back and forth between kinetic and potential energy.</p>
+
+        <div class="key-concept">
+          <div class="concept-label">Key Concept</div>
+          <p>In SHM with no dissipation, kinetic energy and potential energy oscillate out of phase. When one is at its maximum, the other is zero. The total mechanical energy remains constant throughout the motion and equals the maximum kinetic energy, which equals the maximum potential energy: E = &frac12;kA&sup2;.</p>
+        </div>
+
+        <p>Consider a spring-mass system. The potential energy stored in the spring at displacement x is:</p>
+        <p>PE = &frac12;kx&sup2;</p>
+        <p>The kinetic energy of the moving mass is:</p>
+        <p>KE = &frac12;mv&sup2;</p>
+        <p>The total mechanical energy is:</p>
+        <p>E = KE + PE = &frac12;mv&sup2; + &frac12;kx&sup2;</p>
+
+        <h3>At the Extremes (x = &plusmn;A)</h3>
+        <p>When the object reaches maximum displacement (the amplitude), it momentarily stops before reversing direction. At this instant, v = 0, so KE = 0. All the energy is potential:</p>
+        <p>E = &frac12;kA&sup2;</p>
+
+        <h3>At Equilibrium (x = 0)</h3>
+        <p>When the object passes through the equilibrium position, the displacement is zero, so PE = 0. All the energy is kinetic:</p>
+        <p>E = &frac12;mv<sub>max</sub>&sup2;</p>
+        <p>Since total energy is conserved: &frac12;kA&sup2; = &frac12;mv<sub>max</sub>&sup2;, which gives v<sub>max</sub> = A&radic;(k/m) = A&omega;.</p>
+
+        <div class="formula">
+          <span class="formula-name">Total Energy in SHM</span>
+          E = &frac12;kA&sup2; = &frac12;mv<sub>max</sub>&sup2;
+        </div>
+
+        <h3>At Intermediate Points</h3>
+        <p>At any position x between 0 and A, the speed can be found from energy conservation:</p>
+        <p>&frac12;mv&sup2; + &frac12;kx&sup2; = &frac12;kA&sup2;</p>
+        <p>Solving for v: v = &radic;[(k/m)(A&sup2; - x&sup2;)] = &omega;&radic;(A&sup2; - x&sup2;)</p>
+        <p>This confirms that the speed is maximum at x = 0 and zero at x = &plusmn;A, with a smooth variation in between. The energy sloshes continuously between kinetic and potential forms, like water rocking back and forth in a basin.</p>
+      </section>
+
+      <!-- Section 6: Damped Oscillations -->
+      <section class="lecture-section" id="damped-oscillations">
+        <h2>Damped Oscillations</h2>
+        <p>In the real world, oscillations do not continue forever. Friction, air resistance, and internal dissipation gradually sap energy from the system, causing the amplitude to decrease over time. This is damped oscillation.</p>
+        <p>When a resistive force proportional to velocity (F<sub>drag</sub> = -bv, where b is the damping coefficient) acts on an oscillating system, the behavior depends on the relative strength of the damping compared to the restoring force. There are three qualitatively different regimes:</p>
+
+        <h3>Underdamped (Light Damping)</h3>
+        <p>When the damping is weak, the system still oscillates, but with an amplitude that gradually decreases over time. The envelope of the oscillation is an exponential decay. This is the most common case in practice. A tuning fork vibrating in air, a child on a swing losing height with each cycle, and a plucked guitar string all exhibit underdamped oscillation. The frequency of the damped oscillation is slightly lower than the natural frequency of the undamped system.</p>
+
+        <h3>Critically Damped</h3>
+        <p>When the damping reaches a specific threshold value, the system returns to equilibrium as quickly as possible without oscillating. It approaches equilibrium exponentially and just barely avoids overshooting. This is the ideal behavior for systems that need to return to equilibrium quickly without bouncing, such as the needle on an analog meter or, most importantly, a car's shock absorbers.</p>
+
+        <h3>Overdamped (Heavy Damping)</h3>
+        <p>When the damping is very strong, the system returns to equilibrium without oscillating, but more slowly than in the critically damped case. The excessive damping impedes the motion so much that the system sluggishly creeps back to rest. Think of trying to close a door through thick honey: it will eventually close, but very slowly and without swinging past the frame.</p>
+
+        <div class="example">
+          <div class="example-label">Worked Example — Real-World Application</div>
+          <p>A car's suspension system is designed to be slightly underdamped or critically damped. Why not undamped?</p>
+          <div class="solution">
+            <div class="solution-label">Solution</div>
+            <p>If a car's suspension had no damping (just springs), the car would bounce up and down many times after hitting a bump, making the ride uncomfortable and the vehicle difficult to control. The shock absorbers provide damping that dissipates the energy of the oscillation. Engineers typically aim for slightly underdamped behavior: one or two gentle bounces that die out quickly, providing a balance between comfort (not too stiff) and stability (oscillations decay rapidly). A critically damped system returns to equilibrium fastest with no bouncing, but may feel overly rigid. An overdamped system would feel sluggish, with the car taking a long time to settle.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 7: Wave Basics -->
+      <section class="lecture-section" id="wave-basics">
+        <h2>Wave Basics</h2>
+        <p>We now make the transition from oscillations of a single object to waves, which are oscillations that propagate through space. This is one of the most important conceptual steps in physics.</p>
+
+        <div class="definition-box">
+          <div class="def-term">Wave</div>
+          <div class="def-text">A wave is a disturbance that propagates through a medium or through space, transferring energy from one location to another without the net transport of matter. Each particle of the medium oscillates about its equilibrium position as the wave passes, but the particles themselves do not travel with the wave.</div>
+        </div>
+
+        <p>Consider dropping a stone into a still pond. Ripples spread outward in concentric circles. The water molecules near the impact point are disturbed, and they push on neighboring molecules, which push on their neighbors, and so on. The disturbance propagates outward, but the water itself does not flow outward. If you placed a cork on the surface, it would bob up and down as each ripple passed, but it would not be carried to the shore. The wave carries energy, not matter.</p>
+        <p>This distinction is fundamental. When you hear someone's voice across a room, sound waves carry energy from their vocal cords to your eardrum. But no air molecules travel from their mouth to your ear. The air molecules near the speaker oscillate, pushing on the adjacent molecules, which push on their neighbors, and the disturbance propagates across the room. Each air molecule stays essentially in its own neighborhood.</p>
+        <p>Waves that require a medium to travel through are called mechanical waves. Sound waves in air, waves on a string, water waves, and seismic waves are all mechanical waves. Electromagnetic waves (light, radio, X-rays) do not require a medium. They can travel through the vacuum of space. The physics of both types, however, shares the same fundamental principles of superposition, interference, and wave propagation.</p>
+      </section>
+
+      <!-- Section 8: Types of Waves -->
+      <section class="lecture-section" id="types-of-waves">
+        <h2>Types of Waves</h2>
+        <p>Waves are classified by the relationship between the direction of the particle oscillation and the direction of wave propagation.</p>
+
+        <h3>Transverse Waves</h3>
+        <p>In a transverse wave, the particles of the medium oscillate perpendicular to the direction the wave travels. If you shake one end of a long rope up and down, a wave pulse travels horizontally along the rope while each segment of the rope moves vertically. Light is a transverse wave: the electric and magnetic fields oscillate perpendicular to the direction of propagation. Waves on the surface of water are also primarily transverse (though they have a small longitudinal component).</p>
+        <p>You can recognize a transverse wave by imagining the wave frozen in time. The shape looks like a sine wave: peaks (crests) and valleys (troughs) undulating above and below the equilibrium position. As the wave propagates, this pattern moves through space.</p>
+
+        <h3>Longitudinal Waves</h3>
+        <p>In a longitudinal wave, the particles of the medium oscillate parallel to the direction the wave travels. Sound is the most important longitudinal wave. When a speaker cone pushes forward, it compresses the air in front of it. This compression pushes on the adjacent air, and the disturbance propagates outward as alternating regions of compression (high density) and rarefaction (low density).</p>
+        <p>If you push one end of a Slinky back and forth along its length, you can see compressions and rarefactions travel along the Slinky. The coils oscillate left and right, parallel to the direction the wave travels, but the wave pattern itself moves along the Slinky.</p>
+        <p>Both transverse and longitudinal waves obey the same wave equation and share the same properties: wavelength, frequency, speed, amplitude, superposition, and interference. The only difference is the geometry of the oscillation relative to the direction of travel.</p>
+      </section>
+
+      <!-- Section 9: Wave Properties -->
+      <section class="lecture-section" id="wave-properties">
+        <h2>Wave Properties</h2>
+        <p>Every wave is characterized by a set of fundamental properties that describe its spatial and temporal patterns.</p>
+
+        <h3>Wavelength (&lambda;)</h3>
+        <p>The wavelength is the distance between two consecutive points in the same phase of the wave, such as the distance between two adjacent crests or two adjacent compressions. It is measured in meters and represents the spatial period of the wave: the distance over which the wave pattern repeats.</p>
+
+        <h3>Frequency (f)</h3>
+        <p>The frequency is the number of complete oscillations that pass a given point per second, measured in hertz (Hz). It is the temporal rate of the wave: how often the wave pattern repeats at a fixed location. A frequency of 440 Hz means 440 complete oscillations per second (this is the musical note A above middle C).</p>
+
+        <h3>Period (T)</h3>
+        <p>The period is the time for one complete oscillation to pass a given point: T = 1/f. It is the temporal spacing between identical phases of the wave.</p>
+
+        <h3>Amplitude (A)</h3>
+        <p>The amplitude is the maximum displacement of a particle from its equilibrium position as the wave passes. It determines the energy carried by the wave. For a sound wave, a larger amplitude means a louder sound. For a light wave, a larger amplitude means brighter light. The energy carried by a wave is proportional to the square of its amplitude: E &prop; A&sup2;.</p>
+
+        <h3>Wave Speed (v)</h3>
+        <p>The speed of a wave is determined by the properties of the medium through which it travels, not by the frequency or amplitude of the wave. For a wave on a string, the speed depends on the tension and linear mass density. For sound in air, the speed depends on the temperature and composition of the air. The relationship between wave speed, frequency, and wavelength is one of the most important equations in wave physics:</p>
+
+        <div class="formula">
+          <span class="formula-name">The Fundamental Wave Equation</span>
+          v = f &lambda;
+        </div>
+
+        <p>This equation is easy to understand. If the wave completes f cycles per second, and each cycle has a spatial length of &lambda;, then the wave moves a distance of f&lambda; per second. That is the speed. This relationship holds for all waves, whether mechanical or electromagnetic, transverse or longitudinal.</p>
+        <p>An important consequence: if the wave speed is fixed by the medium, then increasing the frequency must decrease the wavelength, and vice versa. High-frequency sound waves have short wavelengths. Low-frequency sound waves have long wavelengths. This is why bass sounds can bend around obstacles more easily than treble sounds (a phenomenon called diffraction, which is more pronounced when the wavelength is comparable to the size of the obstacle).</p>
+      </section>
+
+      <!-- Section 10: Superposition and Interference -->
+      <section class="lecture-section" id="superposition-interference">
+        <h2>Superposition and Interference</h2>
+        <p>One of the most remarkable properties of waves is that they can pass through each other. When two water waves meet, they do not bounce off each other like billiard balls. Instead, they pass right through, each continuing on its way as if the other did not exist. But while they overlap, the resulting disturbance is the sum of the individual disturbances.</p>
+
+        <div class="definition-box">
+          <div class="def-term">Principle of Superposition</div>
+          <div class="def-text">When two or more waves overlap in space, the resulting displacement at any point is the algebraic sum of the displacements that would be produced by each wave individually. After the waves pass through each other, they continue unchanged.</div>
+        </div>
+
+        <p>This principle leads to one of the most distinctive phenomena in wave physics: interference.</p>
+
+        <h3>Constructive Interference</h3>
+        <p>When two waves arrive at the same point in phase — meaning their crests align with crests and their troughs align with troughs — they add together to produce a wave with a larger amplitude. The resultant displacement is the sum of the individual displacements. If two identical waves are perfectly in phase, the resulting amplitude is double that of either individual wave. This is constructive interference.</p>
+        <p>Constructive interference occurs when the path difference between two waves from identical sources is a whole number of wavelengths: &Delta;path = 0, &lambda;, 2&lambda;, 3&lambda;, ... In general, &Delta;path = n&lambda; where n = 0, 1, 2, 3, ...</p>
+
+        <h3>Destructive Interference</h3>
+        <p>When two waves arrive at the same point out of phase — meaning the crest of one aligns with the trough of the other — they cancel each other. If two identical waves are exactly half a wavelength out of phase, the resulting amplitude is zero. Complete silence, or complete darkness, or zero displacement. This is destructive interference.</p>
+        <p>Destructive interference occurs when the path difference is an odd number of half-wavelengths: &Delta;path = &lambda;/2, 3&lambda;/2, 5&lambda;/2, ... In general, &Delta;path = (n + &frac12;)&lambda; where n = 0, 1, 2, 3, ...</p>
+
+        <div class="example">
+          <div class="example-label">Worked Example</div>
+          <p>Two speakers, 3.0 m apart, emit identical sound waves of frequency 680 Hz in phase. A listener stands 4.0 m directly in front of one speaker. The speed of sound is 340 m/s. Does the listener hear a loud sound (constructive interference) or a quiet sound (destructive interference)?</p>
+          <div class="solution">
+            <div class="solution-label">Solution</div>
+            <p>First, find the wavelength: &lambda; = v/f = 340/680 = 0.50 m</p>
+            <p>Distance from the near speaker to the listener: d<sub>1</sub> = 4.0 m</p>
+            <p>Distance from the far speaker to the listener: d<sub>2</sub> = &radic;(4.0&sup2; + 3.0&sup2;) = &radic;(16 + 9) = &radic;25 = 5.0 m</p>
+            <p>Path difference: &Delta;d = d<sub>2</sub> - d<sub>1</sub> = 5.0 - 4.0 = 1.0 m</p>
+            <p>Number of wavelengths in the path difference: &Delta;d/&lambda; = 1.0/0.50 = 2.0 (a whole number)</p>
+            <p>Since the path difference is exactly 2 wavelengths, the waves arrive in phase, producing constructive interference. The listener hears a loud sound.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 11: Standing Waves -->
+      <section class="lecture-section" id="standing-waves">
+        <h2>Standing Waves</h2>
+        <p>A standing wave is a special pattern that emerges when two identical waves travel in opposite directions through the same medium. This commonly occurs when a wave reflects from a boundary (such as the fixed end of a string) and interferes with the incoming wave. The result is a pattern that appears to stand still rather than travel.</p>
+        <p>In a standing wave, certain points called nodes remain permanently at rest. They never move. Between the nodes are points called antinodes where the oscillation amplitude is maximum. The distance between two consecutive nodes is half a wavelength (&lambda;/2).</p>
+
+        <h3>Standing Waves on a String</h3>
+        <p>Consider a string fixed at both ends, like a guitar string. Both ends must be nodes because the string cannot vibrate at a point where it is clamped. Only certain wavelengths can fit into the string such that nodes occur at both ends. The allowed wavelengths form a discrete set called the harmonics.</p>
+        <p>For a string of length L fixed at both ends, the allowed wavelengths are:</p>
+
+        <div class="formula">
+          <span class="formula-name">Harmonics of a String Fixed at Both Ends</span>
+          &lambda;<sub>n</sub> = 2L / n &nbsp;&nbsp;&nbsp; and &nbsp;&nbsp;&nbsp; f<sub>n</sub> = n v / (2L)
+        </div>
+
+        <p>where n = 1, 2, 3, ... is the harmonic number and v is the wave speed on the string.</p>
+        <p>The first harmonic (n = 1) is called the fundamental frequency. It has the longest wavelength (&lambda;<sub>1</sub> = 2L) and the lowest frequency (f<sub>1</sub> = v/2L). The string vibrates with a single antinode at its center and nodes at both ends. This is the dominant pitch you hear when you pluck a guitar string.</p>
+        <p>The second harmonic (n = 2) has a wavelength of L and frequency 2f<sub>1</sub>. There is an additional node at the center of the string, creating two antinodes. The third harmonic has three antinodes and two internal nodes, and so on. Each higher harmonic has one more node and one more antinode than the previous one.</p>
+        <p>In musical instruments, the relative strengths of the different harmonics determine the timbre or tonal quality of the sound. A flute and a violin can play the same note (same fundamental frequency) but sound completely different because they produce different mixtures of harmonics. This is the physics behind the richness of musical sound.</p>
+      </section>
+
+      <!-- Section 12: Resonance -->
+      <section class="lecture-section" id="resonance">
+        <h2>Resonance</h2>
+        <p>Resonance is one of the most dramatic and important phenomena in wave physics. It occurs when a system is driven by a periodic external force at a frequency that matches one of the system's natural frequencies. When this happens, energy is transferred into the system with maximum efficiency, and the amplitude of oscillation grows dramatically.</p>
+
+        <div class="key-concept">
+          <div class="concept-label">Key Concept</div>
+          <p>Resonance occurs when the driving frequency of an external force matches the natural frequency of an oscillating system. At resonance, even a small periodic force can produce very large amplitude oscillations because energy is being added to the system in phase with its natural motion, building up the amplitude over many cycles.</p>
+        </div>
+
+        <p>Think about pushing a child on a swing. The swing has a natural frequency determined by its length (it is a pendulum). If you push at just the right moments — at the natural frequency — each push adds energy to the motion, and the amplitude grows with each cycle. If you push at the wrong frequency, sometimes your pushes add energy and sometimes they subtract energy, and the amplitude stays small. Pushing at the natural frequency is resonance.</p>
+
+        <h3>Examples of Resonance</h3>
+        <ul>
+          <li><strong>Musical instruments:</strong> When you blow across the top of a bottle, you excite the air column at its natural resonant frequency, producing a clear tone. Wind instruments work on this principle, with the player exciting standing waves in air columns at specific resonant frequencies.</li>
+          <li><strong>Shattering a wine glass:</strong> A trained singer can shatter a wine glass by singing at the glass's natural resonant frequency. The sound waves drive the glass into vibration, and if the amplitude builds up enough, the glass fractures. This requires sustaining a very pure tone at precisely the right frequency.</li>
+          <li><strong>The Tacoma Narrows Bridge (1940):</strong> One of the most famous engineering failures in history. Wind flowing past the bridge drove it into oscillation at one of its natural frequencies. The amplitude grew until the bridge twisted apart and collapsed. This was not exactly simple resonance (the mechanism involved aeroelastic flutter), but it dramatically illustrates the danger of resonant buildup.</li>
+          <li><strong>Microwave ovens:</strong> Microwave radiation is tuned to a frequency near the resonant frequency of water molecules. The electromagnetic waves drive the water molecules into vigorous oscillation, transferring energy to the food and heating it.</li>
+          <li><strong>Radio tuning:</strong> When you tune a radio, you adjust the resonant frequency of an electrical circuit to match the frequency of the desired radio station. Only the signals at the resonant frequency are amplified; all others are suppressed.</li>
+        </ul>
+
+        <p>In engineering, resonance can be either beneficial (as in musical instruments and radio circuits) or destructive (as in bridge failures and unwanted mechanical vibrations). Understanding resonance is essential for designing structures, machines, and electronic systems that either exploit resonance or protect against it.</p>
+      </section>
+
+      <!-- Section 13: Common Misconceptions -->
+      <section class="lecture-section" id="misconceptions">
+        <h2>Common Misconceptions</h2>
+
+        <div class="misconception">
+          <div class="misconception-label">Misconception</div>
+          <p><strong>"Waves carry matter from one place to another."</strong> Waves carry energy, not matter. When a water wave passes, the water molecules bob up and down (and trace small circles), but they do not travel with the wave. When sound reaches your ear, no air molecules have traveled from the speaker to your eardrum. The particles of the medium oscillate around their equilibrium positions and pass energy to their neighbors. The wave pattern propagates, but the medium does not.</p>
+        </div>
+
+        <div class="misconception">
+          <div class="misconception-label">Misconception</div>
+          <p><strong>"Amplitude affects frequency."</strong> Amplitude and frequency are independent properties of a wave. Changing the amplitude (how hard you pluck a string or how loudly you shout) changes the energy and intensity of the wave, but not its frequency. Conversely, changing the frequency (by tightening or loosening a string) does not change the amplitude. A louder sound is not a higher-pitched sound. A brighter light is not a different color. Amplitude relates to intensity; frequency relates to pitch or color.</p>
+        </div>
+
+        <div class="misconception">
+          <div class="misconception-label">Misconception</div>
+          <p><strong>"Sound can travel through a vacuum."</strong> Sound is a mechanical wave. It requires a medium — air, water, metal, or some other material — in which particles can vibrate and transmit the disturbance. In the vacuum of space, there are no particles to vibrate, so sound cannot propagate. This is why the tagline of the movie Alien — "In space, no one can hear you scream" — is physically accurate. Light, on the other hand, is an electromagnetic wave and does not require a medium. It travels perfectly well through vacuum, which is how sunlight reaches the Earth.</p>
+        </div>
+      </section>
+
+      <!-- Interactive: Wave Superposition Lab -->
+      <section class="lecture-section" id="wave-superposition-lab">
+        <h2>Interactive: Wave Superposition Lab</h2>
+        <p>Visualize how two sinusoidal waves combine through superposition. Adjust frequency, amplitude, and phase difference to observe constructive and destructive interference, beat patterns, and the resulting waveform in real time.</p>
+
+        <div class="sim-container">
+          <div class="sim-canvas-wrap">
+            <canvas id="waveCanvas" width="800" height="480"></canvas>
+          </div>
+
+          <div class="sim-controls">
+            <div class="sim-control">
+              <label>Freq 1: <span id="freq1Val">2.0</span> Hz</label>
+              <input type="range" id="freq1Slider" min="5" max="50" value="20">
+            </div>
+            <div class="sim-control">
+              <label>Amp 1: <span id="amp1Val">50</span> px</label>
+              <input type="range" id="amp1Slider" min="10" max="80" value="50">
+            </div>
+            <div class="sim-control">
+              <label>Freq 2: <span id="freq2Val">2.5</span> Hz</label>
+              <input type="range" id="freq2Slider" min="5" max="50" value="25">
+            </div>
+            <div class="sim-control">
+              <label>Amp 2: <span id="amp2Val">50</span> px</label>
+              <input type="range" id="amp2Slider" min="10" max="80" value="50">
+            </div>
+            <div class="sim-control">
+              <label>Phase Diff: <span id="phaseVal">0</span>&deg;</label>
+              <input type="range" id="phaseSlider" min="0" max="360" value="0">
+            </div>
+            <div style="display:flex;gap:8px;margin-left:auto;">
+              <button class="sim-btn active" id="wavePlayBtn">Play</button>
+              <button class="sim-btn" id="wavePauseBtn">Pause</button>
+              <button class="sim-btn" id="waveResetBtn">Reset</button>
+            </div>
+          </div>
+
+          <div class="sim-data">
+            <div class="sim-datum">
+              <div class="datum-value" id="datFreq1">2.0</div>
+              <div class="datum-label">Frequency 1 (Hz)</div>
+            </div>
+            <div class="sim-datum">
+              <div class="datum-value" id="datFreq2">2.5</div>
+              <div class="datum-label">Frequency 2 (Hz)</div>
+            </div>
+            <div class="sim-datum">
+              <div class="datum-value" id="datBeatFreq">0.5</div>
+              <div class="datum-label">Beat Freq |f1-f2|</div>
+            </div>
+            <div class="sim-datum">
+              <div class="datum-value" id="datResultAmp">--</div>
+              <div class="datum-label">Resultant Amp</div>
+            </div>
+          </div>
+
+          <div class="sim-explanation">
+            <strong>How it works:</strong> The top row shows Wave 1 (cyan), the middle row shows Wave 2 (magenta), and the bottom row shows their superposition (white). When the two frequencies are close, you will see a <em>beat pattern</em> in the resultant wave -- the amplitude slowly oscillates at the beat frequency |f<sub>1</sub> - f<sub>2</sub>|. When frequencies are equal and phase difference is 0&deg;, you get perfect constructive interference. At 180&deg; phase difference with equal amplitudes, you get complete destructive interference.
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 14: Key Takeaways -->
+      <section class="lecture-section" id="takeaways">
+        <div class="takeaways">
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>Simple harmonic motion occurs when the restoring force is proportional to displacement: F = -kx. The resulting motion is sinusoidal with x(t) = A cos(&omega;t + &phi;).</li>
+            <li>The period of a spring-mass system is T = 2&pi;&radic;(m/k): larger mass oscillates more slowly, stiffer spring oscillates faster, and the period is independent of amplitude.</li>
+            <li>The period of a simple pendulum is T = 2&pi;&radic;(L/g) for small angles: it depends only on length and gravitational field strength, not on mass or amplitude.</li>
+            <li>In SHM, total mechanical energy E = &frac12;kA&sup2; is conserved. Kinetic and potential energy oscillate out of phase, trading back and forth while their sum remains constant.</li>
+            <li>A wave is a disturbance that transfers energy without transferring matter. The fundamental wave equation v = f&lambda; relates speed, frequency, and wavelength for all waves.</li>
+            <li>The principle of superposition states that overlapping waves add algebraically, producing constructive interference (when in phase) and destructive interference (when out of phase).</li>
+            <li>Standing waves form from the superposition of two identical waves traveling in opposite directions, creating nodes (zero displacement) and antinodes (maximum displacement) at fixed positions.</li>
+            <li>Resonance occurs when a system is driven at its natural frequency. Energy accumulates efficiently, producing large-amplitude oscillations that can be beneficial or destructive.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Lecture Navigation -->
+      <div class="lecture-nav">
+        <a href="07-circular-motion-gravitation.html" class="nav-prev">
+          <div class="nav-direction">&larr; Previous</div>
+          <div class="nav-title">Lecture 7: Circular Motion and Gravitation</div>
+        </a>
+        <a href="09-thermodynamics.html" class="nav-next">
+          <div class="nav-direction">Next &rarr;</div>
+          <div class="nav-title">Lecture 9: Thermodynamics</div>
+        </a>
+      </div>
+
+    </article>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <div class="footer-brand">Physics Logic</div>
+          <p class="footer-desc">A free educational platform dedicated to teaching physics through deep reasoning and logical thinking. Understanding over memorization, always.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Lectures</h5>
+          <a href="01-introduction.html">Introduction to Physics</a>
+          <a href="04-newtons-laws.html">Newton's Laws</a>
+          <a href="08-oscillations-waves.html">Oscillations and Waves</a>
+          <a href="12-modern-physics.html">Modern Physics</a>
+          <a href="../lectures.html">View All &rarr;</a>
+        </div>
+        <div class="footer-col">
+          <h5>Resources</h5>
+          <a href="../about.html">About</a>
+          <a href="../lectures.html">All Lectures</a>
+          <a href="../faq.html">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h5>Connect</h5>
+          <a href="#">Twitter</a>
+          <a href="#">GitHub</a>
+          <a href="#">YouTube</a>
+          <a href="#">Email</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Physics Logic Lectures. All rights reserved.</span>
+        <span>Built for learners, by learners.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

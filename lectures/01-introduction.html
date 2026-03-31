@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lecture 1: Introduction to Physics and Physical Reasoning | Physics Logic</title>
+  <meta name="description" content="What physics is, how physicists think, the role of logic in understanding nature, and why reasoning matters more than memorization.">
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .sim-container { background: #101020; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 24px; margin: 2rem 0; }
+    .sim-canvas-wrap { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,212,255,0.15); }
+    .sim-canvas-wrap canvas { display: block; width: 100%; background: #0a0a14; }
+    .sim-controls { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px; align-items: center; }
+    .sim-control { display: flex; flex-direction: column; gap: 4px; }
+    .sim-control label { font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; color: #636780; text-transform: uppercase; letter-spacing: 0.1em; }
+    .sim-control input[type="range"] { -webkit-appearance: none; width: 160px; height: 4px; background: #222244; border-radius: 2px; outline: none; }
+    .sim-control input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #00d4ff; cursor: pointer; box-shadow: 0 0 8px rgba(0,212,255,0.4); }
+    .sim-btn { font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 600; padding: 8px 20px; border-radius: 20px; border: 1px solid rgba(0,212,255,0.3); background: rgba(0,212,255,0.08); color: #00d4ff; cursor: pointer; transition: all 0.15s; }
+    .sim-btn:hover { background: rgba(0,212,255,0.15); box-shadow: 0 0 12px rgba(0,212,255,0.2); }
+    .sim-btn.active { background: #00d4ff; color: #06060c; }
+    .sim-data { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-top: 16px; }
+    .sim-datum { background: #16162a; border-radius: 8px; padding: 12px; text-align: center; }
+    .sim-datum .datum-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; color: #00d4ff; }
+    .sim-datum .datum-label { font-size: 0.7rem; color: #636780; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+    .sim-explanation { margin-top: 16px; padding: 16px; background: rgba(0,212,255,0.04); border-left: 2px solid #00d4ff; border-radius: 0 8px 8px 0; font-size: 0.9rem; color: #a0a4b8; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress"></div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand"><span class="brand-icon">&phi;</span> Physics Logic</a>
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../lectures.html" class="active">Lectures</a>
+        <a href="../faq.html">FAQ</a>
+      </div>
+      <div class="nav-search">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" placeholder="Search lectures...">
+        <div class="search-results"></div>
+      </div>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Lecture Hero -->
+    <section class="lecture-hero">
+      <div class="lecture-hero-inner">
+        <div class="breadcrumb animate-in">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="../lectures.html">Lectures</a>
+          <span class="sep">/</span>
+          Lecture 1
+        </div>
+        <div class="lecture-number animate-in">Lecture 01</div>
+        <h1 class="animate-in">Introduction to Physics and <em>Physical Reasoning</em></h1>
+        <div class="lecture-meta animate-in">
+          <span>Category: Foundations</span>
+          <span>Difficulty: Beginner</span>
+          <span>Reading Time: 25 min</span>
+        </div>
+      </div>
+      <div class="hero-decoration">&phi;</div>
+    </section>
+
+    <!-- Lecture Layout: Sidebar TOC + Article -->
+    <div class="lecture-layout">
+
+      <!-- Table of Contents (sticky sidebar) -->
+      <aside class="lecture-toc">
+        <h3>Contents</h3>
+        <ul class="toc-list">
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#what-is-physics">What Is Physics?</a></li>
+          <li><a href="#observation-and-experiment">Observation and Experiment</a></li>
+          <li><a href="#models-and-laws">Models and Laws</a></li>
+          <li><a href="#role-of-logic">The Role of Logic</a></li>
+          <li><a href="#how-physicists-think">How Physicists Think</a></li>
+          <li><a href="#scientific-method">The Scientific Method</a></li>
+          <li><a href="#common-misconceptions">Common Misconceptions</a></li>
+          <li><a href="#interactive">Interactive Simulation</a></li>
+          <li><a href="#key-takeaways">Key Takeaways</a></li>
+        </ul>
+      </aside>
+
+      <!-- Lecture Article -->
+      <article class="lecture-article">
+
+        <!-- Learning Goals -->
+        <div class="learning-goals">
+          <h3>Learning Goals</h3>
+          <ul>
+            <li>Understand what physics is and what it seeks to explain</li>
+            <li>Distinguish between observation, hypothesis, model, and law</li>
+            <li>Appreciate the role of logic and reasoning in physics</li>
+            <li>Understand how physicists approach problems</li>
+            <li>Recognize the scientific method as a living process</li>
+          </ul>
+        </div>
+
+        <!-- ==================== OVERVIEW ==================== -->
+        <section id="overview" class="lecture-section">
+          <h2>Overview</h2>
+
+          <p>
+            Welcome to the first lecture in this course on physics and physical reasoning. Before we
+            dive into equations, before we talk about forces or energy or the structure of matter,
+            we need to step back and ask a deceptively simple question: <strong>what is physics,
+            really?</strong> This lecture is not about solving problems or plugging numbers into
+            formulas. It is about building the mental foundation upon which everything else in this
+            course will rest. We will explore what physics aims to do, how physicists observe and
+            interpret the world, what we mean by models and laws, and&mdash;most critically&mdash;why
+            logical reasoning is the single most important skill you can develop as a student of
+            physics. If you understand the ideas in this lecture deeply, every subsequent lecture will
+            be easier. If you skip them, you will spend the rest of the course struggling with
+            concepts that should feel natural.
+          </p>
+
+          <p>
+            Think of this lecture as the lens through which you will view everything that follows.
+            When we later discuss Newton's laws, you will need to understand what a "law" means in
+            physics and why it is different from a law in a courtroom. When we work with equations,
+            you will need to understand that each equation tells a story&mdash;a logical story about
+            how quantities relate to one another&mdash;and that understanding that story is far more
+            powerful than memorizing the equation itself. When we encounter models that seem to
+            contradict each other (is light a wave or a particle?), you will need to understand what
+            a model is and why models can be useful even when they are imperfect. All of this starts
+            here, in this first conversation about the nature and logic of physics.
+          </p>
+        </section>
+
+        <!-- ==================== WHAT IS PHYSICS? ==================== -->
+        <section id="what-is-physics" class="lecture-section">
+          <h2>What Is Physics?</h2>
+
+          <p>
+            If you ask most people what physics is, they might say something like "the science of
+            matter and energy" or "the study of how things move." These descriptions are not wrong,
+            but they miss the deeper point. Physics is, at its heart, the human attempt to understand
+            <strong>why the universe behaves the way it does</strong>. It is not merely a catalog of
+            facts about nature. It is the disciplined, systematic search for the underlying patterns
+            and principles that govern everything from the smallest subatomic particle to the largest
+            structure in the cosmos. A biologist might study how a cell divides; a chemist might
+            study how molecules bond. A physicist asks: what are the fundamental rules that make any
+            of this possible in the first place?
+          </p>
+
+          <p>
+            The scope of physics is staggering. At one extreme, particle physicists probe the
+            behavior of quarks and leptons&mdash;entities so small that no microscope will ever
+            image them directly. At the other extreme, cosmologists study the large-scale structure
+            of the universe itself: how galaxies cluster, how space expands, how the cosmos began and
+            how it might end. Between these extremes lies everything else: the physics of everyday
+            life, the physics of materials and fluids and sound and light, the physics of stars and
+            planets and the atmospheres that surround them. What unites all of these sub-fields is
+            not their subject matter but their method: the conviction that nature follows consistent,
+            discoverable rules, and that careful observation combined with rigorous reasoning can
+            reveal those rules.
+          </p>
+
+          <div class="definition-box">
+            <div class="def-term">Physics</div>
+            <p class="def-text">
+              The branch of science concerned with discovering and describing the fundamental laws
+              and principles that govern the behavior of matter, energy, space, and time across all
+              scales of the universe&mdash;from subatomic particles to the cosmos as a whole.
+            </p>
+          </div>
+
+          <p>
+            One of the most remarkable features of physics is its <strong>universality</strong>. The
+            same gravitational law that explains why an apple falls from a tree also explains the
+            orbits of planets around the Sun, the motion of galaxies, and the bending of light near
+            a black hole. The same electromagnetic equations that describe the glow of a light bulb
+            also describe the radio waves carrying a phone signal, the X-rays used in a hospital, and
+            the microwaves heating your lunch. This is not a coincidence&mdash;it reflects something
+            profound about the structure of nature. Physics reveals that beneath the apparent
+            diversity of phenomena lies a surprising unity: a small number of principles, expressed
+            in the language of mathematics, that apply everywhere and always.
+          </p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>
+              Physics is not a collection of disconnected facts or formulas. It is the search for
+              <strong>patterns and laws</strong> in nature&mdash;a small set of deep principles that
+              explain a vast range of phenomena. Understanding these principles, rather than
+              memorizing their consequences, is the goal of a physics education.
+            </p>
+          </div>
+
+          <p>
+            It is also worth noting what physics is <em>not</em>. Physics is not about having the
+            right answer immediately. It is about having a reliable <em>process</em> for arriving at
+            correct answers and, just as importantly, for recognizing when you are wrong. The history
+            of physics is full of brilliant people who were wrong about important things&mdash;and
+            the discipline advanced precisely because it had the tools to detect and correct those
+            errors. Aristotle believed that heavier objects fall faster than lighter ones. This
+            seemed perfectly reasonable for nearly two thousand years until Galileo demonstrated
+            otherwise. The self-correcting nature of physics is one of its greatest strengths: no
+            idea is too sacred to question, and every claim must ultimately answer to observation
+            and experiment.
+          </p>
+        </section>
+
+        <!-- ==================== OBSERVATION AND EXPERIMENT ==================== -->
+        <section id="observation-and-experiment" class="lecture-section">
+          <h2>Observation and Experiment</h2>
+
+          <p>
+            All physics begins with observation. Before there can be a theory, before there can be
+            an equation, someone must first <em>notice</em> something about the world. This sounds
+            trivial, but it is not. Most people look at the world every day without really seeing it.
+            A physicist looks at the world and asks questions: Why does the sky change color at
+            sunset? Why does a spinning top stay upright? Why does water form droplets instead of
+            cubes? These are not idle curiosities&mdash;they are the seeds from which physical
+            understanding grows. The ability to observe carefully and to ask the right questions is
+            the very first skill a physicist must develop, and it is a skill that requires practice.
+            When Galileo Galilei sat in the cathedral of Pisa in 1583 and watched a chandelier
+            swinging back and forth, he was not the first person to see a pendulum. But he was
+            perhaps the first to <em>time</em> it&mdash;using the only clock he had available, the
+            steady beat of his own pulse&mdash;and to notice something that everyone before him had
+            missed.
+          </p>
+
+          <div class="example">
+            <div class="example-label">Historical Example</div>
+            <p>
+              <strong>Galileo and the Chandelier (1583).</strong> While attending a service in the
+              Cathedral of Pisa, the young Galileo noticed a chandelier swinging in the draft. Using
+              his pulse as a timer, he observed that the chandelier took roughly the same amount of
+              time to complete each swing, regardless of how wide the swing was. A large arc and a
+              small arc seemed to take the same time. This observation&mdash;the approximate
+              <em>isochronism</em> of the pendulum&mdash;was startling. Common sense says a longer
+              arc should take more time, yet Galileo's careful timing showed otherwise. This single
+              observation eventually led to the development of pendulum clocks and to deeper
+              understanding of oscillatory motion. It began with nothing more than paying attention.
+            </p>
+            <div class="solution">
+              <div class="solution-label">Why This Matters</div>
+              <p>
+                Galileo's observation illustrates a principle we will see again and again: nature
+                does not always behave the way common sense suggests. Our everyday intuitions are
+                built from a limited range of experiences, and they can be systematically wrong.
+                The pendulum's isochronism is counterintuitive, yet it is real. Physics advances
+                precisely when someone notices that reality contradicts expectation&mdash;and takes
+                that contradiction seriously rather than dismissing it. This willingness to trust
+                careful observation over comfortable assumption is the first step toward becoming
+                a physicist.
+              </p>
+            </div>
+          </div>
+
+          <p>
+            But observation alone is not enough. Nature is complicated, and the things we observe are
+            often the result of many factors acting at once. A leaf falls from a tree and drifts
+            sideways&mdash;is this because of gravity, because of the wind, because of the leaf's
+            shape, or some combination of all three? To untangle cause from effect, physicists design
+            <strong>controlled experiments</strong>: situations in which they deliberately vary one
+            factor at a time while keeping everything else constant. The idea is deceptively simple
+            but extraordinarily powerful. If you want to know how the length of a pendulum affects
+            its swing time, you must change the length while keeping the mass and release angle the
+            same. If you change everything at once, you learn nothing. This principle of isolation
+            and control is the backbone of experimental science, and it distinguishes physics from
+            casual observation the way a surgeon's scalpel distinguishes itself from a butter knife.
+          </p>
+
+          <p>
+            It is worth pausing to appreciate how difficult good experimental design actually is.
+            Consider something as seemingly straightforward as measuring the effect of mass on how
+            quickly an object falls. You might think: drop a heavy ball and a light ball, time them,
+            and compare. But in practice, you must worry about air resistance (which depends on shape
+            and size, not just mass), about releasing both objects at exactly the same moment, about
+            the precision of your timing instrument, and about whether the floor is truly level. Each
+            of these confounding factors can corrupt your result if you are not careful. The history
+            of physics is littered with experiments that gave wrong answers because the experimenter
+            failed to account for some subtle influence. Learning to anticipate and eliminate these
+            confounding factors is a skill that requires both creativity and discipline, and it is
+            a large part of what separates a good physicist from a mediocre one.
+          </p>
+
+          <p>
+            There is one more essential idea about experiments: <strong>reproducibility</strong>. A
+            physics result is not accepted because one person observed it once. It is accepted when
+            the experiment can be repeated&mdash;by different people, in different laboratories, using
+            different equipment&mdash;and the same result is obtained every time. This is what gives
+            physics its extraordinary reliability. When we say that the speed of light in a vacuum is
+            approximately 299,792,458 meters per second, we say this not because one scientist
+            measured it once, but because hundreds of scientists over more than a century have measured
+            it using dozens of different methods, and they all converge on the same value. If an
+            experiment cannot be reproduced, it may be interesting, but it is not yet physics. This
+            insistence on reproducibility is what keeps physics honest: it is nature's ultimate
+            peer review.
+          </p>
+        </section>
+
+        <!-- ==================== MODELS AND LAWS ==================== -->
+        <section id="models-and-laws" class="lecture-section">
+          <h2>Models and Laws</h2>
+
+          <p>
+            Once we have observed patterns in nature and confirmed them through experiments, we need
+            a way to describe and communicate those patterns. This is where <strong>models</strong>
+            enter the picture. A model, in physics, is a simplified representation of some aspect of
+            the real world. It is not the real world itself&mdash;it never can be. The real world is
+            overwhelmingly complex, with billions of atoms interacting simultaneously, countless
+            forces acting at every scale, and details upon details that no human mind could track all
+            at once. A model strips away the complexity and focuses on the essential features of a
+            situation. When you draw a "free body diagram" showing a block on a ramp with arrows for
+            the forces acting on it, you are building a model. You have ignored the color of the
+            block, its temperature, its atomic composition, the sound it makes, and countless other
+            features. You have kept only what matters for the question you are asking: what forces
+            are acting, and in what directions?
+          </p>
+
+          <p>
+            The power of models lies precisely in their simplicity. By ignoring details that are
+            irrelevant to the problem at hand, a model allows you to see the essential structure of
+            a physical situation clearly. Consider the model of a "point particle"&mdash;an object
+            with mass but no size. No real object is a point, of course. Every real ball, car, or
+            planet has a definite size and shape. But for many problems&mdash;such as calculating the
+            orbit of Earth around the Sun&mdash;the size of the Earth is so small compared to the
+            distance involved that treating it as a point introduces negligible error and vastly
+            simplifies the mathematics. A good physicist knows when this simplification is
+            appropriate and when it is not. That judgment, the art of knowing which details matter
+            and which can be safely ignored, is one of the most important skills in physics.
+          </p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>
+              All models are wrong; some models are useful. A model does not need to capture every
+              detail of reality to be valuable. It needs only to capture the details that are
+              <strong>relevant to the question being asked</strong>. The skill of modeling is the
+              skill of deciding what matters and what can be ignored.
+            </p>
+          </div>
+
+          <p>
+            While models describe specific situations, <strong>physical laws</strong> are broader
+            statements about patterns that nature consistently follows. Newton's second law,
+            <em>F = ma</em>, is not a description of one particular situation. It is a universal
+            claim: whenever a net force acts on an object, that object accelerates, and the
+            acceleration is proportional to the force and inversely proportional to the mass. This
+            law applies to baseballs, planets, electrons, and galaxies. It does not need to be
+            "obeyed" in the way that a traffic law needs to be obeyed&mdash;nature cannot choose to
+            violate it. Physical laws are descriptions of what nature <em>does</em>, discovered
+            through careful observation and validated through experiment. They are patterns so
+            reliable that they can be used to make precise predictions about situations that have
+            never been observed before.
+          </p>
+
+          <div class="definition-box">
+            <div class="def-term">Physical Law</div>
+            <p class="def-text">
+              A concise, general statement&mdash;usually expressed mathematically&mdash;that
+              describes a pattern in nature which has been consistently confirmed by observation and
+              experiment. Physical laws are not legislated or decreed; they are discovered. They
+              represent regularities that nature follows without exception within their known domain
+              of validity.
+            </p>
+          </div>
+
+          <p>
+            It is important to understand that even physical laws have limits. Newton's laws of
+            motion work extraordinarily well for everyday objects moving at everyday speeds. But
+            when objects move close to the speed of light, Newton's laws break down and must be
+            replaced by Einstein's special relativity. When objects are very small&mdash;on the
+            scale of atoms and subatomic particles&mdash;Newton's laws again fail, and quantum
+            mechanics takes over. This does not mean Newton was "wrong." It means his laws are
+            <em>approximations</em>&mdash;spectacularly good ones within their domain, but
+            approximations nonetheless. Every law in physics carries with it, implicitly, a domain
+            of validity: the range of conditions under which it has been tested and found to hold.
+            Part of learning physics is learning where each law applies and where it begins to fail.
+          </p>
+
+          <p>
+            The relationship between models and laws is intimate but often misunderstood. A law
+            like <em>F = ma</em> is a general statement. A model uses that law (and others) to
+            describe a specific situation. When you model a ball rolling down a ramp, you invoke
+            Newton's second law, you make assumptions about friction and air resistance, you idealize
+            the ramp as perfectly rigid and straight, and you produce a prediction about the ball's
+            acceleration. The model is the specific application; the law is the general principle
+            that powers it. If the model's prediction disagrees with experiment, the fault usually
+            lies in the model's assumptions, not in the law itself. Perhaps the ramp was not as
+            frictionless as you assumed, or the ball was not perfectly spherical. The ability to
+            distinguish between "the law is wrong" and "the model's assumptions are wrong" is a
+            subtle but critical skill in physics. Most of the time, when your answer does not match
+            reality, the problem is in your model, not in the laws of nature.
+          </p>
+
+          <div class="example">
+            <div class="example-label">Thinking Exercise</div>
+            <p>
+              <strong>When models clash:</strong> Light can be modeled as a wave (it diffracts, it
+              interferes) and also as a stream of particles called photons (it comes in discrete
+              packets of energy, it can knock electrons out of metals). These two models seem to
+              contradict each other&mdash;how can light be both a wave and a particle? The answer is
+              that light is neither, in the classical sense. It is a quantum object that has
+              properties of both. The wave model and the particle model are each useful in different
+              contexts: the wave model explains diffraction patterns; the particle model explains the
+              photoelectric effect. Neither model is "the truth"&mdash;both are tools that capture
+              different aspects of a deeper reality. This is a theme you will encounter repeatedly:
+              models are not competing claims about truth but complementary lenses for understanding.
+            </p>
+          </div>
+        </section>
+
+        <!-- ==================== THE ROLE OF LOGIC ==================== -->
+        <section id="role-of-logic" class="lecture-section">
+          <h2>The Role of Logic in Physics</h2>
+
+          <p>
+            If observation is the eye of physics and experiment is its hand, then <strong>logical
+            reasoning is its spine</strong>. Logic is what connects observations to conclusions. It
+            is what allows us to go from "I notice that this happens" to "therefore, that must also
+            be true." Without logic, physics would be nothing more than a disconnected collection of
+            observations&mdash;interesting, perhaps, but powerless. With logic, physics becomes a
+            predictive science: it can tell you what will happen in situations you have never
+            encountered, because the logical structure of the theory extends beyond the specific
+            cases from which it was derived. This is the magic of physics, and it is entirely a
+            product of rigorous reasoning.
+          </p>
+
+          <p>
+            Physicists rely on two complementary forms of reasoning. <strong>Inductive
+            reasoning</strong> moves from specific observations to general principles. You drop a
+            ball and it falls. You drop it again, and again, and again, and it always falls. From
+            many specific observations, you induce a general principle: unsupported objects near
+            Earth's surface fall downward. <strong>Deductive reasoning</strong> moves in the
+            opposite direction: from general principles to specific predictions. If you know that
+            all unsupported objects near Earth's surface fall, and you know that a particular book
+            is unsupported, you can deduce that the book will fall. Physics uses both forms
+            constantly. Induction builds the laws; deduction applies them. A physics education that
+            focuses only on memorizing results (the end products of induction) without teaching you
+            how to deduce consequences from principles is like teaching you to read a map without
+            teaching you to walk. You can see where you want to go, but you cannot get there.
+          </p>
+
+          <p>
+            This brings us to one of the most important points in this entire course: <strong>why
+            understanding the logic behind a formula is more important than memorizing the formula
+            itself</strong>. Consider the simple relation between speed, distance, and time. Most
+            students memorize <em>v = d / t</em>. But what does this formula actually <em>say</em>,
+            logically? It says that speed is the rate at which distance changes over time. If you
+            travel a greater distance in the same time, your speed must be higher. If you travel the
+            same distance in less time, your speed must also be higher. If you understand this
+            logic&mdash;that speed is simply "how much ground you cover per unit of time"&mdash;then
+            you never need to memorize the formula. You can reconstruct it on demand, because the
+            logic produces the formula as its natural consequence. You can also rearrange it
+            immediately: need distance? Multiply speed by time. Need time? Divide distance by speed.
+            None of this requires memorization if the underlying logic is clear.
+          </p>
+
+          <div class="formula">
+            <span class="formula-name">Speed &mdash; Distance &mdash; Time</span>
+            v = d / t
+          </div>
+
+          <p>
+            <strong>Why this formula makes logical sense:</strong> Speed tells you how much distance
+            you cover per unit of time. If you walk 10 kilometers in 2 hours, your speed is
+            10 / 2 = 5 km/h. The division by time is not an arbitrary mathematical operation&mdash;it
+            reflects the physical meaning of speed as a <em>rate</em>. Every formula in physics has
+            this kind of logical story behind it. When you encounter a new formula, your first
+            question should not be "how do I memorize this?" but rather "why does this make sense?
+            What is the logical relationship between these quantities?" If you can answer that
+            question, the formula becomes unforgettable&mdash;not because you drilled it into memory,
+            but because you <em>understand</em> it.
+          </p>
+
+          <p>
+            There is a deeper reason why logical understanding trumps memorization: the number of
+            formulas in physics is vast, but the number of underlying principles is small. If you
+            try to memorize every formula, you will be overwhelmed within weeks. But if you
+            understand the handful of core principles&mdash;conservation of energy, Newton's laws,
+            the relationship between force and motion, the behavior of waves&mdash;you can derive
+            most formulas on the spot. This is not an exaggeration. Professional physicists
+            rarely memorize formulas beyond the most basic ones. Instead, they understand the
+            principles deeply enough to reconstruct whatever formula they need in the moment.
+            This is the standard we aim for in this course: not the ability to recall, but the
+            ability to reason.
+          </p>
+
+          <p>
+            The centrality of logic also explains why physicists place such emphasis on
+            <strong>"if-then" thinking</strong>. Almost every argument in physics takes the form:
+            "If this principle is true, and if these conditions hold, then this consequence must
+            follow." For example: if Newton's second law is correct, and if a 2-kilogram object
+            experiences a net force of 10 newtons, then the object must accelerate at 5 meters per
+            second squared. This chain of reasoning is not just a calculation exercise. It is a
+            test of the law itself. If the predicted acceleration does not match what is measured,
+            then either the law is wrong, or the conditions were not what we assumed, or we made an
+            error in reasoning. Every experimental test of a physical theory is, at bottom, an
+            exercise in "if-then" logic. Learning to think this way&mdash;clearly, step by step,
+            from premises to conclusions&mdash;is arguably the single most valuable thing you will
+            take away from studying physics, regardless of your career.
+          </p>
+        </section>
+
+        <!-- ==================== HOW PHYSICISTS THINK ==================== -->
+        <section id="how-physicists-think" class="lecture-section">
+          <h2>How Physicists Think</h2>
+
+          <p>
+            Physicists have developed a distinctive style of thinking that sets them apart from
+            practitioners of other disciplines. One of the most celebrated tools in this style is
+            the <strong>thought experiment</strong>&mdash;an imaginary scenario designed to test the
+            logical consequences of a physical principle without the need for actual apparatus.
+            Galileo used thought experiments brilliantly. To argue against Aristotle's claim that
+            heavier objects fall faster, Galileo imagined tying a heavy stone to a light stone. If
+            Aristotle were right, the light stone should slow down the heavy one (acting as a drag),
+            so the combined pair should fall <em>slower</em> than the heavy stone alone. But the
+            combined pair is <em>heavier</em> than the heavy stone alone, so by Aristotle's own
+            logic, it should fall <em>faster</em>. The same system cannot fall both faster and
+            slower. The only way out of the contradiction is to abandon Aristotle's premise: in the
+            absence of air resistance, all objects fall at the same rate, regardless of weight.
+            Galileo arrived at this conclusion through pure logic, without dropping a single object.
+          </p>
+
+          <p>
+            Einstein elevated the thought experiment to an art form. His most famous involves an
+            elevator in free fall. Imagine you are inside a sealed elevator with no windows. The
+            cable snaps, and the elevator begins to plummet. Inside the elevator, you and everything
+            else float weightlessly&mdash;exactly as if you were in deep space, far from any planet
+            or star. Einstein's insight was that there is no experiment you can perform inside the
+            elevator to distinguish between "falling freely in a gravitational field" and "floating
+            in the absence of gravity." This <strong>equivalence principle</strong> became the
+            foundation of general relativity, one of the most successful theories in the history of
+            physics. It emerged not from a laboratory but from a carefully reasoned thought
+            experiment. The lesson here is profound: in physics, clear thinking is itself a form of
+            experimentation.
+          </p>
+
+          <p>
+            Beyond thought experiments, physicists routinely employ several other reasoning
+            strategies. <strong>Approximation and idealization</strong> are essential: you ignore air
+            resistance when it is small, treat the Earth as a perfect sphere when slight bulges do
+            not matter, and assume a rope is massless when its mass is negligible compared to the
+            objects it connects. The key insight is that physics is not about getting the exact answer
+            to an impossibly complicated real-world problem; it is about getting a useful answer to a
+            well-posed simplified problem. The simplification itself is part of the physics. Choosing
+            which effects to include and which to neglect requires physical judgment, and developing
+            that judgment is one of the central goals of a physics education.
+          </p>
+
+          <p>
+            <strong>Symmetry arguments</strong> are among the most powerful tools in physics. If a
+            problem looks the same from the left as from the right, the answer must also look the
+            same, which often eliminates half the possibilities immediately. If you place a
+            point charge in empty space and ask "what does its electric field look like?", symmetry
+            tells you the field must point radially outward (or inward) in all directions equally,
+            because there is no preferred direction. This single observation, derived from pure
+            reasoning before any calculation, dramatically simplifies the problem. The great
+            physicist Emmy Noether proved a deep theorem connecting symmetries to conservation
+            laws: the symmetry of physical laws under time translation gives rise to conservation
+            of energy; symmetry under spatial translation gives conservation of momentum; symmetry
+            under rotation gives conservation of angular momentum. Symmetry is not just a
+            convenience in physics; it is a window into the deepest structure of nature.
+          </p>
+
+          <p>
+            <strong>Order-of-magnitude reasoning</strong> (also called "Fermi estimation," after
+            the physicist Enrico Fermi) lets you estimate answers quickly without detailed
+            calculation. How many piano tuners are there in Chicago? How much energy does the Sun
+            emit per second? How many atoms are there in a human body? These questions seem
+            impossible to answer without extensive research, but a physicist can estimate them to
+            within a factor of 10 using a chain of reasonable assumptions. The point is not to get
+            the exact number but to get the <em>scale</em> right: is the answer closer to 1, 100,
+            or 1,000,000? This kind of rough estimate is often more useful than a precise calculation,
+            because it tells you whether your more detailed answer is even in the right ballpark.
+            If your careful calculation says a baseball thrown by a human pitcher should travel at
+            10,000 km/h, an order-of-magnitude check immediately reveals the error. All of these
+            strategies share a common philosophy: physics is about understanding, not computing.
+            The numbers come after the thinking, not before it.
+          </p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>
+              The physicist's approach can be summarized in three steps: <strong>(1)</strong> identify
+              the essential features of the problem and ignore the rest; <strong>(2)</strong> use
+              logic, symmetry, and physical principles to reason about what the answer should look
+              like before calculating; <strong>(3)</strong> perform the calculation, then check
+              whether the result makes physical sense. If step three contradicts step two, go back
+              and find your error. Calculation without understanding is dangerous; understanding
+              without calculation is incomplete. The best physics uses both.
+            </p>
+          </div>
+        </section>
+
+        <!-- ==================== THE SCIENTIFIC METHOD ==================== -->
+        <section id="scientific-method" class="lecture-section">
+          <h2>The Scientific Method</h2>
+
+          <p>
+            You have probably seen the "scientific method" presented as a neat flowchart: observe,
+            question, hypothesize, predict, test, conclude. While this captures the general spirit,
+            it can be misleading if taken too literally. Real science is not a linear process that
+            moves cleanly from step to step. It is iterative, messy, and full of dead ends.
+            A physicist might start with a vague hunch, design an experiment that yields confusing
+            results, revise the hypothesis three times, discover an error in the equipment, start
+            over, and eventually arrive at an insight that looks nothing like the original
+            hypothesis. The flowchart version of the scientific method is a cleaned-up,
+            after-the-fact summary of what is, in practice, a deeply creative and nonlinear process.
+          </p>
+
+          <p>
+            That said, the key ingredients of the scientific method are real and essential. Every
+            scientific investigation begins with an <strong>observation</strong> that prompts a
+            <strong>question</strong>. The question leads to a <strong>hypothesis</strong>&mdash;a
+            tentative, testable explanation. From the hypothesis, the scientist derives a specific
+            <strong>prediction</strong>: if the hypothesis is correct, then a particular experiment
+            should produce a particular result. The experiment is performed, and the result either
+            supports or contradicts the prediction. If it contradicts, the hypothesis must be
+            revised or abandoned. If it supports, the hypothesis gains credibility&mdash;but it is
+            never "proven" in the mathematical sense. It simply survives another test. Over time,
+            hypotheses that survive many tests, explain a wide range of phenomena, and successfully
+            predict new observations earn the title of <strong>theory</strong>.
+          </p>
+
+          <p>
+            One of the most important concepts in the philosophy of science is
+            <strong>falsifiability</strong>, introduced by the philosopher Karl Popper. A statement
+            is scientific only if it is, in principle, possible to show it is wrong. "All swans are
+            white" is falsifiable: finding a single black swan would disprove it. "The universe
+            exists because it wants to" is not falsifiable: no conceivable observation could prove
+            it wrong, which means it lies outside the domain of science. This criterion is what
+            separates physics from metaphysics. A physical theory must make predictions that could,
+            in principle, fail. Einstein's general relativity predicted that light passing near the
+            Sun would bend by a specific, calculable amount. In 1919, Arthur Eddington measured the
+            bending during a solar eclipse and found it matched Einstein's prediction. Had it not
+            matched, the theory would have been in serious trouble. The willingness to be wrong,
+            and the courage to put your ideas to the test, is the defining characteristic of the
+            scientific enterprise.
+          </p>
+
+          <p>
+            It is also crucial to understand that scientific knowledge is <strong>provisional
+            </strong> but <strong>progressive</strong>. No theory in physics is considered final
+            or absolute. Every theory is, in principle, open to revision in light of new evidence.
+            This may sound like a weakness, but it is in fact physics' greatest strength. It means
+            that physics is self-correcting: errors are eventually caught and fixed. Newtonian
+            mechanics reigned for over two centuries before being superseded (not replaced, but
+            refined and extended) by relativity and quantum mechanics. These newer theories did not
+            invalidate everything Newton had done&mdash;they showed that his mechanics was an
+            approximation valid in a particular regime and extended it to regimes he never imagined.
+            Each generation of physicists builds on the work of those who came before, refining
+            the picture, extending the domain of understanding, and occasionally overturning ideas
+            that were once considered unassailable. This is how physics progresses: not by
+            demolishing the old but by deepening and generalizing it.
+          </p>
+
+          <div class="example">
+            <div class="example-label">Example</div>
+            <p>
+              <strong>The evolution of our understanding of gravity:</strong> Aristotle believed
+              objects fall because they seek their "natural place" at the center of the Earth.
+              Newton replaced this with a precise mathematical law of universal gravitation: every
+              mass attracts every other mass with a force proportional to the product of their masses
+              and inversely proportional to the square of the distance between them. Einstein then
+              showed that gravity is not a force at all but a curvature of spacetime caused by mass
+              and energy. Each theory is more accurate and more general than the one before, yet
+              each earlier theory remains useful within its domain. We still use Newtonian gravity
+              to launch satellites and plan space missions, because in that regime it is simpler
+              than general relativity and produces answers that are accurate to many decimal places.
+              The progression from Aristotle to Newton to Einstein is not a story of successive
+              failures but of deepening understanding.
+            </p>
+          </div>
+        </section>
+
+        <!-- ==================== COMMON MISCONCEPTIONS ==================== -->
+        <section id="common-misconceptions" class="lecture-section">
+          <h2>Common Misconceptions</h2>
+
+          <p>
+            Before we close this introductory lecture, let us address some of the most common
+            misconceptions that students bring into a physics course. These misconceptions can act
+            as invisible barriers to learning. By naming and confronting them now, we can clear the
+            path for genuine understanding.
+          </p>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p>
+              <strong>"Physics is just memorizing formulas."</strong> &mdash; This is perhaps the
+              most damaging misconception of all. Formulas are not the essence of physics; they are
+              the <em>consequences</em> of deeper principles. A student who memorizes <em>F = ma</em>
+              without understanding what force, mass, and acceleration mean, and without grasping
+              the logical relationship between them, has learned nothing useful. Such a student will
+              fail the moment they encounter a problem that is phrased differently from the examples
+              they studied. In contrast, a student who understands the underlying logic can derive
+              the formula, apply it in novel contexts, and recognize when it does and does not apply.
+              Physics rewards understanding, not memorization.
+            </p>
+          </div>
+
+          <p>
+            The formula-memorization trap is especially dangerous because it creates a false sense
+            of confidence. A student who has memorized twenty formulas may feel prepared for an exam,
+            but when the exam presents a scenario they have never seen before&mdash;which is exactly
+            what a good exam does&mdash;they find that their formulas are useless without the
+            reasoning to connect them to the problem. This is why you will often hear physics
+            students complain that "the exam was nothing like the homework." What they mean is that
+            the exam tested understanding, not recall. This course is designed to build understanding
+            from the start, so that you are never in that position.
+          </p>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p>
+              <strong>"You need to be a math genius to succeed in physics."</strong> &mdash;
+              Mathematics is the language of physics, and fluency in that language is certainly
+              helpful. But physics requires <em>logical</em> thinking far more than it requires
+              computational prowess. The hardest part of most physics problems is not the algebra
+              or calculus; it is figuring out how to set up the problem: what principles apply, what
+              can be neglected, what the relevant quantities are, and how they relate to each other.
+              This is a reasoning challenge, not a calculation challenge. Many brilliant physicists
+              have been only average mathematicians, and many brilliant mathematicians struggle with
+              physics precisely because physics demands a kind of physical intuition that pure
+              mathematics does not develop. If you can think clearly and logically, you can learn
+              physics.
+            </p>
+          </div>
+
+          <p>
+            This does not mean math is unimportant in physics&mdash;it is essential, as we will
+            discover throughout this course. Mathematics is the language in which the laws of
+            physics are expressed, and developing mathematical fluency will make your physics
+            studies much easier. The point is that the math in physics is always in service of
+            a physical idea. You are never asked to solve an equation just for the sake of
+            solving it; you are always solving it to learn something about the physical world.
+            When you see an equation, your first task is to understand what physical story it
+            tells. The calculation follows naturally once the story is clear.
+          </p>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p>
+              <strong>"Theories are just guesses."</strong> &mdash; In everyday English, "theory"
+              often means "speculation" or "hunch." In science, it means something entirely
+              different. A scientific theory is a well-tested, logically coherent framework that
+              explains a broad range of observations and has survived rigorous attempts to prove it
+              wrong. The theory of general relativity, quantum mechanics, and the theory of evolution
+              are not "just guesses"&mdash;they are among the most thoroughly tested and
+              well-supported ideas in all of human knowledge. When a physicist says "the theory
+              predicts," they are invoking a structure that has been validated by thousands of
+              experiments and observations. Calling such a theory "just a guess" is like calling the
+              foundation of a skyscraper "just a pile of rocks."
+            </p>
+          </div>
+        </section>
+
+        <!-- ==================== INTERACTIVE SIMULATION ==================== -->
+        <section id="interactive" class="lecture-section">
+          <h2>Interactive: The Scientific Method Explorer</h2>
+          <p>
+            Click on any step in the scientific method cycle to learn more about it,
+            or press <strong>Auto Play</strong> to watch the process animate through each stage.
+          </p>
+
+          <div class="sim-container">
+            <div class="sim-canvas-wrap">
+              <canvas id="methodCanvas" width="800" height="500"></canvas>
+            </div>
+
+            <div class="sim-controls">
+              <button class="sim-btn" id="btnAutoPlay">Auto Play</button>
+              <button class="sim-btn" id="btnReset">Reset</button>
+            </div>
+
+            <div class="sim-data" id="stepInfo">
+              <div class="sim-datum" style="grid-column: 1 / -1;">
+                <div class="datum-value" id="stepName">Click a step to begin</div>
+                <div class="datum-label">Current Step</div>
+              </div>
+            </div>
+
+            <div class="sim-explanation" id="stepDesc">
+              The scientific method is an iterative cycle that scientists use to investigate
+              the natural world. Click on any node above to explore each stage, or press
+              Auto Play to see the full cycle in action.
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== KEY TAKEAWAYS ==================== -->
+        <section id="key-takeaways" class="lecture-section">
+          <h2>Key Takeaways</h2>
+
+          <div class="takeaways">
+            <h3>Summary</h3>
+            <ul>
+              <li>
+                Physics is the search for fundamental patterns and laws that govern the behavior of
+                nature at every scale, from subatomic particles to the cosmos.
+              </li>
+              <li>
+                All physics begins with careful observation, and progress depends on controlled
+                experiments that isolate causes and produce reproducible results.
+              </li>
+              <li>
+                Models are simplified representations of reality. They are valuable not because
+                they are perfect, but because they capture the essential features of a physical
+                situation while ignoring irrelevant details.
+              </li>
+              <li>
+                Physical laws are descriptions of patterns that nature consistently follows. They
+                are discovered, not legislated, and they hold within a specific domain of validity.
+              </li>
+              <li>
+                Logical reasoning&mdash;both inductive and deductive&mdash;is the backbone of
+                physics. Understanding the logic behind a formula is far more powerful than
+                memorizing the formula itself.
+              </li>
+              <li>
+                Physicists think in distinctive ways: thought experiments, approximation, symmetry
+                arguments, and order-of-magnitude estimation are all central tools.
+              </li>
+              <li>
+                The scientific method is not a rigid flowchart but a flexible, iterative process
+                centered on observation, hypothesis, prediction, testing, and revision.
+                Falsifiability is the hallmark of a scientific claim.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ==================== LECTURE NAVIGATION ==================== -->
+        <div class="lecture-nav">
+          <div class="nav-prev"></div>
+          <a href="02-units-dimensions.html" class="nav-next">
+            <div class="nav-direction">Next Lecture &rarr;</div>
+            <div class="nav-title">Lecture 2: Units, Dimensions, and Measurement</div>
+          </a>
+        </div>
+
+      </article>
+    </div><!-- /.lecture-layout -->
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">&phi; Physics Logic</div>
+          <p class="footer-desc">
+            A lecture series built on the conviction that understanding the reasoning behind
+            physics is more powerful than memorizing its results.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h5>Pages</h5>
+          <a href="../index.html">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../lectures.html">Lectures</a>
+          <a href="../faq.html">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h5>Foundations</h5>
+          <a href="01-introduction.html">Lecture 1: Introduction</a>
+          <a href="02-units-dimensions.html">Lecture 2: Units &amp; Dimensions</a>
+        </div>
+        <div class="footer-col">
+          <h5>Mechanics</h5>
+          <a href="03-vectors-motion.html">Lecture 3: Vectors &amp; Motion</a>
+          <a href="04-newtons-laws.html">Lecture 4: Newton's Laws</a>
+          <a href="05-work-energy-power.html">Lecture 5: Work &amp; Energy</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Physics Logic Lectures</span>
+        <span>Built for learners who want to understand, not just calculate.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+
+  <script>
+  (function() {
+    const canvas = document.getElementById('methodCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const stepNameEl = document.getElementById('stepName');
+    const stepDescEl = document.getElementById('stepDesc');
+    const btnAutoPlay = document.getElementById('btnAutoPlay');
+    const btnReset = document.getElementById('btnReset');
+
+    const dpr = window.devicePixelRatio || 1;
+    let W, H;
+
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      W = rect.width;
+      H = 500;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resizeCanvas();
+    window.addEventListener('resize', function() { resizeCanvas(); draw(); });
+
+    const steps = [
+      { name: 'Observation', desc: 'Science begins with observing the natural world. A physicist notices a pattern, an anomaly, or something unexplained. Good observation requires careful attention and freedom from preconception.' },
+      { name: 'Question', desc: 'From observation comes a question: Why does this happen? What causes this pattern? The quality of the question often determines the quality of the science that follows.' },
+      { name: 'Hypothesis', desc: 'A hypothesis is a testable, falsifiable proposed explanation. It must make specific predictions that can be checked against reality. A hypothesis that cannot be tested is not scientific.' },
+      { name: 'Prediction', desc: 'From the hypothesis, the scientist derives concrete, measurable predictions. "If my hypothesis is correct, then when I do X, I should observe Y." Predictions must be specific enough to be wrong.' },
+      { name: 'Experiment', desc: 'The experiment is designed to test the prediction under controlled conditions. Variables are isolated, measurements are made carefully, and the setup is designed so that the results can distinguish between the hypothesis being right or wrong.' },
+      { name: 'Analysis', desc: 'Data from the experiment is analyzed rigorously. Statistical tools, dimensional checks, and logical reasoning are applied. Does the data support or refute the prediction? Honest analysis is the heart of scientific integrity.' },
+      { name: 'Theory', desc: 'When a hypothesis survives repeated testing and explains a broad range of phenomena, it may mature into a scientific theory. A theory is not a guess\u2014it is a well-tested framework. But even theories remain open to revision if new evidence demands it.' }
+    ];
+
+    let activeStep = -1;
+    let glowPhase = 0;
+    let autoPlaying = false;
+    let autoTimer = null;
+    let autoIndex = 0;
+
+    function getNodePositions() {
+      const cx = W / 2;
+      const cy = H / 2 - 10;
+      const rx = Math.min(W * 0.36, 280);
+      const ry = Math.min(H * 0.36, 180);
+      const positions = [];
+      for (let i = 0; i < steps.length; i++) {
+        const angle = -Math.PI / 2 + (2 * Math.PI * i) / steps.length;
+        positions.push({
+          x: cx + rx * Math.cos(angle),
+          y: cy + ry * Math.sin(angle)
+        });
+      }
+      return positions;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      const nodes = getNodePositions();
+      const nodeRadius = Math.min(38, W * 0.048);
+      glowPhase += 0.03;
+
+      // Draw arrows between nodes
+      for (let i = 0; i < steps.length; i++) {
+        const from = nodes[i];
+        const to = nodes[(i + 1) % steps.length];
+        const dx = to.x - from.x;
+        const dy = to.y - from.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const ux = dx / dist;
+        const uy = dy / dist;
+        const startX = from.x + ux * (nodeRadius + 6);
+        const startY = from.y + uy * (nodeRadius + 6);
+        const endX = to.x - ux * (nodeRadius + 6);
+        const endY = to.y - uy * (nodeRadius + 6);
+
+        const isActive = (i === activeStep);
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
+        ctx.strokeStyle = isActive ? 'rgba(0,212,255,0.7)' : 'rgba(100,103,128,0.25)';
+        ctx.lineWidth = isActive ? 2.5 : 1.2;
+        ctx.stroke();
+
+        // Arrowhead
+        const arrowLen = 10;
+        const arrowAngle = Math.atan2(endY - startY, endX - startX);
+        ctx.beginPath();
+        ctx.moveTo(endX, endY);
+        ctx.lineTo(endX - arrowLen * Math.cos(arrowAngle - 0.35), endY - arrowLen * Math.sin(arrowAngle - 0.35));
+        ctx.lineTo(endX - arrowLen * Math.cos(arrowAngle + 0.35), endY - arrowLen * Math.sin(arrowAngle + 0.35));
+        ctx.closePath();
+        ctx.fillStyle = isActive ? 'rgba(0,212,255,0.7)' : 'rgba(100,103,128,0.25)';
+        ctx.fill();
+      }
+
+      // Draw "back to observation" arrow from Theory (index 6) back to Observation (index 0)
+      // Already handled by the cycle above
+
+      // Draw nodes
+      for (let i = 0; i < steps.length; i++) {
+        const node = nodes[i];
+        const isActive = (i === activeStep);
+        const pulseR = isActive ? nodeRadius + 4 + 3 * Math.sin(glowPhase * 2) : nodeRadius;
+
+        // Glow
+        if (isActive) {
+          const glow = ctx.createRadialGradient(node.x, node.y, pulseR * 0.5, node.x, node.y, pulseR * 2.5);
+          glow.addColorStop(0, 'rgba(0,212,255,0.25)');
+          glow.addColorStop(1, 'rgba(0,212,255,0)');
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, pulseR * 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = glow;
+          ctx.fill();
+        }
+
+        // Circle
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, pulseR, 0, Math.PI * 2);
+        ctx.fillStyle = isActive ? 'rgba(0,212,255,0.18)' : 'rgba(22,22,42,0.95)';
+        ctx.fill();
+        ctx.strokeStyle = isActive ? '#00d4ff' : 'rgba(100,103,128,0.35)';
+        ctx.lineWidth = isActive ? 2.5 : 1.2;
+        ctx.stroke();
+
+        // Step number
+        ctx.fillStyle = isActive ? '#00d4ff' : '#636780';
+        ctx.font = (isActive ? 'bold ' : '') + '11px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText((i + 1).toString(), node.x, node.y - 8);
+
+        // Step name
+        ctx.fillStyle = isActive ? '#ffffff' : '#a0a4b8';
+        ctx.font = (isActive ? '700 ' : '500 ') + '11px "Space Grotesk", sans-serif';
+        ctx.fillText(steps[i].name, node.x, node.y + 8);
+      }
+
+      // Center label
+      ctx.fillStyle = 'rgba(0,212,255,0.12)';
+      ctx.font = '600 13px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('The Scientific Method', W / 2, H / 2 - 10);
+    }
+
+    function setActive(index) {
+      activeStep = index;
+      if (index >= 0 && index < steps.length) {
+        stepNameEl.textContent = 'Step ' + (index + 1) + ': ' + steps[index].name;
+        stepDescEl.textContent = steps[index].desc;
+      }
+    }
+
+    function reset() {
+      stopAutoPlay();
+      activeStep = -1;
+      stepNameEl.textContent = 'Click a step to begin';
+      stepDescEl.textContent = 'The scientific method is an iterative cycle that scientists use to investigate the natural world. Click on any node above to explore each stage, or press Auto Play to see the full cycle in action.';
+    }
+
+    function startAutoPlay() {
+      if (autoPlaying) return;
+      autoPlaying = true;
+      autoIndex = 0;
+      btnAutoPlay.classList.add('active');
+      btnAutoPlay.textContent = 'Playing...';
+      function advance() {
+        if (!autoPlaying) return;
+        setActive(autoIndex % steps.length);
+        autoIndex++;
+        if (autoIndex > steps.length) {
+          stopAutoPlay();
+          return;
+        }
+        autoTimer = setTimeout(advance, 1800);
+      }
+      advance();
+    }
+
+    function stopAutoPlay() {
+      autoPlaying = false;
+      if (autoTimer) clearTimeout(autoTimer);
+      autoTimer = null;
+      btnAutoPlay.classList.remove('active');
+      btnAutoPlay.textContent = 'Auto Play';
+    }
+
+    canvas.addEventListener('click', function(e) {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      const nodes = getNodePositions();
+      const nodeRadius = Math.min(38, W * 0.048);
+      stopAutoPlay();
+
+      for (let i = 0; i < nodes.length; i++) {
+        const dx = mx - nodes[i].x;
+        const dy = my - nodes[i].y;
+        if (dx * dx + dy * dy < (nodeRadius + 12) * (nodeRadius + 12)) {
+          setActive(i);
+          return;
+        }
+      }
+    });
+
+    btnAutoPlay.addEventListener('click', function() {
+      if (autoPlaying) stopAutoPlay(); else startAutoPlay();
+    });
+    btnReset.addEventListener('click', reset);
+
+    // Animation loop
+    function loop() {
+      draw();
+      requestAnimationFrame(loop);
+    }
+    loop();
+  })();
+  </script>
+</body>
+</html>

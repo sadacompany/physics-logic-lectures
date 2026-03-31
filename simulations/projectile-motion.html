@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projectile Motion — Physics Logic Simulations</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .sim-hero { padding: var(--space-2xl) var(--space-lg) var(--space-lg); text-align: center; }
+    .sim-hero .label { display: inline-block; font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--electric); background: var(--electric-glow); padding: 4px 14px; border-radius: 20px; margin-bottom: var(--space-sm); }
+    .sim-hero h1 { font-size: var(--text-3xl); margin-bottom: var(--space-xs); }
+    .sim-hero h1 em { color: var(--lime); font-style: normal; }
+    .sim-hero p { color: var(--text-secondary); max-width: 640px; margin: 0 auto; font-size: var(--text-base); }
+
+    .sim-container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-lg) var(--space-2xl); display: grid; grid-template-columns: 1fr 320px; gap: var(--space-lg); }
+    .sim-main { display: flex; flex-direction: column; gap: var(--space-md); }
+
+    .canvas-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: var(--void-light); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    .canvas-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    .sim-controls { display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; }
+    .sim-btn { font-family: var(--font-display); font-size: var(--text-sm); font-weight: 600; padding: 10px 22px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface); color: var(--text-primary); cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+    .sim-btn:hover { border-color: var(--electric); color: var(--electric); box-shadow: 0 0 16px var(--electric-glow); }
+    .sim-btn.active { background: var(--electric); color: var(--void); border-color: var(--electric); }
+    .sim-btn.reset-btn:hover { border-color: var(--magenta); color: var(--magenta); box-shadow: 0 0 16px var(--magenta-glow); }
+
+    .sim-sidebar { display: flex; flex-direction: column; gap: var(--space-md); }
+    .sim-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-md); }
+    .sim-panel h3 { font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--electric); margin-bottom: var(--space-sm); display: flex; align-items: center; gap: 8px; }
+    .sim-panel h3::before { content: ''; width: 3px; height: 14px; background: var(--electric); border-radius: 2px; }
+
+    .slider-group { margin-bottom: var(--space-sm); }
+    .slider-label { display: flex; justify-content: space-between; align-items: center; font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: 6px; }
+    .slider-label .slider-val { color: var(--electric); font-weight: 600; font-family: var(--font-display); }
+
+    input[type="range"] { -webkit-appearance: none; width: 100%; height: 6px; background: var(--surface-hover); border-radius: 3px; outline: none; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--electric); border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px var(--electric-glow-strong); border: 2px solid var(--void); }
+    input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; background: var(--electric); border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px rgba(0,212,255,0.3); border: 2px solid var(--void); }
+
+    .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .data-item { background: var(--void-light); border-radius: var(--radius-sm); padding: 10px 12px; }
+    .data-item .data-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 2px; }
+    .data-item .data-value { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; color: var(--electric); }
+    .data-item .data-unit { font-size: var(--text-xs); color: var(--text-muted); margin-left: 4px; }
+    .data-item.lime .data-value { color: var(--lime); }
+    .data-item.magenta .data-value { color: var(--magenta); }
+    .data-item.gold .data-value { color: var(--gold); }
+
+    .explanation-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-md); margin-top: 0; }
+    .explanation-panel h3 { font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--violet); margin-bottom: var(--space-sm); display: flex; align-items: center; gap: 8px; }
+    .explanation-panel h3::before { content: ''; width: 3px; height: 14px; background: var(--violet); border-radius: 2px; }
+    #explanation-text { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.7; }
+    #explanation-text strong { color: var(--electric); font-weight: 600; }
+
+    @media (max-width: 900px) {
+      .sim-container { grid-template-columns: 1fr; }
+      .canvas-wrap { aspect-ratio: 4/3; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reading-progress"></div>
+  <nav class="nav"><div class="nav-inner">
+    <a href="../index.html" class="nav-brand"><span class="brand-icon">&phi;</span> Physics Logic</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../lectures.html">Lectures</a>
+      <a href="../simulations.html" class="active">Simulations</a>
+      <a href="../faq.html">FAQ</a>
+    </div>
+    <div class="nav-search"><span class="search-icon">&#128269;</span><input type="text" placeholder="Search lectures..."><div class="search-results"></div></div>
+    <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+  </div></nav>
+
+  <main class="main-content">
+    <section class="sim-hero">
+      <span class="label">Simulation</span>
+      <h1>Projectile <em>Motion</em></h1>
+      <p>Launch a projectile at any angle and velocity. Watch the parabolic trajectory unfold, track position and velocity components in real time, and discover how angle affects range and maximum height.</p>
+    </section>
+
+    <div class="sim-container">
+      <div class="sim-main">
+        <div class="canvas-wrap">
+          <canvas id="simCanvas"></canvas>
+        </div>
+        <div class="sim-controls">
+          <button class="sim-btn" id="btn-play">&#9654; Launch</button>
+          <button class="sim-btn" id="btn-pause">&#10074;&#10074; Pause</button>
+          <button class="sim-btn reset-btn" id="btn-reset">&#8634; Reset</button>
+        </div>
+        <div class="explanation-panel">
+          <h3>What's Happening</h3>
+          <div id="explanation-text">Set the launch angle and initial velocity, then press <strong>Launch</strong>. The horizontal velocity stays constant while gravity pulls the projectile downward, creating the characteristic parabolic arc.</div>
+        </div>
+      </div>
+
+      <div class="sim-sidebar">
+        <div class="sim-panel">
+          <h3>Parameters</h3>
+          <div class="slider-group">
+            <div class="slider-label"><span>Launch Angle</span><span class="slider-val"><span id="disp-angle">45</span>&deg;</span></div>
+            <input type="range" id="sl-angle" min="5" max="85" step="1" value="45">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Initial Velocity</span><span class="slider-val"><span id="disp-v0">25</span> m/s</span></div>
+            <input type="range" id="sl-v0" min="5" max="50" step="0.5" value="25">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Gravity</span><span class="slider-val"><span id="disp-g">9.81</span> m/s&sup2;</span></div>
+            <input type="range" id="sl-g" min="1" max="20" step="0.1" value="9.81">
+          </div>
+        </div>
+
+        <div class="sim-panel">
+          <h3>Live Data</h3>
+          <div class="data-grid">
+            <div class="data-item">
+              <div class="data-label">X Position</div>
+              <div><span class="data-value" id="data-x">0</span><span class="data-unit">m</span></div>
+            </div>
+            <div class="data-item">
+              <div class="data-label">Y Position</div>
+              <div><span class="data-value" id="data-y">0</span><span class="data-unit">m</span></div>
+            </div>
+            <div class="data-item lime">
+              <div class="data-label">Vx</div>
+              <div><span class="data-value" id="data-vx">0</span><span class="data-unit">m/s</span></div>
+            </div>
+            <div class="data-item magenta">
+              <div class="data-label">Vy</div>
+              <div><span class="data-value" id="data-vy">0</span><span class="data-unit">m/s</span></div>
+            </div>
+            <div class="data-item gold">
+              <div class="data-label">Max Height</div>
+              <div><span class="data-value" id="data-maxh">--</span><span class="data-unit">m</span></div>
+            </div>
+            <div class="data-item gold">
+              <div class="data-label">Range</div>
+              <div><span class="data-value" id="data-range">--</span><span class="data-unit">m</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <div class="footer-brand">Physics Logic</div>
+          <p class="footer-desc">A free educational platform dedicated to teaching physics through deep reasoning and logical thinking.</p>
+        </div>
+        <div class="footer-col"><h5>Simulations</h5><a href="../simulations.html">All Simulations</a><a href="newton-second-law.html">F = ma</a><a href="energy-conservation.html">Energy Conservation</a></div>
+        <div class="footer-col"><h5>Resources</h5><a href="../about.html">About</a><a href="../lectures.html">Lectures</a><a href="../faq.html">FAQ</a></div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Physics Logic Lectures. All rights reserved.</span>
+        <span>Built for learners, by learners.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/simulations.js"></script>
+  <script>
+  (function() {
+    let angle = 45, v0 = 25, grav = 9.81;
+    let vx = 0, vy = 0, px = 0, py = 0;
+    let trail = [];
+    let landed = false;
+    let maxHeight = 0, range = 0;
+
+    const sim = new SimController('simCanvas');
+
+    bindSlider('sl-angle', 'disp-angle', v => { angle = v; });
+    bindSlider('sl-v0', 'disp-v0', v => { v0 = v; });
+    bindSlider('sl-g', 'disp-g', v => { grav = v; });
+
+    // Theoretical values
+    function theoreticalMax() {
+      const rad = degToRad(angle);
+      return (v0 * Math.sin(rad)) * (v0 * Math.sin(rad)) / (2 * grav);
+    }
+    function theoreticalRange() {
+      const rad = degToRad(angle);
+      return (v0 * v0 * Math.sin(2 * rad)) / grav;
+    }
+
+    sim.onReset = function() {
+      const rad = degToRad(angle);
+      vx = 0; vy = 0; px = 0; py = 0;
+      trail = [];
+      landed = false;
+      maxHeight = 0; range = 0;
+      updateDisplays();
+      setDisplay('data-maxh', formatNum(theoreticalMax()));
+      setDisplay('data-range', formatNum(theoreticalRange()));
+      setExplanation('Set the launch angle and initial velocity, then press <strong>Launch</strong>. The horizontal velocity stays constant while gravity pulls the projectile downward, creating the characteristic parabolic arc. <br><br>Predicted max height: <strong>' + formatNum(theoreticalMax()) + ' m</strong>. Predicted range: <strong>' + formatNum(theoreticalRange()) + ' m</strong>.');
+    };
+
+    sim.update = function(dt) {
+      if (landed) return;
+
+      // Initialize on first frame
+      if (this.time < dt * 2) {
+        const rad = degToRad(angle);
+        vx = v0 * Math.cos(rad);
+        vy = v0 * Math.sin(rad);
+      }
+
+      // Physics: constant vx, vy decreases due to gravity
+      vy -= grav * dt;
+      px += vx * dt;
+      py += vy * dt;
+
+      if (py > maxHeight) maxHeight = py;
+
+      trail.push({ x: px, y: py });
+      if (trail.length > 2000) trail.shift();
+
+      // Landed?
+      if (py <= 0 && this.time > 0.05) {
+        py = 0;
+        range = px;
+        landed = true;
+        setExplanation('The projectile has <strong>landed</strong> after traveling <strong>' + formatNum(range) + ' m</strong> horizontally. Maximum height reached: <strong>' + formatNum(maxHeight) + ' m</strong>. Flight time: <strong>' + formatNum(this.time) + ' s</strong>.<br><br>Theoretical range: <strong>' + formatNum(theoreticalRange()) + ' m</strong>. Theoretical max height: <strong>' + formatNum(theoreticalMax()) + ' m</strong>. Try changing the angle to 45&deg; for maximum range at a given speed.');
+      } else {
+        setExplanation('The projectile is in flight. Horizontal velocity <strong>Vx = ' + formatNum(vx) + ' m/s</strong> remains constant (no air resistance). Vertical velocity <strong>Vy = ' + formatNum(vy) + ' m/s</strong> decreases due to gravity at ' + formatNum(grav) + ' m/s&sup2;. Current height: <strong>' + formatNum(py) + ' m</strong>.');
+      }
+
+      updateDisplays();
+    };
+
+    function updateDisplays() {
+      setDisplay('data-x', px);
+      setDisplay('data-y', py);
+      setDisplay('data-vx', vx);
+      setDisplay('data-vy', vy);
+      if (maxHeight > 0) setDisplay('data-maxh', maxHeight);
+      if (range > 0) setDisplay('data-range', range);
+    }
+
+    sim.draw = function() {
+      const w = this.getWidth(), h = this.getHeight();
+      const ctx = this.ctx;
+      ctx.clearRect(0, 0, w, h);
+      drawGrid(ctx, w, h);
+
+      const groundY = h * 0.85;
+      const originX = 60;
+      const originY = groundY;
+
+      // Auto-scale: fit the theoretical range and max height
+      const tRange = Math.max(theoreticalRange(), range, px, 50);
+      const tHeight = Math.max(theoreticalMax(), maxHeight, 30);
+      const scaleX = (w - 100) / tRange;
+      const scaleY = (groundY - 40) / (tHeight * 1.2);
+      const scale = Math.min(scaleX, scaleY);
+
+      // Ground
+      ctx.fillStyle = SIM_COLORS.surfaceRaised;
+      ctx.fillRect(0, groundY, w, h - groundY);
+      ctx.strokeStyle = SIM_COLORS.lime;
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(w, groundY); ctx.stroke();
+
+      // Axis markers
+      ctx.fillStyle = SIM_COLORS.textMuted;
+      ctx.font = '10px "DM Sans", sans-serif';
+      ctx.textAlign = 'center';
+      for (let d = 0; d <= tRange; d += Math.ceil(tRange / 8)) {
+        const mx = originX + d * scale;
+        if (mx > w - 20) break;
+        ctx.fillText(d + 'm', mx, groundY + 14);
+        ctx.strokeStyle = SIM_COLORS.gridLine;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(mx, groundY); ctx.lineTo(mx, groundY - 4); ctx.stroke();
+      }
+
+      // Launch angle indicator
+      if (!this.running || this.time < 0.1) {
+        const rad = degToRad(angle);
+        const indLen = 60;
+        ctx.strokeStyle = 'rgba(0,212,255,0.4)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(originX, originY);
+        ctx.lineTo(originX + indLen * Math.cos(rad), originY - indLen * Math.sin(rad));
+        ctx.stroke();
+        ctx.setLineDash([]);
+        // Angle arc
+        ctx.strokeStyle = SIM_COLORS.electric;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(originX, originY, 30, -rad, 0);
+        ctx.stroke();
+        ctx.fillStyle = SIM_COLORS.electric;
+        ctx.font = '12px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(angle + '\u00B0', originX + 34, originY - 8);
+      }
+
+      // Trail
+      if (trail.length > 1) {
+        // Trail glow
+        ctx.strokeStyle = 'rgba(0,255,136,0.15)';
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        trail.forEach((p, i) => {
+          const sx = originX + p.x * scale;
+          const sy = originY - p.y * scale;
+          if (i === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
+        });
+        ctx.stroke();
+
+        // Trail line
+        ctx.strokeStyle = SIM_COLORS.lime;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        trail.forEach((p, i) => {
+          const sx = originX + p.x * scale;
+          const sy = originY - p.y * scale;
+          if (i === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
+        });
+        ctx.stroke();
+      }
+
+      // Projectile
+      const projX = originX + px * scale;
+      const projY = originY - py * scale;
+
+      ctx.shadowColor = SIM_COLORS.lime;
+      ctx.shadowBlur = 15;
+      ctx.fillStyle = SIM_COLORS.lime;
+      ctx.beginPath();
+      ctx.arc(projX, projY, 8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      ctx.strokeStyle = SIM_COLORS.white;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(projX, projY, 8, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Velocity vector arrows on projectile
+      if (!landed && (vx !== 0 || vy !== 0)) {
+        const vScale = 2;
+        // Vx arrow
+        if (Math.abs(vx) > 0.5) {
+          drawArrow(ctx, projX, projY, projX + vx * vScale, projY, SIM_COLORS.electric, 6, 1.5);
+        }
+        // Vy arrow
+        if (Math.abs(vy) > 0.5) {
+          drawArrow(ctx, projX, projY, projX, projY - vy * vScale, SIM_COLORS.magenta, 6, 1.5);
+        }
+        // Resultant
+        const speed = Math.sqrt(vx * vx + vy * vy);
+        if (speed > 1) {
+          ctx.setLineDash([3, 3]);
+          ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(projX + vx * vScale, projY);
+          ctx.lineTo(projX + vx * vScale, projY - vy * vScale);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(projX, projY - vy * vScale);
+          ctx.lineTo(projX + vx * vScale, projY - vy * vScale);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+      }
+
+      // Max height dashed line
+      if (maxHeight > 1) {
+        const mhY = originY - maxHeight * scale;
+        ctx.strokeStyle = 'rgba(251,191,36,0.3)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath(); ctx.moveTo(originX, mhY); ctx.lineTo(w - 20, mhY); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = SIM_COLORS.gold;
+        ctx.font = '11px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText('H = ' + formatNum(maxHeight) + ' m', w - 24, mhY - 6);
+      }
+
+      // Range marker
+      if (landed && range > 0) {
+        const rX = originX + range * scale;
+        ctx.fillStyle = SIM_COLORS.gold;
+        ctx.font = '12px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('R = ' + formatNum(range) + ' m', rX, groundY + 28);
+        // Small triangle marker
+        ctx.beginPath();
+        ctx.moveTo(rX, groundY);
+        ctx.lineTo(rX - 5, groundY + 8);
+        ctx.lineTo(rX + 5, groundY + 8);
+        ctx.closePath();
+        ctx.fillStyle = SIM_COLORS.gold;
+        ctx.fill();
+      }
+
+      // Title
+      ctx.fillStyle = SIM_COLORS.textMuted;
+      ctx.font = '12px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Projectile Motion — Parabolic Trajectory', 12, 20);
+      ctx.fillText('t = ' + formatNum(sim.time, 1) + ' s', 12, 36);
+    };
+
+    sim.onReset();
+    sim.draw();
+  })();
+  </script>
+</body>
+</html>

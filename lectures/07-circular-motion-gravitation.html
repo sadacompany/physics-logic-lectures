@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lecture 7: Circular Motion and Gravitation — Physics Logic</title>
+  <meta name="description" content="Understand centripetal acceleration, gravitational force, orbits, and Kepler's laws through logical reasoning and first principles.">
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .sim-container { background: #101020; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 24px; margin: 2rem 0; }
+    .sim-canvas-wrap { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,212,255,0.15); }
+    .sim-canvas-wrap canvas { display: block; width: 100%; background: #0a0a14; }
+    .sim-controls { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px; align-items: center; }
+    .sim-control { display: flex; flex-direction: column; gap: 4px; }
+    .sim-control label { font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; color: #636780; text-transform: uppercase; letter-spacing: 0.1em; }
+    .sim-control input[type="range"] { -webkit-appearance: none; width: 160px; height: 4px; background: #222244; border-radius: 2px; outline: none; }
+    .sim-control input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #00d4ff; cursor: pointer; box-shadow: 0 0 8px rgba(0,212,255,0.4); }
+    .sim-btn { font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 600; padding: 8px 20px; border-radius: 20px; border: 1px solid rgba(0,212,255,0.3); background: rgba(0,212,255,0.08); color: #00d4ff; cursor: pointer; transition: all 0.15s; }
+    .sim-btn:hover { background: rgba(0,212,255,0.15); box-shadow: 0 0 12px rgba(0,212,255,0.2); }
+    .sim-btn.active { background: #00d4ff; color: #06060c; }
+    .sim-data { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-top: 16px; }
+    .sim-datum { background: #16162a; border-radius: 8px; padding: 12px; text-align: center; }
+    .sim-datum .datum-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; color: #00d4ff; }
+    .sim-datum .datum-label { font-size: 0.7rem; color: #636780; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+    .sim-explanation { margin-top: 16px; padding: 16px; background: rgba(0,212,255,0.04); border-left: 2px solid #00d4ff; border-radius: 0 8px 8px 0; font-size: 0.9rem; color: #a0a4b8; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress"></div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand"><span class="brand-icon">&phi;</span> Physics Logic</a>
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../lectures.html" class="active">Lectures</a>
+        <a href="../faq.html">FAQ</a>
+      </div>
+      <div class="nav-search">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" placeholder="Search lectures...">
+        <div class="search-results"></div>
+      </div>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Lecture Hero -->
+  <section class="lecture-hero">
+    <div class="lecture-hero-inner">
+      <div class="breadcrumb">
+        <a href="../index.html">Home</a><span class="sep">/</span>
+        <a href="../lectures.html">Lectures</a><span class="sep">/</span>
+        Lecture 7
+      </div>
+      <div class="lecture-number">Lecture 07</div>
+      <h1>Circular Motion and <em>Gravitation</em></h1>
+      <div class="lecture-meta">
+        <span>Mechanics</span>
+        <span>Intermediate</span>
+        <span>40 min read</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lecture Layout: Sidebar + Article -->
+  <div class="lecture-layout">
+
+    <!-- Sticky Table of Contents Sidebar -->
+    <aside class="lecture-toc">
+      <h3>Contents</h3>
+      <div class="toc-list">
+        <a href="#overview">Overview</a>
+        <a href="#uniform-circular-motion">Uniform Circular Motion</a>
+        <a href="#centripetal-acceleration">Centripetal Acceleration</a>
+        <a href="#centripetal-force">Centripetal Force</a>
+        <a href="#non-uniform-circular-motion">Non-Uniform Circular Motion</a>
+        <a href="#newtons-law-of-gravitation">Newton's Law of Gravitation</a>
+        <a href="#gravitational-field">Gravitational Field</a>
+        <a href="#orbits">Orbits</a>
+        <a href="#keplers-laws">Kepler's Laws</a>
+        <a href="#weightlessness">Weightlessness</a>
+        <a href="#misconceptions">Common Misconceptions</a>
+        <a href="#orbital-simulator">Interactive: Orbital Simulator</a>
+        <a href="#takeaways">Key Takeaways</a>
+      </div>
+    </aside>
+
+    <!-- Main Article Content -->
+    <article class="lecture-article">
+
+      <!-- Learning Goals -->
+      <div class="learning-goals">
+        <h3>Learning Goals</h3>
+        <ul>
+          <li>Understand what circular motion is and why an object moving in a circle must be accelerating</li>
+          <li>Derive the expression for centripetal acceleration from first principles</li>
+          <li>Apply Newton's second law to circular motion problems using centripetal force</li>
+          <li>State and apply Newton's law of universal gravitation</li>
+          <li>Explain how gravity governs orbital motion and derive orbital velocity</li>
+          <li>Understand and derive Kepler's three laws of planetary motion</li>
+          <li>Explain the phenomenon of apparent weightlessness in orbiting spacecraft</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: Overview -->
+      <section class="lecture-section" id="overview">
+        <h2>Overview</h2>
+        <p>In the preceding lectures, we studied motion primarily along straight lines and analyzed forces in linear contexts. We developed Newton's laws to understand why objects accelerate, and we used energy and momentum to analyze interactions. But the natural world is full of curves. The Earth orbits the Sun. The Moon orbits the Earth. A car rounds a bend. A ball whirls on a string. An electron spirals through a magnetic field. Blood flows through curved arteries. Satellites trace arcs above the atmosphere. Curved motion, and circular motion in particular, is one of the most prevalent forms of movement in the universe.</p>
+        <p>This lecture brings together two major threads. First, we develop the mathematics and physics of circular motion itself: what acceleration means when direction changes, and what forces are required to sustain it. Second, we tackle gravitation, Newton's grand insight that the same force pulling an apple downward also holds the Moon in orbit. The unification of terrestrial and celestial mechanics was one of the most profound intellectual achievements in human history, and understanding the logic behind it will deepen your grasp of forces, acceleration, and energy.</p>
+        <p>By the end of this lecture, you will see that circular motion is not a separate topic from Newton's laws. It is simply Newton's second law applied to a particular geometry. And gravitation is not a mysterious force that defies explanation. It follows logically from a single, elegant equation that describes how every mass in the universe attracts every other mass.</p>
+        <p>The conceptual thread running through this entire lecture is the following: an object moving in a curve is accelerating, and acceleration requires a force. Identify the force, understand its direction, and you unlock the physics of everything from a spinning top to the orbital mechanics of spacecraft. Along the way, we will encounter several of the most common misconceptions in physics and dismantle them with careful reasoning.</p>
+        <p>We will also see how energy methods complement force analysis. The concepts of gravitational potential energy, escape velocity, and orbital energy all connect to the work-energy ideas from Lecture 5, reinforcing the theme that physics is a unified discipline where the same principles appear again and again in different guises.</p>
+      </section>
+
+      <!-- Section 2: Uniform Circular Motion -->
+      <section class="lecture-section" id="uniform-circular-motion">
+        <h2>Uniform Circular Motion</h2>
+        <p>Let us begin with the simplest case: an object moving along a circular path at constant speed. This is called uniform circular motion. You might think that if the speed is constant, there is no acceleration. But that intuition is wrong, and correcting it is one of the most important conceptual steps in mechanics.</p>
+        <p>Recall what acceleration actually means. Acceleration is the rate of change of velocity. And velocity is a vector: it has both magnitude (speed) and direction. In uniform circular motion, the magnitude of the velocity does not change. The speed is constant. But the direction of the velocity changes continuously. At every point along the circular path, the velocity vector is tangent to the circle, pointing in a different direction than it did a moment before. Because the direction is changing, the velocity is changing. And because the velocity is changing, there must be an acceleration, even though the speed is constant.</p>
+        <p>This is a subtle but crucial point. Many students conflate speed and velocity, and therefore struggle with the idea that constant speed can coexist with acceleration. Remember: speed is a scalar (just a number), while velocity is a vector (a number plus a direction). When either the magnitude or the direction of a vector changes, the vector itself changes.</p>
+        <p>An analogy may help. Imagine driving a car at exactly 60 km/h on a perfectly circular track. Your speedometer never changes. But you are constantly turning the steering wheel to follow the curve. That continuous turning is the physical manifestation of the acceleration. If you released the steering wheel, the car would go straight — off the track. The fact that you must actively steer to maintain a circular path is direct evidence that circular motion requires a continuous force, and therefore a continuous acceleration.</p>
+        <p>It is also important to appreciate that this acceleration is not a small effect. A car traveling at 20 m/s around a curve of radius 50 m has a centripetal acceleration of v&sup2;/r = 400/50 = 8 m/s&sup2;, which is nearly as large as the acceleration due to gravity. This is why you feel a strong pull to the side when a car takes a sharp turn at speed.</p>
+
+        <div class="definition-box">
+          <div class="def-term">Uniform Circular Motion</div>
+          <div class="def-text">Motion along a circular path at constant speed. Although the speed remains unchanged, the velocity changes continuously because its direction changes. The object is therefore accelerating at every instant.</div>
+        </div>
+
+        <h3>Period and Frequency</h3>
+        <p>Two quantities describe how quickly an object completes its circular path. The period, denoted T, is the time required for one complete revolution. The frequency, denoted f, is the number of complete revolutions per unit time. These two quantities are reciprocals of each other:</p>
+
+        <div class="formula">
+          <span class="formula-name">Period and Frequency</span>
+          f = 1 / T &nbsp;&nbsp;&nbsp; and &nbsp;&nbsp;&nbsp; T = 1 / f
+        </div>
+
+        <p>The speed of an object in uniform circular motion can be found from the circumference of the circle divided by the period. If the radius is r, then the circumference is 2&pi;r, and the speed is v = 2&pi;r / T. This also equals v = 2&pi;rf. We often use the angular frequency &omega; = 2&pi;f = 2&pi;/T, which measures the rate of angle change in radians per second. In terms of angular frequency, the speed is v = &omega;r.</p>
+        <p>Think about what this means physically. A larger radius at the same angular frequency means a higher linear speed. This is why the outer edge of a spinning disc moves faster than a point near the center, even though both complete one revolution in the same time. The outer point must travel a greater distance in the same period, so it must move faster.</p>
+
+        <h3>Everyday Examples</h3>
+        <p>Uniform circular motion is an idealization, but many real-world situations approximate it closely. The second hand of a clock sweeps around the dial at a nearly constant angular speed, completing one revolution every 60 seconds. A satellite in a circular orbit moves at constant speed (we will derive why later in this lecture). A car negotiating a circular roundabout at steady speed is approximately in uniform circular motion.</p>
+        <p>Even a washing machine drum during the spin cycle, once it reaches its operating speed, approximates uniform circular motion. The clothes inside are pressed against the drum wall because the drum pushes them inward (providing the centripetal force), and water escapes through the drum's holes because it lacks a surface to provide the necessary inward force.</p>
+
+        <div class="example">
+          <div class="example-label">Worked Example</div>
+          <p>A point on the equator of the Earth moves in a circle due to Earth's rotation. The radius of the Earth is approximately 6.37 &times; 10<sup>6</sup> m. Find the speed of this point and its centripetal acceleration.</p>
+          <div class="solution">
+            <div class="solution-label">Solution</div>
+            <p>The period of Earth's rotation is T = 24 hours = 86,400 s.</p>
+            <p>Speed: v = 2&pi;r/T = 2&pi;(6.37 &times; 10<sup>6</sup>)/86,400 = 463 m/s (about 1,670 km/h)</p>
+            <p>Centripetal acceleration: a<sub>c</sub> = v&sup2;/r = (463)&sup2;/(6.37 &times; 10<sup>6</sup>) = 0.034 m/s&sup2;</p>
+            <p>This is only about 0.35% of g. The centripetal acceleration required for Earth's rotation is tiny compared to gravitational acceleration. This is why you do not feel the rotation of the Earth. However, this small effect does make your apparent weight at the equator slightly less than at the poles.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Centripetal Acceleration -->
+      <section class="lecture-section" id="centripetal-acceleration">
+        <h2>Centripetal Acceleration</h2>
+        <p>Now we arrive at one of the most important derivations in mechanics. We have established that an object in uniform circular motion is accelerating. The question is: in what direction does this acceleration point, and what is its magnitude?</p>
+
+        <h3>Direction of the Acceleration</h3>
+        <p>Consider an object moving along a circle at constant speed. At some instant, the velocity is tangent to the circle. A short time later, the velocity is still tangent to the circle, but at a different point, so it points in a slightly different direction. The change in velocity, &Delta;v, is the vector difference between the new velocity and the old velocity.</p>
+        <p>If you draw the two velocity vectors tail-to-tail and construct the difference vector, something remarkable emerges. Because both velocity vectors have the same magnitude (the speed is constant) and they are separated by a small angle, the difference vector &Delta;v points roughly toward the center of the circle. As the time interval shrinks to zero, this approximation becomes exact. The acceleration in uniform circular motion always points directly toward the center of the circle.</p>
+        <p>This is why we call it centripetal acceleration, from the Latin meaning "center-seeking." It does not point along the direction of motion (that would change the speed). It points perpendicular to the motion, toward the center, which changes only the direction of the velocity. This is exactly what is needed to keep the object moving in a circle rather than flying off in a straight line.</p>
+        <p>To build intuition for this, consider what would happen if the inward acceleration suddenly vanished. Without a center-directed acceleration, Newton's first law tells us the object would continue in a straight line tangent to the circle at whatever point it was at. It would fly off on a tangent, not radially outward. This is what happens when you release a ball from a circular path — it does not fly outward from the center, but tangent to the circle. The common perception that objects fly outward is an illusion created by the rotating reference frame. From an inertial (non-rotating) perspective, the object simply goes straight while the circular path curves away from it.</p>
+
+        <h3>Magnitude of the Acceleration</h3>
+        <p>To find the magnitude, we use a geometric argument. Consider a small time interval &Delta;t during which the object moves through a small angle &Delta;&theta;. The object's position shifts along the arc of the circle, and its velocity rotates by the same angle &Delta;&theta;.</p>
+        <p>Draw the velocity vector at the beginning of the interval and at the end. Both have the same magnitude v (speed is constant), but they point in slightly different directions, separated by angle &Delta;&theta;. Now construct the change in velocity &Delta;v = v<sub>final</sub> - v<sub>initial</sub> by placing the two vectors tail-to-tail. They form an isosceles triangle with two sides of length v and the included angle &Delta;&theta;.</p>
+        <p>For small &Delta;&theta;, the base of this triangle (the magnitude of &Delta;v) is approximately v &middot; &Delta;&theta;. This is the same small-angle approximation that gives arc length = radius &times; angle. Therefore:</p>
+        <p>a = |&Delta;v| / &Delta;t = v &middot; &Delta;&theta; / &Delta;t = v &middot; &omega;</p>
+        <p>Here we recognized that &Delta;&theta;/&Delta;t is the angular velocity &omega;. Since &omega; = v/r, we obtain:</p>
+
+        <div class="formula">
+          <span class="formula-name">Centripetal Acceleration</span>
+          a<sub>c</sub> = v&sup2; / r = &omega;&sup2;r = 4&pi;&sup2;r / T&sup2;
+        </div>
+
+        <h3>Why v-squared and Why 1/r?</h3>
+        <p>The formula a<sub>c</sub> = v&sup2;/r is worth understanding intuitively, not just memorizing. Consider the v&sup2; in the numerator. If you double the speed, the direction of velocity changes twice as fast (because you traverse the curve twice as quickly), and each change in direction is twice as large (because the velocity vectors are twice as long). Two factors of v give v&sup2;.</p>
+        <p>Now consider the r in the denominator. A larger radius means a gentler curve. The direction changes more slowly because the path deviates less from a straight line per unit distance traveled. So the acceleration is smaller for a larger radius, which is why r appears in the denominator.</p>
+        <p>You can also understand this dimensionally. Acceleration has units of m/s&sup2;. The quantity v&sup2;/r has units of (m/s)&sup2; / m = m&sup2;/s&sup2; / m = m/s&sup2;. The dimensions work out, which is a good sanity check.</p>
+
+        <h3>Alternative Forms</h3>
+        <p>The centripetal acceleration can be expressed in several equivalent forms, each useful in different contexts:</p>
+        <ul>
+          <li>a<sub>c</sub> = v&sup2;/r — useful when you know the linear speed and radius</li>
+          <li>a<sub>c</sub> = &omega;&sup2;r — useful when you know the angular speed and radius</li>
+          <li>a<sub>c</sub> = 4&pi;&sup2;r/T&sup2; — useful when you know the period and radius</li>
+          <li>a<sub>c</sub> = v&omega; — useful when you know both linear and angular speed</li>
+        </ul>
+        <p>All four expressions are mathematically equivalent. Which one you choose depends on which quantities are given in the problem. Having multiple forms at your disposal makes problem-solving more flexible and efficient.</p>
+
+        <div class="example">
+          <div class="example-label">Worked Example</div>
+          <p>A centrifuge spins biological samples at 12,000 revolutions per minute (rpm) in a circle of radius 0.10 m. What is the centripetal acceleration, and how does it compare to g?</p>
+          <div class="solution">
+            <div class="solution-label">Solution</div>
+            <p>Convert rpm to angular frequency: &omega; = 12,000 &times; 2&pi;/60 = 1,257 rad/s</p>
+            <p>Centripetal acceleration: a<sub>c</sub> = &omega;&sup2;r = (1257)&sup2;(0.10) = 158,000 m/s&sup2;</p>
+            <p>Ratio to g: a<sub>c</sub>/g = 158,000/9.8 &approx; 16,100</p>
+            <p>The centrifuge provides over 16,000 times the acceleration due to gravity. This enormous acceleration is what allows centrifuges to separate substances of different densities far more effectively than gravity alone.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Centripetal Force -->
+      <section class="lecture-section" id="centripetal-force">
+        <h2>Centripetal Force</h2>
+        <p>If an object has an acceleration, Newton's second law tells us there must be a net force causing it. For an object in uniform circular motion, the acceleration points toward the center, so the net force must also point toward the center. We call this the centripetal force:</p>
+
+        <div class="formula">
+          <span class="formula-name">Centripetal Force</span>
+          F<sub>c</sub> = m a<sub>c</sub> = m v&sup2; / r
+        </div>
+
+        <div class="key-concept">
+          <div class="concept-label">Key Concept</div>
+          <p>Centripetal force is not a new, separate type of force. It is simply the name we give to whatever net force is directed toward the center of the circular path. In different situations, the centripetal force is provided by different physical forces: the tension in a string, the gravitational pull of a planet, the friction between tires and road, or the normal force from a banked curve. The term "centripetal force" is a label describing the role a force plays, not the origin of the force.</p>
+        </div>
+
+        <p>This distinction is essential and is the source of enormous confusion among students. When you see a problem involving circular motion, your job is to identify which real, physical force or combination of forces provides the centripetal force. You never add "centripetal force" as a separate arrow on a free body diagram. Instead, you set the net inward force equal to mv&sup2;/r.</p>
+        <p>To reinforce this point, consider what happens when the centripetal force disappears. If you are swinging a ball on a string and the string breaks, what happens? The ball does not continue in a circle. It does not fly radially outward. It flies off in a straight line tangent to the circle at the point where the string broke. The moment the inward force (tension) vanishes, there is no force to curve the path, and Newton's first law takes over: the ball moves in a straight line at constant velocity. This simple observation confirms that circular motion requires a continuous inward force.</p>
+        <p>A useful problem-solving strategy for circular motion is the following three-step approach:</p>
+        <ol>
+          <li><strong>Draw a free body diagram</strong> showing all real forces acting on the object (gravity, tension, normal force, friction, etc.).</li>
+          <li><strong>Choose a coordinate system</strong> with one axis pointing toward the center of the circular path (the radial direction) and the other tangent to the path (the tangential direction).</li>
+          <li><strong>Apply Newton's second law</strong> in the radial direction: &Sigma;F<sub>radial</sub> = mv&sup2;/r (with inward forces positive). Apply it separately in the tangential direction if needed: &Sigma;F<sub>tangential</sub> = ma<sub>t</sub>.</li>
+        </ol>
+        <p>This systematic approach works for every circular motion problem, whether horizontal, vertical, banked, or otherwise. The key is correctly identifying which components of each force point toward the center.</p>
+
+        <h3>Examples of Forces Providing Centripetal Acceleration</h3>
+        <ul>
+          <li><strong>A ball on a string:</strong> The tension in the string pulls the ball toward the center of the circle. Tension provides the centripetal force.</li>
+          <li><strong>A car rounding a flat curve:</strong> Static friction between the tires and the road pushes the car toward the center of the curve. Friction provides the centripetal force.</li>
+          <li><strong>The Moon orbiting Earth:</strong> Earth's gravitational pull on the Moon is directed toward Earth's center. Gravity provides the centripetal force.</li>
+          <li><strong>A car on a banked curve with no friction:</strong> The horizontal component of the normal force from the road surface provides the centripetal force.</li>
+          <li><strong>A satellite orbiting a planet:</strong> The gravitational force is the only force, and it provides all of the centripetal force.</li>
+        </ul>
+
+        <h3>Banked Curves: A Detailed Analysis</h3>
+        <p>One of the most instructive applications of centripetal force is the physics of banked curves. When a road curves, friction between the tires and road usually provides the centripetal force. But on a banked curve (tilted toward the center), the normal force has a horizontal component that contributes to the centripetal force, reducing or eliminating the need for friction.</p>
+        <p>For a frictionless banked curve, the only forces on the car are gravity (downward) and the normal force (perpendicular to the road surface). The vertical component of the normal force balances gravity: N cos&theta; = mg. The horizontal component provides the centripetal force: N sin&theta; = mv&sup2;/r. Dividing these equations yields:</p>
+        <p>tan&theta; = v&sup2;/(rg)</p>
+        <p>This gives the ideal banking angle for a car to negotiate the curve at speed v without any friction. At this speed, the car would follow the curve perfectly even on an icy road. Highway engineers use this relationship to design exit ramps and curved roads, choosing the banking angle to match the expected traffic speed.</p>
+
+        <div class="example">
+          <div class="example-label">Worked Example</div>
+          <p>A 0.50 kg ball is attached to a string and swung in a horizontal circle of radius 1.2 m at a speed of 4.0 m/s. Find the tension in the string.</p>
+          <div class="solution">
+            <div class="solution-label">Solution</div>
+            <p>The tension provides the centripetal force. Applying Newton's second law in the radial direction:</p>
+            <p>T = mv&sup2;/r = (0.50 kg)(4.0 m/s)&sup2; / (1.2 m) = (0.50)(16) / 1.2 = 6.7 N</p>
+            <p>The string must exert a 6.7 N inward pull on the ball to maintain the circular path at this speed.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Non-Uniform Circular Motion -->
+      <section class="lecture-section" id="non-uniform-circular-motion">
+        <h2>Non-Uniform Circular Motion</h2>
+        <p>In uniform circular motion, the speed is constant and the only acceleration is centripetal, directed toward the center. But what happens when the speed changes while the object moves along a circular path? This is non-uniform circular motion, and it is far more common in the real world.</p>
+        <p>When the speed changes, there are two components of acceleration simultaneously. The centripetal (radial) component still points toward the center and has magnitude v&sup2;/r. It is responsible for changing the direction of the velocity. But now there is also a tangential component, directed along the velocity (tangent to the circle), that is responsible for changing the speed. If the object is speeding up, the tangential acceleration points in the direction of motion. If it is slowing down, the tangential acceleration points opposite to the direction of motion.</p>
+        <p>The total acceleration is the vector sum of these two perpendicular components:</p>
+
+        <div class="formula">
+          <span class="formula-name">Total Acceleration in Non-Uniform Circular Motion</span>
+          a = &radic;(a<sub>c</sub>&sup2; + a<sub>t</sub>&sup2;)
+        </div>
+
+        <p>Because the centripetal and tangential components are always perpendicular to each other (one is radial, the other is tangential), the magnitude of the total acceleration follows from the Pythagorean theorem. The direction of the total acceleration vector lies somewhere between the radial and tangential directions, depending on the relative magnitudes of the two components.</p>
+        <p>The angle the total acceleration makes with the radial direction is given by tan&alpha; = a<sub>t</sub>/a<sub>c</sub>. When a<sub>t</sub> = 0 (uniform circular motion), the total acceleration points purely toward the center. When a<sub>c</sub> = 0 (straight-line acceleration), the total acceleration is purely tangential. In general, the acceleration vector spirals inward, pulling the object around the curve while also speeding it up or slowing it down.</p>
+        <p>Real-world examples of non-uniform circular motion abound. A car accelerating out of a curve, a roller coaster descending through a loop, a planet in an elliptical orbit (where the speed varies), and a charged particle spiraling in a non-uniform magnetic field all exhibit both centripetal and tangential acceleration simultaneously.</p>
+        <p>Consider a ball swinging on a string in a vertical circle. At the top and bottom, the forces may not provide exactly mv&sup2;/r, so the speed changes as the ball moves around the circle. Gravity has both a radial component (contributing to centripetal acceleration) and a tangential component (speeding up or slowing down the ball), depending on the ball's position in the circle. This is a classic example of non-uniform circular motion.</p>
+
+        <h3>Vertical Circular Motion in Detail</h3>
+        <p>Vertical circular motion deserves careful attention because gravity acts differently at various points of the circle. At the bottom of the circle, the net upward force (tension minus weight) provides the centripetal force, so the tension is greatest there: T = mv&sup2;/r + mg. At the top of the circle, gravity helps provide the centripetal force, so the tension is smallest: T = mv&sup2;/r - mg. If the speed is too low at the top, the required centripetal force exceeds the available gravitational force, and the string goes slack. The minimum speed at the top for the string to remain taut is found by setting T = 0, giving v<sub>min</sub> = &radic;(gr).</p>
+        <p>This analysis is directly relevant to roller coaster design. At the top of a loop, the track must push the car inward (downward). If the car is too slow, the passengers would need to be held in by their seatbelts rather than pushed inward by the track — an unpleasant and potentially dangerous sensation. Engineers calculate the minimum speed needed at the top of each loop to ensure passengers feel safely pressed into their seats throughout the ride.</p>
+
+        <div class="example">
+          <div class="example-label">Worked Example</div>
+          <p>A 0.30 kg ball on a 0.80 m string moves in a vertical circle. At the top of the circle, its speed is 4.0 m/s. Find the tension in the string at the top and the bottom of the circle. (Assume energy is conserved.)</p>
+          <div class="solution">
+            <div class="solution-label">Solution</div>
+            <p><strong>At the top:</strong> Both tension and weight point toward the center (downward).</p>
+            <p>T + mg = mv&sup2;/r</p>
+            <p>T = mv&sup2;/r - mg = (0.30)(4.0)&sup2;/0.80 - (0.30)(9.8) = 6.0 - 2.94 = 3.06 N</p>
+            <p><strong>Finding speed at the bottom:</strong> Using energy conservation between top and bottom (height difference = 2r = 1.6 m):</p>
+            <p>&frac12;mv<sub>b</sub>&sup2; = &frac12;mv<sub>t</sub>&sup2; + mg(2r)</p>
+            <p>v<sub>b</sub>&sup2; = v<sub>t</sub>&sup2; + 4gr = 16 + 4(9.8)(0.80) = 16 + 31.36 = 47.36</p>
+            <p>v<sub>b</sub> = 6.88 m/s</p>
+            <p><strong>At the bottom:</strong> Tension points up (toward center), weight points down (away from center).</p>
+            <p>T - mg = mv<sub>b</sub>&sup2;/r</p>
+            <p>T = mv<sub>b</sub>&sup2;/r + mg = (0.30)(47.36)/0.80 + 2.94 = 17.76 + 2.94 = 20.7 N</p>
+            <p>The tension at the bottom is nearly seven times the tension at the top, which illustrates why strings and chains are most likely to break at the lowest point of a vertical loop.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Newton's Law of Gravitation -->
+      <section class="lecture-section" id="newtons-law-of-gravitation">
+        <h2>Newton's Law of Gravitation</h2>
+        <p>We now turn to one of the most consequential ideas in the history of science. Before Newton, the motions of objects on Earth and the motions of celestial bodies were considered entirely separate phenomena, governed by different rules. For nearly two thousand years, following Aristotle, scholars believed that terrestrial and celestial realms obeyed fundamentally different laws. Stones fall because they seek their natural place. Planets orbit because they are embedded in crystalline celestial spheres. The heavens were perfect and unchanging; the Earth was imperfect and transient.</p>
+        <p>Newton shattered this division with a single, breathtaking insight: the same force that pulls an apple toward the ground also holds the Moon in orbit around the Earth. He tested this quantitatively. He knew the Moon orbits at about 60 Earth radii from Earth's center and takes approximately 27.3 days per orbit. If gravity follows an inverse-square law, the Moon's centripetal acceleration should be (1/60)&sup2; = 1/3600 of the surface value of 9.8 m/s&sup2;, giving about 0.0027 m/s&sup2;. The actual centripetal acceleration of the Moon, calculated from its orbital parameters, matched this prediction beautifully. Terrestrial and celestial physics were one and the same.</p>
+        <p>This unification was staggering in its scope. With one equation, Newton could explain the fall of raindrops, the arc of cannonballs, the ocean tides, the orbits of planets, and the trajectories of comets. No phenomenon in the heavens was beyond the reach of earthly physics. The law of gravitation is truly universal.</p>
+        <p>According to Newton's law of universal gravitation, every particle in the universe attracts every other particle with a force that is directly proportional to the product of their masses and inversely proportional to the square of the distance between them:</p>
+
+        <div class="formula">
+          <span class="formula-name">Newton's Law of Universal Gravitation</span>
+          F = G M m / r&sup2;
+        </div>
+
+        <p>Here, M and m are the two masses, r is the distance between their centers, and G is the universal gravitational constant:</p>
+        <p>G = 6.674 &times; 10<sup>-11</sup> N&middot;m&sup2;/kg&sup2;</p>
+
+        <div class="definition-box">
+          <div class="def-term">Universal Gravitation</div>
+          <div class="def-text">Every mass in the universe attracts every other mass with a force proportional to the product of their masses and inversely proportional to the square of the distance between them. This force is always attractive, acts along the line connecting the two masses, and obeys Newton's third law: the force on mass M due to mass m is equal in magnitude and opposite in direction to the force on mass m due to mass M.</div>
+        </div>
+
+        <h3>Why G Is So Small</h3>
+        <p>Notice the value of G: approximately 6.674 &times; 10<sup>-11</sup>. This is an extremely small number. It means that gravitational forces between everyday objects are fantastically tiny. Two 1 kg masses separated by 1 meter attract each other with a force of only 6.674 &times; 10<sup>-11</sup> N. That is less than one ten-billionth of a Newton. You never notice the gravitational pull between your body and a nearby chair because it is utterly negligible compared to other forces in your daily experience.</p>
+        <p>Gravity only becomes significant when at least one of the masses is astronomically large, like a planet or a star. The Earth's mass is about 5.97 &times; 10<sup>24</sup> kg. Multiply that by G and by your mass, and you get a substantial force. This is why gravity dominates on planetary scales despite being, fundamentally, the weakest of the four known forces of nature.</p>
+        <p>The gravitational constant G was first measured experimentally by Henry Cavendish in 1798, more than a century after Newton published his law. Cavendish used a delicate torsion balance to measure the tiny gravitational attraction between lead spheres. His experiment was so sensitive that it had to be conducted in a sealed room to avoid air currents, and the deflection of the balance was observed through a telescope. Cavendish's result allowed physicists to calculate the mass of the Earth for the first time — an achievement so remarkable that his experiment is sometimes called "weighing the Earth."</p>
+
+        <h3>The Inverse Square Law</h3>
+        <p>Why does the force decrease as 1/r&sup2;? There is a beautiful geometric reason. Imagine a mass radiating its gravitational influence outward in all directions. At a distance r, this influence is spread over the surface of a sphere of radius r. The surface area of a sphere is 4&pi;r&sup2;. As r increases, the same total influence is spread over a larger area. The force per unit area, or the intensity of the gravitational effect, therefore decreases as 1/r&sup2;. This is not unique to gravity. Any influence that spreads uniformly in three dimensions from a point source will obey an inverse square law. Light intensity, electric fields from point charges, and sound intensity (in the far field) all follow the same pattern.</p>
+
+        <h3>The Shell Theorem</h3>
+        <p>Newton proved a remarkable result known as the shell theorem. A uniform spherical shell of mass attracts a particle outside the shell as if all the shell's mass were concentrated at its center. Conversely, a uniform spherical shell exerts no net gravitational force on a particle located inside it. This result is essential because it means we can treat planets and stars, which are roughly spherical, as point masses located at their centers when calculating gravitational forces on external objects. The distance r in the gravitational formula then refers to the distance between the centers of the two objects, not the distance between their surfaces.</p>
+        <p>The proof of the shell theorem is mathematically involved (Newton himself spent considerable effort on it), but the result is crucial. It is what allows us to write F = GMm/r&sup2; for the gravitational force between two spherical bodies using their center-to-center distance. Without the shell theorem, we would have to integrate the gravitational contributions from every tiny piece of each body separately — a vastly more complicated calculation.</p>
+        <p>An interesting consequence of the shell theorem applies to the interior of the Earth. If you could dig a tunnel to a point halfway to the center, only the mass in the sphere below your feet would attract you. The spherical shell of mass above you would exert zero net force. As you descend toward the center, the attracting mass shrinks (proportional to r&sup3; for uniform density), and the gravitational acceleration decreases linearly. At the very center, g = 0.</p>
+
+        <h3>Gravitational Potential Energy Revisited</h3>
+        <p>In earlier lectures, we used the expression PE = mgh for gravitational potential energy. This is an approximation valid only near Earth's surface where g is approximately constant. The more general expression, valid at any distance, is:</p>
+
+        <div class="formula">
+          <span class="formula-name">Gravitational Potential Energy (General)</span>
+          U = &minus;G M m / r
+        </div>
+
+        <p>The negative sign indicates that gravitational potential energy is always negative (taking the reference point at infinity, where U = 0). As two masses approach each other, their potential energy becomes more negative, meaning energy is released. This is consistent with the fact that you must do positive work (add energy) to separate two gravitationally bound objects.</p>
+        <p>The total mechanical energy of an orbiting object is E = KE + PE = &frac12;mv&sup2; - GMm/r. For a bound orbit (one that does not escape), the total energy is negative. For a circular orbit specifically, the kinetic energy equals exactly half the magnitude of the potential energy: KE = &frac12;|PE|, and the total energy is E = -GMm/(2r). This elegant relationship connects the orbital radius directly to the energy of the orbit.</p>
+
+        <div class="example">
+          <div class="example-label">Worked Example</div>
+          <p>Calculate the gravitational force between the Earth (M = 5.97 &times; 10<sup>24</sup> kg) and a 70 kg person standing on its surface (R = 6.37 &times; 10<sup>6</sup> m).</p>
+          <div class="solution">
+            <div class="solution-label">Solution</div>
+            <p>F = GMm/r&sup2; = (6.674 &times; 10<sup>-11</sup>)(5.97 &times; 10<sup>24</sup>)(70) / (6.37 &times; 10<sup>6</sup>)&sup2;</p>
+            <p>F = (6.674 &times; 10<sup>-11</sup>)(4.179 &times; 10<sup>26</sup>) / (4.058 &times; 10<sup>13</sup>)</p>
+            <p>F = 2.789 &times; 10<sup>16</sup> / 4.058 &times; 10<sup>13</sup> = 687 N</p>
+            <p>This is exactly what we expect: the weight of a 70 kg person is mg = 70 &times; 9.8 = 686 N. Newton's law of gravitation gives the same answer as the simple weight formula, confirming the connection between G, M, R, and g.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 7: Gravitational Field -->
+      <section class="lecture-section" id="gravitational-field">
+        <h2>Gravitational Field</h2>
+        <p>The concept of a field is one of the most powerful ideas in physics. Rather than thinking about a force that acts at a distance between two masses, we can think of a single mass creating a gravitational field in the space around it. Any other mass placed in that field then experiences a force.</p>
+        <p>The gravitational field strength at a point in space is defined as the gravitational force per unit mass that a small test mass would experience at that point:</p>
+
+        <div class="formula">
+          <span class="formula-name">Gravitational Field Strength</span>
+          g = F / m = G M / r&sup2;
+        </div>
+
+        <p>Notice that the field strength depends only on the source mass M and the distance r. It does not depend on the test mass. This is a property of the space itself, created by the source mass. The units of gravitational field strength are N/kg, which are dimensionally identical to m/s&sup2;. This is no coincidence: the gravitational field strength is numerically equal to the acceleration due to gravity at that point.</p>
+
+        <h3>On Earth's Surface</h3>
+        <p>At the surface of the Earth, the gravitational field strength is:</p>
+        <p>g = G M<sub>E</sub> / R<sub>E</sub>&sup2; = (6.674 &times; 10<sup>-11</sup>)(5.97 &times; 10<sup>24</sup>) / (6.37 &times; 10<sup>6</sup>)&sup2; &approx; 9.8 N/kg = 9.8 m/s&sup2;</p>
+        <p>This is the familiar value we have been using throughout our study of mechanics. But now we see where it comes from: it is a consequence of Earth's mass and radius, combined with the universal gravitational constant.</p>
+        <p>On other celestial bodies, g takes very different values. On the Moon, where the mass is about 81 times less than Earth's and the radius is about 3.7 times smaller, the surface gravitational field is about 1.6 m/s&sup2; — roughly one-sixth of Earth's. This is why astronauts could take long, bounding leaps on the lunar surface. On Jupiter, with its enormous mass, the surface gravity is about 24.8 m/s&sup2;, roughly 2.5 times Earth's value. A 70 kg person would feel as if they weighed 175 kg on Jupiter's cloud tops. On the surface of a neutron star, g can exceed 10<sup>12</sup> m/s&sup2;, a gravitational field so intense that it would crush any ordinary matter flat.</p>
+
+        <h3>Variation with Altitude</h3>
+        <p>Because g depends on r&sup2;, the gravitational field strength decreases with altitude. At a height h above Earth's surface, the distance from Earth's center is r = R<sub>E</sub> + h, and the field strength is:</p>
+        <p>g(h) = G M<sub>E</sub> / (R<sub>E</sub> + h)&sup2;</p>
+        <p>For small heights compared to Earth's radius (h &laquo; R<sub>E</sub>), the change is negligible. At the top of Mount Everest (about 8.8 km), g decreases by only about 0.3%. But at the altitude of the International Space Station (about 400 km), g is about 88% of its surface value. The gravitational field is still quite strong there, a fact that becomes important when we discuss weightlessness.</p>
+
+        <h3>Gravitational Field as a Concept</h3>
+        <p>The field concept is more than a mathematical convenience. It represents a deep shift in how we think about interactions. Instead of thinking of gravity as an instantaneous action at a distance between two bodies (which troubled Newton himself), we think of each mass creating a field that permeates all of space. Another mass placed anywhere in that field responds to the local value of the field at its location. The field acts as an intermediary, carrying the gravitational influence from the source to the affected body.</p>
+        <p>This way of thinking becomes indispensable in more advanced physics. General relativity describes gravity as a curvature of spacetime itself — essentially, the field becomes the geometry of the universe. But even at the level of Newtonian physics, the field concept helps us organize our thinking. We can map the gravitational field of a planet or a system of planets, and then predict how any object placed in that field will move, without recalculating the forces from scratch each time.</p>
+        <p>Gravitational field lines point radially inward toward the center of a spherical mass. They are closer together where the field is stronger (near the surface) and farther apart where the field is weaker (far from the surface). The density of field lines at any point is proportional to the magnitude of the field at that point, giving us a visual representation of the invisible force of gravity.</p>
+      </section>
+
+      <!-- Section 8: Orbits -->
+      <section class="lecture-section" id="orbits">
+        <h2>Orbits</h2>
+        <p>An orbit is the path of an object that is continuously falling toward another object under the influence of gravity but moving fast enough sideways that it keeps missing. This is a profound realization. The Moon is falling toward the Earth, right now. An astronaut aboard the International Space Station is falling toward the Earth, right now. But because they also have a large tangential velocity, the curvature of their fall matches the curvature of the Earth, and they never reach the surface.</p>
+        <p>Newton himself articulated this idea with a famous thought experiment, often called "Newton's cannonball." Imagine a cannon on top of a very high mountain, well above the atmosphere, firing a ball horizontally. With a low muzzle velocity, the ball arcs downward and hits the ground nearby. With a higher velocity, the ball travels farther before landing. With an even higher velocity, the ball travels so far that the curvature of the Earth becomes significant — the ground curves away beneath the ball as it falls. If the velocity is high enough, the ball falls toward the Earth but the Earth's surface curves away from it at the same rate. The ball falls forever in a circle around the Earth. It is in orbit.</p>
+        <p>This thought experiment is extraordinarily powerful because it unifies two things that seem completely different: a ball falling to the ground and the Moon orbiting the Earth. They are the same phenomenon — gravitational free fall — differing only in the sideways velocity. A thrown ball is in orbit; it just happens to be an orbit that intersects the ground. The Moon is a falling object; it just happens to be falling with enough sideways speed to continuously miss the Earth.</p>
+
+        <h3>Deriving Orbital Velocity</h3>
+        <p>For a circular orbit, gravity provides all of the centripetal force. Setting the gravitational force equal to the centripetal force:</p>
+        <p>G M m / r&sup2; = m v&sup2; / r</p>
+        <p>The mass m of the orbiting object cancels from both sides, giving:</p>
+
+        <div class="formula">
+          <span class="formula-name">Orbital Velocity</span>
+          v = &radic;(G M / r)
+        </div>
+
+        <p>This result is remarkable for what it does not contain: the mass of the orbiting object. The orbital velocity depends only on the mass of the central body and the radius of the orbit. A feather and a bowling ball, placed at the same orbital radius, would orbit at exactly the same speed. This is another manifestation of the equivalence of gravitational and inertial mass, and it is the same reason all objects fall with the same acceleration near Earth's surface.</p>
+        <p>Another important insight: the orbital velocity decreases with radius. Objects in larger orbits move more slowly. Mercury, the closest planet to the Sun, orbits at about 48 km/s. Earth orbits at about 30 km/s. Neptune, far out in the solar system, orbits at only about 5.4 km/s. This is a direct consequence of the formula v = &radic;(GM/r): as r increases, v decreases. This also means that to move a satellite to a higher orbit, you must first speed it up (to gain energy) and then it will actually end up moving more slowly in the larger orbit — a counterintuitive result that is a frequent source of confusion in orbital mechanics.</p>
+
+        <h3>Why Astronauts Float</h3>
+        <p>Astronauts aboard the International Space Station appear to float weightlessly. But as we calculated earlier, the gravitational field at the station's altitude is about 88% as strong as at the surface. So they are not beyond the reach of gravity. They float because they are in free fall. The station and everything in it are all falling toward Earth at the same rate. Since the astronaut and the station accelerate identically, the astronaut experiences no contact force from the station's walls or floor. There is no normal force, and therefore no sensation of weight.</p>
+
+        <h3>Escape Velocity</h3>
+        <p>If an object is launched from the surface of a planet with sufficient velocity, it can escape the planet's gravitational pull entirely and never return. The escape velocity is found using energy conservation. At the surface, the object has kinetic energy &frac12;mv&sup2; and gravitational potential energy -GMm/R. At infinity, both the kinetic energy and potential energy are zero (the minimum energy for escape). Setting the total energy equal to zero:</p>
+        <p>&frac12;mv&sup2; - GMm/R = 0</p>
+
+        <div class="formula">
+          <span class="formula-name">Escape Velocity</span>
+          v<sub>escape</sub> = &radic;(2 G M / R)
+        </div>
+
+        <p>Notice that the escape velocity is &radic;2 times the orbital velocity at the planet's surface. For Earth, v<sub>escape</sub> &approx; 11.2 km/s, or about 40,000 km/h. Any object launched at this speed or greater from Earth's surface will escape Earth's gravitational field, assuming no air resistance.</p>
+
+        <h3>Types of Orbits</h3>
+        <p>The shape of an orbit depends on the total mechanical energy of the orbiting object. This provides a beautiful classification:</p>
+        <ul>
+          <li><strong>Circular orbit (E &lt; 0, specific value):</strong> The speed is exactly &radic;(GM/r). The kinetic energy is exactly half the magnitude of the potential energy. Any deviation from this precise speed changes the orbit shape.</li>
+          <li><strong>Elliptical orbit (E &lt; 0):</strong> If the speed is less than circular orbit speed, the object falls into a smaller orbit. If slightly more, it enters a larger orbit. In both cases, the orbit is an ellipse with the central body at one focus.</li>
+          <li><strong>Parabolic trajectory (E = 0):</strong> The object has exactly the escape velocity. It escapes to infinity with zero speed. This is the boundary between bound and unbound orbits.</li>
+          <li><strong>Hyperbolic trajectory (E &gt; 0):</strong> The object has more than escape velocity. It passes by the central body, curves due to gravity, but escapes to infinity with speed to spare. Interstellar objects passing through our solar system follow hyperbolic trajectories.</li>
+        </ul>
+
+        <h3>Geostationary Orbits</h3>
+        <p>A particularly useful orbit is the geostationary orbit, in which a satellite orbits the Earth with a period of exactly 24 hours while hovering over the equator. Since the satellite's orbital period matches Earth's rotation period, the satellite appears stationary when viewed from the ground. This is ideal for communication satellites, weather satellites, and television broadcasting.</p>
+        <p>We can calculate the radius of a geostationary orbit using Kepler's third law. Setting T = 86,400 s and solving for r:</p>
+        <p>r = (GMT&sup2;/4&pi;&sup2;)<sup>1/3</sup> = [(6.674 &times; 10<sup>-11</sup>)(5.97 &times; 10<sup>24</sup>)(86,400)&sup2;/(4&pi;&sup2;)]<sup>1/3</sup> &approx; 42,200 km from Earth's center</p>
+        <p>This is about 35,800 km above Earth's surface, or roughly 5.6 Earth radii from the center. All geostationary satellites share this same orbital radius — the only variable is their position along the orbit (their longitude above the equator).</p>
+      </section>
+
+      <!-- Section 9: Kepler's Laws -->
+      <section class="lecture-section" id="keplers-laws">
+        <h2>Kepler's Laws</h2>
+        <p>More than half a century before Newton published his law of gravitation, the German astronomer Johannes Kepler (1571-1630) painstakingly analyzed decades of astronomical observations compiled by the Danish astronomer Tycho Brahe and distilled them into three empirical laws describing planetary motion. Kepler spent years poring over Brahe's meticulous measurements of Mars's position in the sky, trying to find a mathematical pattern that fit the data. His initial attempts using circles and combinations of circles all failed. Only when he abandoned circles in favor of ellipses did the data fall perfectly into place.</p>
+        <p>Kepler discovered these laws from data alone, without understanding why they were true. They were purely descriptive — they told you what the planets did, but not why. Newton's genius, half a century later, was to show that all three of Kepler's laws follow directly and necessarily from the law of universal gravitation combined with Newton's own laws of motion. What had been mysterious empirical regularities became logical consequences of a deeper theory. This is the pattern of scientific progress at its best: observation leads to empirical rules, and then a deeper theory explains why those rules hold.</p>
+
+        <h3>Kepler's First Law: The Law of Orbits</h3>
+        <p>Every planet moves in an ellipse with the Sun at one focus. An ellipse is a closed curve defined by two focal points (foci). For any point on the ellipse, the sum of the distances to the two foci is constant. A circle is a special case of an ellipse where both foci coincide at the center, making the eccentricity zero.</p>
+        <p>Most planetary orbits in our solar system are nearly circular, with small eccentricities. Earth's orbital eccentricity is only 0.017, meaning its orbit deviates from a perfect circle by less than 2%. But some orbits, like Mercury's (eccentricity 0.206) or Pluto's (eccentricity 0.248), are noticeably elliptical. Comets often travel in highly elliptical orbits with eccentricities close to 1, spending most of their time in the outer solar system and sweeping close to the Sun only briefly during perihelion passage.</p>
+        <p>Newton showed that an inverse-square force law naturally produces elliptical, parabolic, or hyperbolic orbits, depending on the total energy of the system. Bound orbits (negative total energy) are ellipses. An object with exactly zero total energy follows a parabolic path. An object with positive total energy follows a hyperbolic path and escapes.</p>
+        <p>The elliptical nature of orbits explains why the Earth is not always the same distance from the Sun. At its closest approach (perihelion, in early January), the Earth is about 147.1 million km from the Sun. At its farthest point (aphelion, in early July), the distance is about 152.1 million km. This 3.4% variation has a minor effect on the seasons (which are primarily driven by Earth's axial tilt, not its distance from the Sun). Interestingly, Earth is closest to the Sun during the Northern Hemisphere's winter.</p>
+
+        <h3>Kepler's Second Law: The Law of Areas</h3>
+        <p>A line drawn from the Sun to a planet sweeps out equal areas in equal time intervals. This means a planet moves faster when it is closer to the Sun (at perihelion) and slower when it is farther away (at aphelion). This is a direct consequence of the conservation of angular momentum. Because gravitational force is always directed along the line connecting the two bodies, it exerts no torque about the Sun. Therefore, the planet's angular momentum L = mvr sin&theta; remains constant. When r decreases, v must increase to keep L constant.</p>
+        <p>This law has a beautiful intuitive interpretation. Imagine the line from the Sun to a planet sweeping through space. In a given time interval, this line traces out a thin triangle-like shape. The area of this shape depends on both the length of the line (the distance r) and how far the planet moves along its orbit (related to v). When the planet is close to the Sun, r is small, but v is large, so the planet sweeps a wide angle in a short time. When the planet is far, r is large, but v is small, so it sweeps a narrow angle. The two effects balance perfectly, producing equal areas in equal times. This is the geometric expression of angular momentum conservation.</p>
+
+        <h3>Kepler's Third Law: The Law of Periods</h3>
+        <p>The square of the orbital period of a planet is proportional to the cube of the semi-major axis of its orbit. For circular orbits, this becomes:</p>
+        <p>T&sup2; &prop; r&sup3;</p>
+        <p>We can derive this from Newton's gravitation and circular motion, and this derivation is one of the most satisfying in all of physics because it connects an empirical observation (Kepler's data) to a fundamental theory (Newton's gravity). For a circular orbit:</p>
+        <p>The gravitational force provides the centripetal force:</p>
+        <p>G M m / r&sup2; = m v&sup2; / r</p>
+        <p>Substituting v = 2&pi;r/T (the speed from the circumference divided by the period):</p>
+        <p>G M m / r&sup2; = m (2&pi;r / T)&sup2; / r = 4&pi;&sup2; m r / T&sup2;</p>
+        <p>The mass m of the orbiting body cancels (again confirming that the orbit is independent of the orbiting body's mass). Solving for T&sup2;:</p>
+
+        <div class="formula">
+          <span class="formula-name">Kepler's Third Law (Derived)</span>
+          T&sup2; = (4&pi;&sup2; / G M) r&sup3;
+        </div>
+
+        <p>The constant of proportionality depends only on the mass M of the central body and the universal gravitational constant G. This means that if you know the orbital period and radius of one satellite, you can determine the mass of the body it orbits. This technique is used to measure the masses of stars, planets, and even galaxies.</p>
+
+        <h3>The Power of Kepler's Third Law</h3>
+        <p>Kepler's third law is one of the most practically useful relationships in astronomy. By measuring the orbital period and radius of a moon, we can determine the mass of the planet it orbits. By measuring the orbital parameters of stars in binary systems, we can determine their masses. By measuring the orbital speeds of stars in galaxies, we can infer the total mass of the galaxy — and this is how astronomers first discovered that galaxies contain far more mass than is visible. This "missing mass" is now attributed to dark matter, one of the greatest unsolved problems in modern physics.</p>
+        <p>The law also has practical applications closer to home. GPS satellites orbit at specific radii with specific periods, and the precise relationship between these quantities is essential for the accuracy of the GPS system. Telecommunications engineers use Kepler's third law to calculate the orbital parameters needed for satellite networks that provide continuous global coverage.</p>
+
+        <div class="example">
+          <div class="example-label">Worked Example</div>
+          <p>The Moon orbits the Earth at an average distance of 3.84 &times; 10<sup>8</sup> m with a period of 27.3 days. Use this data to estimate the mass of the Earth.</p>
+          <div class="solution">
+            <div class="solution-label">Solution</div>
+            <p>Convert the period to seconds: T = 27.3 &times; 24 &times; 3600 = 2.36 &times; 10<sup>6</sup> s</p>
+            <p>From Kepler's third law: M = 4&pi;&sup2;r&sup3; / (GT&sup2;)</p>
+            <p>M = 4&pi;&sup2;(3.84 &times; 10<sup>8</sup>)&sup3; / [(6.674 &times; 10<sup>-11</sup>)(2.36 &times; 10<sup>6</sup>)&sup2;]</p>
+            <p>M = 4(9.87)(5.66 &times; 10<sup>25</sup>) / [(6.674 &times; 10<sup>-11</sup>)(5.57 &times; 10<sup>12</sup>)]</p>
+            <p>M &approx; 6.0 &times; 10<sup>24</sup> kg</p>
+            <p>This is remarkably close to the accepted value of 5.97 &times; 10<sup>24</sup> kg. The small discrepancy comes from rounding and the fact that the Moon's orbit is not perfectly circular.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 10: Weightlessness -->
+      <section class="lecture-section" id="weightlessness">
+        <h2>Weightlessness</h2>
+        <p>The concept of weightlessness is widely misunderstood. Many people believe astronauts are weightless because they are far from Earth where gravity is negligible. As we have seen, this is incorrect. At the altitude of the ISS, the gravitational field is still about 88% as strong as on the surface. Astronauts float not because there is no gravity, but because they are in free fall.</p>
+
+        <div class="key-concept">
+          <div class="concept-label">Key Concept</div>
+          <p>Apparent weightlessness occurs whenever an object is in free fall, meaning gravity is the only force acting on it. In this state, the object and everything around it accelerate at the same rate, so there are no contact forces between them. Weight, as experienced through the sensation of being supported, vanishes entirely. The gravitational force still exists, but it is not felt because nothing pushes back.</p>
+        </div>
+
+        <p>Consider standing on a bathroom scale in an elevator. The scale reads your apparent weight, which equals the normal force the scale exerts on you. When the elevator accelerates downward, the normal force decreases and you feel lighter. If the elevator cable snapped and you fell freely, the scale would read zero. You would float relative to the elevator cabin. This is exactly what happens in orbit: the spacecraft is a freely falling elevator, and the astronaut is a freely falling person inside it.</p>
+        <p>You do not need to be in space to experience weightlessness. A skydiver in free fall (before the parachute opens and ignoring air resistance) is weightless. Passengers on a roller coaster feel momentary weightlessness at the top of a hill when the track curves downward faster than gravity pulls them. NASA's "Vomit Comet" aircraft creates about 25 seconds of weightlessness by flying parabolic arcs that simulate free fall.</p>
+        <p>The key distinction is between actual weight (the gravitational force on an object, W = mg, which is rarely zero anywhere near a planet) and apparent weight (the normal force or support force an object experiences, which can be zero during free fall). Apparent weightlessness does not mean gravity has disappeared. It means the normal force has disappeared because everything is accelerating together under gravity alone.</p>
+
+        <h3>The Elevator Analogy Extended</h3>
+        <p>The elevator analogy is worth exploring more deeply because it connects weightlessness to Newton's second law in a concrete way. When you stand on a scale in an accelerating elevator, the scale reads your apparent weight, which equals the normal force N. Applying Newton's second law in the vertical direction:</p>
+        <p>N - mg = ma (where a is the acceleration of the elevator; positive is upward)</p>
+        <p>Therefore: N = m(g + a)</p>
+        <ul>
+          <li>Elevator at rest or constant velocity (a = 0): N = mg. You feel your normal weight.</li>
+          <li>Elevator accelerating upward (a > 0): N > mg. You feel heavier.</li>
+          <li>Elevator accelerating downward (a < 0): N < mg. You feel lighter.</li>
+          <li>Elevator in free fall (a = -g): N = m(g - g) = 0. You feel weightless.</li>
+          <li>Elevator accelerating downward faster than g (impossible in a normal elevator, but conceptually): N would be negative, meaning the floor would have to pull you down. In reality, you would float away from the floor.</li>
+        </ul>
+        <p>An orbiting spacecraft is essentially an elevator in free fall. Everything inside it — the walls, the air, the instruments, the astronauts — is falling toward the Earth at exactly the same rate. No object pushes on any other object due to gravity, because they all accelerate identically. The result is the apparent absence of gravity, even though the gravitational field is nearly as strong as on the surface.</p>
+
+        <div class="example">
+          <div class="example-label">Worked Example</div>
+          <p>The International Space Station orbits at an altitude of 408 km above Earth's surface. Calculate the gravitational acceleration at this altitude and the orbital speed of the ISS.</p>
+          <div class="solution">
+            <div class="solution-label">Solution</div>
+            <p>Distance from Earth's center: r = R<sub>E</sub> + h = 6,370 + 408 = 6,778 km = 6.778 &times; 10<sup>6</sup> m</p>
+            <p>Gravitational acceleration: g' = GM/r&sup2; = (6.674 &times; 10<sup>-11</sup>)(5.97 &times; 10<sup>24</sup>)/(6.778 &times; 10<sup>6</sup>)&sup2;</p>
+            <p>g' = 3.986 &times; 10<sup>14</sup> / 4.594 &times; 10<sup>13</sup> = 8.67 m/s&sup2;</p>
+            <p>This is 88.5% of the surface value of 9.8 m/s&sup2;. Gravity is very much present.</p>
+            <p>Orbital speed: v = &radic;(g'r) = &radic;(8.67 &times; 6.778 &times; 10<sup>6</sup>) = &radic;(5.876 &times; 10<sup>7</sup>) = 7,666 m/s &approx; 7.67 km/s</p>
+            <p>The ISS travels at about 27,600 km/h, completing one orbit every 92 minutes. At this speed, the astronauts witness about 16 sunrises and sunsets every day.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 11: Common Misconceptions -->
+      <section class="lecture-section" id="misconceptions">
+        <h2>Common Misconceptions</h2>
+
+        <div class="misconception">
+          <div class="misconception-label">Misconception</div>
+          <p><strong>"Centrifugal force is a real force."</strong> There is no outward force on an object moving in a circle. What people call "centrifugal force" is actually the tendency of your body to continue in a straight line (inertia) when the car or ride turns. In an inertial reference frame, only the centripetal (inward) force exists. The centrifugal force appears only in a rotating (non-inertial) reference frame as a fictitious or pseudo force. It is useful in calculations within that frame but does not correspond to any physical interaction.</p>
+        </div>
+
+        <div class="misconception">
+          <div class="misconception-label">Misconception</div>
+          <p><strong>"Astronauts are beyond gravity's reach."</strong> The ISS orbits at roughly 400 km altitude. Earth's radius is about 6,370 km. The distance from Earth's center to the ISS is about 6,770 km, only 6% more than the surface distance. Using the inverse square law, g at that altitude is (6370/6770)&sup2; &approx; 0.88 times the surface value. Gravity is very much present. The astronauts float because they are in free fall, not because gravity is absent.</p>
+        </div>
+
+        <div class="misconception">
+          <div class="misconception-label">Misconception</div>
+          <p><strong>"Objects in orbit aren't falling."</strong> This is the opposite of the truth. Objects in orbit are in continuous free fall. They are falling toward the planet at every instant. But their tangential velocity is so large that the curvature of their fall matches the curvature of the planet's surface. They fall around the planet rather than into it. An orbit is free fall with enough sideways speed to keep missing the ground.</p>
+        </div>
+
+        <div class="misconception">
+          <div class="misconception-label">Misconception</div>
+          <p><strong>"Heavier objects orbit differently than lighter ones."</strong> The mass of the orbiting object does not affect its orbital velocity or period. This is because both the gravitational force (which depends on mass) and the inertia (which also depends on mass) scale identically. The mass cancels out of the equation GMm/r&sup2; = mv&sup2;/r, leaving v = &radic;(GM/r). A feather and a space station, placed at the same orbital radius, would orbit at exactly the same speed. This is the principle of equivalence — the equality of gravitational and inertial mass — which Einstein later made the foundation of general relativity.</p>
+        </div>
+
+        <div class="misconception">
+          <div class="misconception-label">Misconception</div>
+          <p><strong>"Gravity only works close to Earth."</strong> Gravity has infinite range. It weakens with distance (as 1/r&sup2;) but never reaches zero. The Sun's gravity holds the planets in orbit billions of kilometers away. The gravitational pull between galaxies separated by millions of light-years influences their motion and the large-scale structure of the universe. Even at the edge of the observable universe, gravity from all the matter within is still acting. What changes with distance is not whether gravity exists, but how strong it is.</p>
+        </div>
+      </section>
+
+      <!-- Interactive: Orbital Simulator -->
+      <section class="lecture-section" id="orbital-simulator">
+        <h2>Interactive: Orbital Simulator</h2>
+        <p>Explore the relationship between orbital radius, central mass, and satellite velocity. Adjust the sliders to see how changing each parameter affects the orbit. When the velocity matches the circular orbit velocity v = &radic;(GM/r), the satellite traces a stable circular orbit. Too fast and it escapes; too slow and it spirals inward.</p>
+
+        <div class="sim-container">
+          <div class="sim-canvas-wrap">
+            <canvas id="orbitalCanvas" width="800" height="600"></canvas>
+          </div>
+
+          <div class="sim-controls">
+            <div class="sim-control">
+              <label>Orbital Radius: <span id="radiusVal">120</span> px</label>
+              <input type="range" id="radiusSlider" min="50" max="200" value="120">
+            </div>
+            <div class="sim-control">
+              <label>Central Mass (GM): <span id="massVal">5000</span></label>
+              <input type="range" id="massSlider" min="1000" max="15000" value="5000">
+            </div>
+            <div class="sim-control">
+              <label>Velocity Factor: <span id="velVal">1.00</span>x</label>
+              <input type="range" id="velSlider" min="30" max="200" value="100">
+            </div>
+            <div style="display:flex;gap:8px;margin-left:auto;">
+              <button class="sim-btn active" id="orbPlayBtn">Play</button>
+              <button class="sim-btn" id="orbPauseBtn">Pause</button>
+              <button class="sim-btn" id="orbResetBtn">Reset</button>
+            </div>
+          </div>
+
+          <div class="sim-data">
+            <div class="sim-datum">
+              <div class="datum-value" id="datOrbVel">--</div>
+              <div class="datum-label">Orbital Velocity</div>
+            </div>
+            <div class="sim-datum">
+              <div class="datum-value" id="datGravForce">--</div>
+              <div class="datum-label">Grav. Force (arb)</div>
+            </div>
+            <div class="sim-datum">
+              <div class="datum-value" id="datPeriod">--</div>
+              <div class="datum-label">Period (s)</div>
+            </div>
+            <div class="sim-datum">
+              <div class="datum-value" id="datCentAccel">--</div>
+              <div class="datum-label">Centripetal Accel</div>
+            </div>
+          </div>
+
+          <div class="sim-explanation">
+            <strong>How it works:</strong> The circular orbit velocity is v<sub>circ</sub> = &radic;(GM/r). The velocity factor slider lets you scale relative to this value. At 1.0x you get a stable circular orbit (cyan trail). Above ~1.0x the satellite gains energy and escapes (magenta trail). Below ~1.0x it loses altitude and spirals inward (red trail). Watch how the gravitational force and centripetal acceleration change as you adjust the radius and mass.
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 12: Summary and Connections -->
+      <section class="lecture-section" id="takeaways">
+        <h2>Connecting the Ideas</h2>
+        <p>This lecture has woven together two seemingly different topics — circular motion and gravitation — revealing them to be deeply connected. Circular motion is simply Newton's second law in a curved geometry. Gravitation is the specific force that most often drives circular motion on astronomical scales. The marriage of these ideas gives us the physics of orbits, which in turn gives us Kepler's laws, escape velocity, and the explanation of weightlessness.</p>
+        <p>Looking back, we can trace a continuous logical thread from Newton's first law (objects move in straight lines unless acted upon by a force), through his second law (force causes acceleration), to the realization that curved motion requires a force (centripetal force), to the identification of gravity as the force that curves planetary orbits, and finally to the elegant mathematical description of those orbits through Kepler's laws. Each step follows logically from the previous one. There is no magic, no memorization — just careful reasoning from first principles.</p>
+        <p>Looking forward, the ideas from this lecture connect to many topics yet to come. The conservation of angular momentum (which underlies Kepler's second law) will reappear in our study of rotational dynamics. The gravitational field concept foreshadows the electric field in electromagnetism. The inverse-square law appears again in Coulomb's law for electric charges. And the equivalence of gravitational and inertial mass, which makes orbital velocity independent of the orbiting body's mass, becomes the foundation of Einstein's general theory of relativity — arguably the most beautiful theory in all of physics.</p>
+
+        <div class="takeaways">
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>An object in uniform circular motion has constant speed but is accelerating because the direction of its velocity changes continuously.</li>
+            <li>Centripetal acceleration has magnitude a<sub>c</sub> = v&sup2;/r and always points toward the center of the circular path.</li>
+            <li>Centripetal force (F<sub>c</sub> = mv&sup2;/r) is not a new type of force. It is the net inward force provided by real forces such as tension, gravity, friction, or the normal force.</li>
+            <li>Newton's law of gravitation, F = GMm/r&sup2;, applies universally to all masses. The inverse-square dependence arises from the geometry of three-dimensional space.</li>
+            <li>The gravitational field g = GM/r&sup2; describes the force per unit mass at a point in space and equals the acceleration due to gravity at that point.</li>
+            <li>Orbital velocity depends only on the central body's mass and the orbital radius: v = &radic;(GM/r). The orbiting object's mass is irrelevant.</li>
+            <li>Kepler's three laws of planetary motion are direct consequences of Newton's law of gravitation, with the third law relating T&sup2; &prop; r&sup3;.</li>
+            <li>Apparent weightlessness occurs during free fall, when gravity is the only force acting. The gravitational force itself is not zero; rather, the normal force is zero because everything accelerates together.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Lecture Navigation -->
+      <div class="lecture-nav">
+        <a href="06-momentum-collisions.html" class="nav-prev">
+          <div class="nav-direction">&larr; Previous</div>
+          <div class="nav-title">Lecture 6: Momentum and Collisions</div>
+        </a>
+        <a href="08-oscillations-waves.html" class="nav-next">
+          <div class="nav-direction">Next &rarr;</div>
+          <div class="nav-title">Lecture 8: Oscillations and Waves</div>
+        </a>
+      </div>
+
+    </article>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <div class="footer-brand">Physics Logic</div>
+          <p class="footer-desc">A free educational platform dedicated to teaching physics through deep reasoning and logical thinking. Understanding over memorization, always.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Lectures</h5>
+          <a href="01-introduction.html">Introduction to Physics</a>
+          <a href="04-newtons-laws.html">Newton's Laws</a>
+          <a href="07-circular-motion-gravitation.html">Circular Motion</a>
+          <a href="09-thermodynamics.html">Thermodynamics</a>
+          <a href="../lectures.html">View All &rarr;</a>
+        </div>
+        <div class="footer-col">
+          <h5>Resources</h5>
+          <a href="../about.html">About</a>
+          <a href="../lectures.html">All Lectures</a>
+          <a href="../faq.html">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h5>Connect</h5>
+          <a href="#">Twitter</a>
+          <a href="#">GitHub</a>
+          <a href="#">YouTube</a>
+          <a href="#">Email</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Physics Logic Lectures. All rights reserved.</span>
+        <span>Built for learners, by learners.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+  (function() {
+    const canvas = document.getElementById('orbitalCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    // Sliders
+    const radiusSlider = document.getElementById('radiusSlider');
+    const massSlider = document.getElementById('massSlider');
+    const velSlider = document.getElementById('velSlider');
+    const radiusVal = document.getElementById('radiusVal');
+    const massVal = document.getElementById('massVal');
+    const velVal = document.getElementById('velVal');
+
+    // Buttons
+    const playBtn = document.getElementById('orbPlayBtn');
+    const pauseBtn = document.getElementById('orbPauseBtn');
+    const resetBtn = document.getElementById('orbResetBtn');
+
+    // Data displays
+    const datOrbVel = document.getElementById('datOrbVel');
+    const datGravForce = document.getElementById('datGravForce');
+    const datPeriod = document.getElementById('datPeriod');
+    const datCentAccel = document.getElementById('datCentAccel');
+
+    let running = true;
+    let animId = null;
+
+    // Simulation state
+    let sat = { x: 0, y: 0, vx: 0, vy: 0 };
+    let trail = [];
+    const maxTrail = 1200;
+    const dt = 0.016;
+    const cx = 400, cy = 300;
+
+    function getParams() {
+      const r = parseFloat(radiusSlider.value);
+      const GM = parseFloat(massSlider.value);
+      const vFactor = parseFloat(velSlider.value) / 100;
+      return { r, GM, vFactor };
+    }
+
+    function initSat() {
+      const { r, GM, vFactor } = getParams();
+      const vCirc = Math.sqrt(GM / r);
+      const v = vCirc * vFactor;
+      sat.x = cx + r;
+      sat.y = cy;
+      sat.vx = 0;
+      sat.vy = -v; // tangential velocity (upward for right-side start)
+      trail = [];
+    }
+
+    function updateSliderLabels() {
+      const { r, GM, vFactor } = getParams();
+      radiusVal.textContent = r;
+      massVal.textContent = GM;
+      velVal.textContent = vFactor.toFixed(2);
+    }
+
+    // Draw faint radial gravitational field lines
+    function drawField() {
+      ctx.save();
+      ctx.globalAlpha = 0.06;
+      ctx.strokeStyle = '#00d4ff';
+      for (let a = 0; a < Math.PI * 2; a += Math.PI / 12) {
+        ctx.beginPath();
+        ctx.moveTo(cx + 20 * Math.cos(a), cy + 20 * Math.sin(a));
+        ctx.lineTo(cx + 280 * Math.cos(a), cy + 280 * Math.sin(a));
+        ctx.stroke();
+      }
+      // Concentric field strength rings
+      for (let rr = 60; rr <= 240; rr += 60) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, rr, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // Draw central mass (star)
+    function drawStar() {
+      const GM = parseFloat(massSlider.value);
+      const starRadius = 10 + (GM / 15000) * 12;
+      // Glow
+      const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, starRadius * 3);
+      grd.addColorStop(0, 'rgba(255, 200, 50, 0.4)');
+      grd.addColorStop(1, 'rgba(255, 200, 50, 0)');
+      ctx.fillStyle = grd;
+      ctx.beginPath();
+      ctx.arc(cx, cy, starRadius * 3, 0, Math.PI * 2);
+      ctx.fill();
+      // Body
+      ctx.fillStyle = '#ffcc33';
+      ctx.beginPath();
+      ctx.arc(cx, cy, starRadius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function getTrailColor(vFactor) {
+      if (vFactor > 1.08) return '#ff00ff'; // escaping - magenta
+      if (vFactor < 0.92) return '#ff3333'; // spiraling in - red
+      return '#00d4ff'; // stable - cyan
+    }
+
+    function drawTrail() {
+      if (trail.length < 2) return;
+      const vFactor = parseFloat(velSlider.value) / 100;
+      const color = getTrailColor(vFactor);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(trail[0].x, trail[0].y);
+      for (let i = 1; i < trail.length; i++) {
+        const alpha = i / trail.length;
+        ctx.globalAlpha = alpha * 0.8;
+        ctx.lineTo(trail[i].x, trail[i].y);
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.lineWidth = 1;
+    }
+
+    function drawSatellite() {
+      // Glow
+      const grd = ctx.createRadialGradient(sat.x, sat.y, 0, sat.x, sat.y, 12);
+      grd.addColorStop(0, 'rgba(0, 212, 255, 0.5)');
+      grd.addColorStop(1, 'rgba(0, 212, 255, 0)');
+      ctx.fillStyle = grd;
+      ctx.beginPath();
+      ctx.arc(sat.x, sat.y, 12, 0, Math.PI * 2);
+      ctx.fill();
+      // Body
+      ctx.fillStyle = '#00d4ff';
+      ctx.beginPath();
+      ctx.arc(sat.x, sat.y, 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function updatePhysics() {
+      const GM = parseFloat(massSlider.value);
+      const dx = cx - sat.x;
+      const dy = cy - sat.y;
+      const rSq = dx * dx + dy * dy;
+      const r = Math.sqrt(rSq);
+
+      // Prevent singularity at center
+      if (r < 15) {
+        initSat();
+        return;
+      }
+
+      // Gravitational acceleration: a = GM / r^2, direction toward center
+      const a = GM / rSq;
+      const ax = a * (dx / r);
+      const ay = a * (dy / r);
+
+      // Velocity Verlet integration
+      sat.vx += ax * dt;
+      sat.vy += ay * dt;
+      sat.x += sat.vx * dt;
+      sat.y += sat.vy * dt;
+
+      // Trail
+      trail.push({ x: sat.x, y: sat.y });
+      if (trail.length > maxTrail) trail.shift();
+
+      // Check bounds - reset if escaped
+      if (sat.x < -200 || sat.x > 1000 || sat.y < -200 || sat.y > 800) {
+        initSat();
+      }
+    }
+
+    function updateData() {
+      const GM = parseFloat(massSlider.value);
+      const dx = cx - sat.x;
+      const dy = cy - sat.y;
+      const r = Math.sqrt(dx * dx + dy * dy);
+      const v = Math.sqrt(sat.vx * sat.vx + sat.vy * sat.vy);
+      const force = GM / (r * r);
+      const accel = v * v / r;
+      const period = (2 * Math.PI * r) / v;
+
+      datOrbVel.textContent = v.toFixed(1);
+      datGravForce.textContent = force.toFixed(2);
+      datPeriod.textContent = period.toFixed(2);
+      datCentAccel.textContent = accel.toFixed(2);
+    }
+
+    function frame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawField();
+      drawStar();
+      if (running) {
+        // Sub-step for stability
+        for (let i = 0; i < 4; i++) {
+          updatePhysics();
+        }
+      }
+      drawTrail();
+      drawSatellite();
+      updateData();
+      animId = requestAnimationFrame(frame);
+    }
+
+    // Slider events
+    radiusSlider.addEventListener('input', function() { updateSliderLabels(); initSat(); });
+    massSlider.addEventListener('input', function() { updateSliderLabels(); initSat(); });
+    velSlider.addEventListener('input', function() { updateSliderLabels(); initSat(); });
+
+    // Buttons
+    playBtn.addEventListener('click', function() {
+      running = true;
+      playBtn.classList.add('active');
+      pauseBtn.classList.remove('active');
+    });
+    pauseBtn.addEventListener('click', function() {
+      running = false;
+      pauseBtn.classList.add('active');
+      playBtn.classList.remove('active');
+    });
+    resetBtn.addEventListener('click', function() {
+      running = true;
+      playBtn.classList.add('active');
+      pauseBtn.classList.remove('active');
+      initSat();
+    });
+
+    // Responsive canvas sizing
+    function resizeCanvas() {
+      const wrap = canvas.parentElement;
+      const w = wrap.clientWidth;
+      const ratio = 600 / 800;
+      canvas.style.height = (w * ratio) + 'px';
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Init
+    updateSliderLabels();
+    initSat();
+    frame();
+  })();
+  </script>
+</body>
+</html>

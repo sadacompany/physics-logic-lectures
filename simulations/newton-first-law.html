@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Newton's First Law — Physics Logic Simulations</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    /* ── Simulation Page Styles ── */
+    .sim-hero { padding: var(--space-2xl) var(--space-lg) var(--space-lg); text-align: center; }
+    .sim-hero .label { display: inline-block; font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--electric); background: var(--electric-glow); padding: 4px 14px; border-radius: 20px; margin-bottom: var(--space-sm); }
+    .sim-hero h1 { font-size: var(--text-3xl); margin-bottom: var(--space-xs); }
+    .sim-hero h1 em { color: var(--electric); font-style: normal; }
+    .sim-hero p { color: var(--text-secondary); max-width: 640px; margin: 0 auto; font-size: var(--text-base); }
+
+    .sim-container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-lg) var(--space-2xl); display: grid; grid-template-columns: 1fr 320px; gap: var(--space-lg); }
+
+    .sim-main { display: flex; flex-direction: column; gap: var(--space-md); }
+
+    .canvas-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: var(--void-light); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    .canvas-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    .sim-controls { display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; }
+    .sim-btn { font-family: var(--font-display); font-size: var(--text-sm); font-weight: 600; padding: 10px 22px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface); color: var(--text-primary); cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+    .sim-btn:hover { border-color: var(--electric); color: var(--electric); box-shadow: 0 0 16px var(--electric-glow); }
+    .sim-btn.active { background: var(--electric); color: var(--void); border-color: var(--electric); }
+    .sim-btn.reset-btn:hover { border-color: var(--magenta); color: var(--magenta); box-shadow: 0 0 16px var(--magenta-glow); }
+
+    .sim-sidebar { display: flex; flex-direction: column; gap: var(--space-md); }
+
+    .sim-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-md); }
+    .sim-panel h3 { font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--electric); margin-bottom: var(--space-sm); display: flex; align-items: center; gap: 8px; }
+    .sim-panel h3::before { content: ''; width: 3px; height: 14px; background: var(--electric); border-radius: 2px; }
+
+    .slider-group { margin-bottom: var(--space-sm); }
+    .slider-label { display: flex; justify-content: space-between; align-items: center; font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: 6px; }
+    .slider-label .slider-val { color: var(--electric); font-weight: 600; font-family: var(--font-display); }
+
+    input[type="range"] { -webkit-appearance: none; width: 100%; height: 6px; background: var(--surface-hover); border-radius: 3px; outline: none; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--electric); border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px var(--electric-glow-strong); border: 2px solid var(--void); }
+    input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; background: var(--electric); border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px rgba(0,212,255,0.3); border: 2px solid var(--void); }
+
+    .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .data-item { background: var(--void-light); border-radius: var(--radius-sm); padding: 10px 12px; }
+    .data-item .data-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 2px; }
+    .data-item .data-value { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; color: var(--electric); }
+    .data-item .data-unit { font-size: var(--text-xs); color: var(--text-muted); margin-left: 4px; }
+
+    .explanation-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-md); margin-top: 0; }
+    .explanation-panel h3 { font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--violet); margin-bottom: var(--space-sm); display: flex; align-items: center; gap: 8px; }
+    .explanation-panel h3::before { content: ''; width: 3px; height: 14px; background: var(--violet); border-radius: 2px; }
+    #explanation-text { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.7; }
+    #explanation-text strong { color: var(--electric); font-weight: 600; }
+
+    @media (max-width: 900px) {
+      .sim-container { grid-template-columns: 1fr; }
+      .canvas-wrap { aspect-ratio: 4/3; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reading-progress"></div>
+  <nav class="nav"><div class="nav-inner">
+    <a href="../index.html" class="nav-brand"><span class="brand-icon">&phi;</span> Physics Logic</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../lectures.html">Lectures</a>
+      <a href="../simulations.html" class="active">Simulations</a>
+      <a href="../faq.html">FAQ</a>
+    </div>
+    <div class="nav-search"><span class="search-icon">&#128269;</span><input type="text" placeholder="Search lectures..."><div class="search-results"></div></div>
+    <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+  </div></nav>
+
+  <main class="main-content">
+    <section class="sim-hero">
+      <span class="label">Simulation</span>
+      <h1>Newton's <em>First Law</em></h1>
+      <p>An object in motion stays in motion unless acted upon by an external force. Explore how friction — the only external force here — determines whether an object keeps moving or comes to rest.</p>
+    </section>
+
+    <div class="sim-container">
+      <div class="sim-main">
+        <div class="canvas-wrap">
+          <canvas id="simCanvas"></canvas>
+        </div>
+        <div class="sim-controls">
+          <button class="sim-btn" id="btn-play">&#9654; Play</button>
+          <button class="sim-btn" id="btn-pause">&#10074;&#10074; Pause</button>
+          <button class="sim-btn reset-btn" id="btn-reset">&#8634; Reset</button>
+        </div>
+        <div class="explanation-panel">
+          <h3>What's Happening</h3>
+          <div id="explanation-text">Press <strong>Play</strong> to launch the block with the set initial velocity. Adjust friction to see how it affects the motion. With zero friction, the block never stops — that is inertia in action.</div>
+        </div>
+      </div>
+
+      <div class="sim-sidebar">
+        <div class="sim-panel">
+          <h3>Parameters</h3>
+          <div class="slider-group">
+            <div class="slider-label"><span>Initial Velocity</span><span class="slider-val"><span id="disp-velocity">10</span> m/s</span></div>
+            <input type="range" id="sl-velocity" min="1" max="30" step="0.5" value="10">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Friction Coefficient</span><span class="slider-val" id="disp-friction">0.15</span></div>
+            <input type="range" id="sl-friction" min="0" max="1" step="0.01" value="0.15">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Mass</span><span class="slider-val"><span id="disp-mass">5</span> kg</span></div>
+            <input type="range" id="sl-mass" min="1" max="20" step="0.5" value="5">
+          </div>
+        </div>
+
+        <div class="sim-panel">
+          <h3>Live Data</h3>
+          <div class="data-grid">
+            <div class="data-item">
+              <div class="data-label">Velocity</div>
+              <div><span class="data-value" id="data-vel">0</span><span class="data-unit">m/s</span></div>
+            </div>
+            <div class="data-item">
+              <div class="data-label">Acceleration</div>
+              <div><span class="data-value" id="data-acc">0</span><span class="data-unit">m/s&sup2;</span></div>
+            </div>
+            <div class="data-item">
+              <div class="data-label">Friction Force</div>
+              <div><span class="data-value" id="data-force">0</span><span class="data-unit">N</span></div>
+            </div>
+            <div class="data-item">
+              <div class="data-label">Distance</div>
+              <div><span class="data-value" id="data-dist">0</span><span class="data-unit">m</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <div class="footer-brand">Physics Logic</div>
+          <p class="footer-desc">A free educational platform dedicated to teaching physics through deep reasoning and logical thinking.</p>
+        </div>
+        <div class="footer-col"><h5>Simulations</h5><a href="../simulations.html">All Simulations</a><a href="newton-second-law.html">F = ma</a><a href="projectile-motion.html">Projectile Motion</a></div>
+        <div class="footer-col"><h5>Resources</h5><a href="../about.html">About</a><a href="../lectures.html">Lectures</a><a href="../faq.html">FAQ</a></div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Physics Logic Lectures. All rights reserved.</span>
+        <span>Built for learners, by learners.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/simulations.js"></script>
+  <script>
+  (function() {
+    const g = 9.81;
+    let initVelocity = 10, mu = 0.15, mass = 5;
+    let velocity = 0, position = 0, distance = 0, acceleration = 0, frictionForce = 0;
+    let trail = [];
+
+    const sim = new SimController('simCanvas');
+
+    bindSlider('sl-velocity', 'disp-velocity', v => { initVelocity = v; });
+    bindSlider('sl-friction', 'disp-friction', v => { mu = v; });
+    bindSlider('sl-mass', 'disp-mass', v => { mass = v; });
+
+    sim.onReset = function() {
+      velocity = 0; position = 0; distance = 0; acceleration = 0; frictionForce = 0;
+      trail = [];
+      updateDisplays();
+      setExplanation('Press <strong>Play</strong> to launch the block with the set initial velocity. Adjust friction to see how it affects the motion. With zero friction, the block never stops — that is inertia in action.');
+    };
+
+    sim.update = function(dt) {
+      if (velocity === 0 && this.time > 0.01) {
+        // Already stopped
+        return;
+      }
+      if (this.time < dt * 2) {
+        velocity = initVelocity;
+      }
+
+      // Friction force opposes motion
+      if (velocity > 0.001) {
+        frictionForce = mu * mass * g;
+        acceleration = -frictionForce / mass; // = -mu * g
+      } else {
+        velocity = 0;
+        acceleration = 0;
+        frictionForce = 0;
+      }
+
+      velocity += acceleration * dt;
+      if (velocity < 0) velocity = 0;
+      position += velocity * dt;
+      distance = position;
+
+      // Trail
+      trail.push({ x: position, v: velocity, t: this.time });
+      if (trail.length > 500) trail.shift();
+
+      updateDisplays();
+      updateExplanation();
+    };
+
+    function updateDisplays() {
+      setDisplay('data-vel', velocity);
+      setDisplay('data-acc', acceleration);
+      setDisplay('data-force', frictionForce);
+      setDisplay('data-dist', distance);
+    }
+
+    function updateExplanation() {
+      if (mu === 0) {
+        setExplanation('<strong>Zero friction!</strong> The block moves at a constant ' + formatNum(velocity) + ' m/s forever. This perfectly demonstrates <strong>Newton\'s First Law</strong>: an object in motion stays in motion at constant velocity when no net force acts on it. The velocity never changes because there is nothing to change it.');
+      } else if (velocity > 0.01) {
+        const stopDist = (initVelocity * initVelocity) / (2 * mu * g);
+        setExplanation('The block is decelerating at <strong>' + formatNum(Math.abs(acceleration)) + ' m/s&sup2;</strong> due to kinetic friction (F = &mu;mg = ' + formatNum(frictionForce) + ' N). Current velocity: <strong>' + formatNum(velocity) + ' m/s</strong>. It will stop after traveling approximately <strong>' + formatNum(stopDist) + ' m</strong>. Higher friction means faster deceleration.');
+      } else {
+        setExplanation('The block has <strong>stopped</strong> after traveling <strong>' + formatNum(distance) + ' m</strong>. Friction converted all kinetic energy into heat. With &mu; = ' + formatNum(mu) + ', the stopping distance was ' + formatNum(distance) + ' m. Try reducing friction to see the block travel further — or set it to zero for true inertial motion!');
+      }
+    }
+
+    sim.draw = function() {
+      const w = this.getWidth(), h = this.getHeight();
+      const ctx = this.ctx;
+
+      ctx.clearRect(0, 0, w, h);
+      drawGrid(ctx, w, h);
+
+      const groundY = h * 0.7;
+      const blockW = 50, blockH = 40;
+      const scale = (w - 120) / Math.max(50, distance + initVelocity * 5);
+
+      // Ground
+      ctx.fillStyle = SIM_COLORS.surfaceRaised;
+      ctx.fillRect(0, groundY, w, h - groundY);
+      ctx.strokeStyle = SIM_COLORS.electric;
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(w, groundY); ctx.stroke();
+
+      // Friction indicators
+      if (mu > 0) {
+        ctx.strokeStyle = SIM_COLORS.textMuted;
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i < w; i += 12) {
+          ctx.beginPath();
+          ctx.moveTo(i, groundY + 2);
+          ctx.lineTo(i - 6, groundY + 10);
+          ctx.stroke();
+        }
+      }
+
+      // Trail
+      if (trail.length > 1) {
+        ctx.strokeStyle = 'rgba(0,212,255,0.2)';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        trail.forEach((p, i) => {
+          const tx = 60 + p.x * scale;
+          if (i === 0) ctx.moveTo(tx, groundY - blockH / 2); else ctx.lineTo(tx, groundY - blockH / 2);
+        });
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Block
+      const bx = 60 + position * scale;
+      const by = groundY - blockH;
+
+      // Shadow / glow
+      ctx.shadowColor = SIM_COLORS.electric;
+      ctx.shadowBlur = velocity > 0.1 ? 15 : 5;
+      ctx.fillStyle = velocity > 0.1 ? SIM_COLORS.electric : SIM_COLORS.electricDim;
+      roundRect(ctx, bx - blockW / 2, by, blockW, blockH, 6);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      ctx.strokeStyle = SIM_COLORS.white;
+      ctx.lineWidth = 1;
+      roundRect(ctx, bx - blockW / 2, by, blockW, blockH, 6);
+      ctx.stroke();
+
+      // Mass label on block
+      ctx.fillStyle = SIM_COLORS.void;
+      ctx.font = 'bold 13px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(mass + ' kg', bx, by + blockH / 2);
+
+      // Velocity arrow
+      if (velocity > 0.1) {
+        const arrowLen = clamp(velocity * 5, 10, 120);
+        drawArrow(ctx, bx + blockW / 2 + 5, by + blockH / 2, bx + blockW / 2 + 5 + arrowLen, by + blockH / 2, SIM_COLORS.lime, 10, 3);
+        ctx.fillStyle = SIM_COLORS.lime;
+        ctx.font = '12px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('v = ' + formatNum(velocity) + ' m/s', bx + blockW / 2 + arrowLen + 14, by + blockH / 2 - 2);
+      }
+
+      // Friction arrow (opposite direction)
+      if (frictionForce > 0 && velocity > 0.01) {
+        const fArrowLen = clamp(frictionForce * 3, 10, 80);
+        drawArrow(ctx, bx - blockW / 2 - 5, by + blockH / 2, bx - blockW / 2 - 5 - fArrowLen, by + blockH / 2, SIM_COLORS.magenta, 8, 2);
+        ctx.fillStyle = SIM_COLORS.magenta;
+        ctx.font = '11px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText('f = ' + formatNum(frictionForce) + ' N', bx - blockW / 2 - fArrowLen - 18, by + blockH / 2 - 2);
+      }
+
+      // Distance marker
+      if (distance > 0.1) {
+        ctx.strokeStyle = SIM_COLORS.textMuted;
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.moveTo(60, groundY + 25); ctx.lineTo(bx, groundY + 25); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = SIM_COLORS.textSecondary;
+        ctx.font = '11px "DM Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(formatNum(distance) + ' m', (60 + bx) / 2, groundY + 40);
+      }
+
+      // Title
+      ctx.fillStyle = SIM_COLORS.textMuted;
+      ctx.font = '12px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Newton\'s First Law — Inertia & Friction', 12, 20);
+      ctx.fillText('t = ' + formatNum(sim.time, 1) + ' s', 12, 36);
+    };
+
+    sim.onReset();
+    sim.draw();
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Momentum &amp; Collisions — Physics Logic Simulations</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .sim-hero { padding: var(--space-2xl) var(--space-lg) var(--space-lg); text-align: center; }
+    .sim-hero .label { display: inline-block; font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--electric); background: var(--electric-glow); padding: 4px 14px; border-radius: 20px; margin-bottom: var(--space-sm); }
+    .sim-hero h1 { font-size: var(--text-3xl); margin-bottom: var(--space-xs); }
+    .sim-hero h1 em { color: var(--gold); font-style: normal; }
+    .sim-hero p { color: var(--text-secondary); max-width: 640px; margin: 0 auto; font-size: var(--text-base); }
+
+    .sim-container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-lg) var(--space-2xl); display: grid; grid-template-columns: 1fr 320px; gap: var(--space-lg); }
+    .sim-main { display: flex; flex-direction: column; gap: var(--space-md); }
+
+    .canvas-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: var(--void-light); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    .canvas-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    .sim-controls { display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; }
+    .sim-btn { font-family: var(--font-display); font-size: var(--text-sm); font-weight: 600; padding: 10px 22px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface); color: var(--text-primary); cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+    .sim-btn:hover { border-color: var(--electric); color: var(--electric); box-shadow: 0 0 16px var(--electric-glow); }
+    .sim-btn.active { background: var(--electric); color: var(--void); border-color: var(--electric); }
+    .sim-btn.reset-btn:hover { border-color: var(--magenta); color: var(--magenta); box-shadow: 0 0 16px var(--magenta-glow); }
+    .sim-btn.toggle-btn { border-color: var(--gold); color: var(--gold); }
+    .sim-btn.toggle-btn.active { background: var(--gold); color: var(--void); }
+
+    .sim-sidebar { display: flex; flex-direction: column; gap: var(--space-md); }
+    .sim-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-md); }
+    .sim-panel h3 { font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--electric); margin-bottom: var(--space-sm); display: flex; align-items: center; gap: 8px; }
+    .sim-panel h3::before { content: ''; width: 3px; height: 14px; background: var(--electric); border-radius: 2px; }
+
+    .slider-group { margin-bottom: var(--space-sm); }
+    .slider-label { display: flex; justify-content: space-between; align-items: center; font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: 6px; }
+    .slider-label .slider-val { color: var(--electric); font-weight: 600; font-family: var(--font-display); }
+
+    input[type="range"] { -webkit-appearance: none; width: 100%; height: 6px; background: var(--surface-hover); border-radius: 3px; outline: none; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--electric); border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px var(--electric-glow-strong); border: 2px solid var(--void); }
+    input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; background: var(--electric); border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px rgba(0,212,255,0.3); border: 2px solid var(--void); }
+
+    .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .data-item { background: var(--void-light); border-radius: var(--radius-sm); padding: 10px 12px; }
+    .data-item .data-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 2px; }
+    .data-item .data-value { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; color: var(--electric); }
+    .data-item .data-unit { font-size: var(--text-xs); color: var(--text-muted); margin-left: 4px; }
+
+    .obj-label { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; padding: 3px 8px; border-radius: 4px; display: inline-block; }
+    .obj-label.obj1 { background: rgba(0,212,255,0.15); color: var(--electric); }
+    .obj-label.obj2 { background: rgba(255,45,123,0.15); color: var(--magenta); }
+
+    .explanation-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-md); margin-top: 0; }
+    .explanation-panel h3 { font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--violet); margin-bottom: var(--space-sm); display: flex; align-items: center; gap: 8px; }
+    .explanation-panel h3::before { content: ''; width: 3px; height: 14px; background: var(--violet); border-radius: 2px; }
+    #explanation-text { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.7; }
+    #explanation-text strong { color: var(--electric); font-weight: 600; }
+
+    @media (max-width: 900px) {
+      .sim-container { grid-template-columns: 1fr; }
+      .canvas-wrap { aspect-ratio: 4/3; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reading-progress"></div>
+  <nav class="nav"><div class="nav-inner">
+    <a href="../index.html" class="nav-brand"><span class="brand-icon">&phi;</span> Physics Logic</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../lectures.html">Lectures</a>
+      <a href="../simulations.html" class="active">Simulations</a>
+      <a href="../faq.html">FAQ</a>
+    </div>
+    <div class="nav-search"><span class="search-icon">&#128269;</span><input type="text" placeholder="Search lectures..."><div class="search-results"></div></div>
+    <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+  </div></nav>
+
+  <main class="main-content">
+    <section class="sim-hero">
+      <span class="label">Simulation</span>
+      <h1>Momentum &amp; <em>Collisions</em></h1>
+      <p>Set up two objects with different masses and velocities, then watch them collide. Compare elastic and perfectly inelastic collisions. Verify that momentum is always conserved.</p>
+    </section>
+
+    <div class="sim-container">
+      <div class="sim-main">
+        <div class="canvas-wrap">
+          <canvas id="simCanvas"></canvas>
+        </div>
+        <div class="sim-controls">
+          <button class="sim-btn" id="btn-play">&#9654; Play</button>
+          <button class="sim-btn" id="btn-pause">&#10074;&#10074; Pause</button>
+          <button class="sim-btn reset-btn" id="btn-reset">&#8634; Reset</button>
+          <button class="sim-btn toggle-btn" id="btn-toggle">Elastic</button>
+        </div>
+        <div class="explanation-panel">
+          <h3>What's Happening</h3>
+          <div id="explanation-text">Press <strong>Play</strong> to send the two objects toward each other. Toggle between <strong>elastic</strong> (kinetic energy conserved) and <strong>inelastic</strong> (objects stick together) collisions. Momentum is always conserved in both types.</div>
+        </div>
+      </div>
+
+      <div class="sim-sidebar">
+        <div class="sim-panel">
+          <span class="obj-label obj1">Object 1 (Cyan)</span>
+          <h3>Object 1</h3>
+          <div class="slider-group">
+            <div class="slider-label"><span>Mass 1</span><span class="slider-val"><span id="disp-m1">5</span> kg</span></div>
+            <input type="range" id="sl-m1" min="1" max="20" step="0.5" value="5">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Velocity 1</span><span class="slider-val"><span id="disp-v1">8</span> m/s</span></div>
+            <input type="range" id="sl-v1" min="-15" max="15" step="0.5" value="8">
+          </div>
+        </div>
+
+        <div class="sim-panel">
+          <span class="obj-label obj2">Object 2 (Magenta)</span>
+          <h3>Object 2</h3>
+          <div class="slider-group">
+            <div class="slider-label"><span>Mass 2</span><span class="slider-val"><span id="disp-m2">3</span> kg</span></div>
+            <input type="range" id="sl-m2" min="1" max="20" step="0.5" value="3">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Velocity 2</span><span class="slider-val"><span id="disp-v2">-5</span> m/s</span></div>
+            <input type="range" id="sl-v2" min="-15" max="15" step="0.5" value="-5">
+          </div>
+        </div>
+
+        <div class="sim-panel">
+          <h3>Collision Data</h3>
+          <div class="data-grid">
+            <div class="data-item">
+              <div class="data-label">P Before</div>
+              <div><span class="data-value" id="data-pb">0</span><span class="data-unit">kg&middot;m/s</span></div>
+            </div>
+            <div class="data-item">
+              <div class="data-label">P After</div>
+              <div><span class="data-value" id="data-pa">--</span><span class="data-unit">kg&middot;m/s</span></div>
+            </div>
+            <div class="data-item">
+              <div class="data-label">KE Before</div>
+              <div><span class="data-value" id="data-keb">0</span><span class="data-unit">J</span></div>
+            </div>
+            <div class="data-item">
+              <div class="data-label">KE After</div>
+              <div><span class="data-value" id="data-kea">--</span><span class="data-unit">J</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <div class="footer-brand">Physics Logic</div>
+          <p class="footer-desc">A free educational platform dedicated to teaching physics through deep reasoning and logical thinking.</p>
+        </div>
+        <div class="footer-col"><h5>Simulations</h5><a href="../simulations.html">All Simulations</a><a href="energy-conservation.html">Energy</a><a href="pendulum.html">Pendulum</a></div>
+        <div class="footer-col"><h5>Resources</h5><a href="../about.html">About</a><a href="../lectures.html">Lectures</a><a href="../faq.html">FAQ</a></div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Physics Logic Lectures. All rights reserved.</span>
+        <span>Built for learners, by learners.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/simulations.js"></script>
+  <script>
+  (function() {
+    let m1 = 5, m2 = 3, v1Init = 8, v2Init = -5;
+    let elastic = true;
+    let obj1 = { x: 0, v: 0 }, obj2 = { x: 0, v: 0 };
+    let collided = false;
+    let pBefore = 0, pAfter = 0, keBefore = 0, keAfter = 0;
+    let collisionFlash = 0;
+    let stuck = false; // for inelastic
+
+    const sim = new SimController('simCanvas');
+
+    bindSlider('sl-m1', 'disp-m1', v => { m1 = v; updateInitial(); });
+    bindSlider('sl-v1', 'disp-v1', v => { v1Init = v; updateInitial(); });
+    bindSlider('sl-m2', 'disp-m2', v => { m2 = v; updateInitial(); });
+    bindSlider('sl-v2', 'disp-v2', v => { v2Init = v; updateInitial(); });
+
+    // Toggle button
+    const toggleBtn = document.getElementById('btn-toggle');
+    toggleBtn.addEventListener('click', () => {
+      elastic = !elastic;
+      toggleBtn.textContent = elastic ? 'Elastic' : 'Inelastic';
+      toggleBtn.classList.toggle('active', !elastic);
+    });
+
+    function updateInitial() {
+      pBefore = m1 * v1Init + m2 * v2Init;
+      keBefore = 0.5 * m1 * v1Init * v1Init + 0.5 * m2 * v2Init * v2Init;
+      setDisplay('data-pb', pBefore);
+      setDisplay('data-keb', keBefore);
+    }
+
+    sim.onReset = function() {
+      // Place objects apart
+      obj1 = { x: -10, v: v1Init };
+      obj2 = { x: 10, v: v2Init };
+      collided = false;
+      stuck = false;
+      collisionFlash = 0;
+      pBefore = m1 * v1Init + m2 * v2Init;
+      keBefore = 0.5 * m1 * v1Init * v1Init + 0.5 * m2 * v2Init * v2Init;
+      pAfter = 0; keAfter = 0;
+      setDisplay('data-pb', pBefore);
+      setDisplay('data-keb', keBefore);
+      setDisplay('data-pa', '--');
+      setDisplay('data-kea', '--');
+      setExplanation('Press <strong>Play</strong> to send the two objects toward each other. Toggle between <strong>elastic</strong> (kinetic energy conserved) and <strong>inelastic</strong> (objects stick together) collisions. Momentum is always conserved in both types.');
+    };
+
+    function getRadius(mass) { return 15 + mass * 1.5; }
+
+    sim.update = function(dt) {
+      if (collisionFlash > 0) collisionFlash -= dt * 3;
+
+      if (stuck) {
+        // Both move together
+        const vf = (m1 * v1Init + m2 * v2Init) / (m1 + m2);
+        obj1.x += vf * dt;
+        obj2.x += vf * dt;
+        obj1.v = vf;
+        obj2.v = vf;
+      } else {
+        obj1.x += obj1.v * dt;
+        obj2.x += obj2.v * dt;
+      }
+
+      // Check collision
+      if (!collided && !stuck) {
+        const r1 = getRadius(m1) / 30; // scale radii to sim units
+        const r2 = getRadius(m2) / 30;
+        const dist = obj2.x - obj1.x;
+        if (dist < (r1 + r2)) {
+          collided = true;
+          collisionFlash = 1;
+
+          if (elastic) {
+            // Elastic collision formulas
+            const v1f = ((m1 - m2) * v1Init + 2 * m2 * v2Init) / (m1 + m2);
+            const v2f = ((m2 - m1) * v2Init + 2 * m1 * v1Init) / (m1 + m2);
+            obj1.v = v1f;
+            obj2.v = v2f;
+          } else {
+            // Perfectly inelastic: stick together
+            const vf = (m1 * v1Init + m2 * v2Init) / (m1 + m2);
+            obj1.v = vf;
+            obj2.v = vf;
+            stuck = true;
+          }
+
+          pAfter = m1 * obj1.v + m2 * obj2.v;
+          keAfter = 0.5 * m1 * obj1.v * obj1.v + 0.5 * m2 * obj2.v * obj2.v;
+          setDisplay('data-pa', pAfter);
+          setDisplay('data-kea', keAfter);
+
+          if (elastic) {
+            setExplanation('<strong>Elastic collision!</strong> Momentum conserved: p_before = <strong>' + formatNum(pBefore) + '</strong>, p_after = <strong>' + formatNum(pAfter) + '</strong> kg&middot;m/s. Kinetic energy also conserved: KE_before = <strong>' + formatNum(keBefore) + '</strong>, KE_after = <strong>' + formatNum(keAfter) + '</strong> J. Both objects bounce off with new velocities.');
+          } else {
+            const keLost = keBefore - keAfter;
+            setExplanation('<strong>Perfectly inelastic collision!</strong> The objects stick together. Momentum conserved: p_before = <strong>' + formatNum(pBefore) + '</strong>, p_after = <strong>' + formatNum(pAfter) + '</strong> kg&middot;m/s. Kinetic energy NOT conserved: KE_before = <strong>' + formatNum(keBefore) + '</strong> J, KE_after = <strong>' + formatNum(keAfter) + '</strong> J. Energy lost to deformation/heat: <strong>' + formatNum(keLost) + '</strong> J.');
+          }
+        }
+      }
+    };
+
+    sim.draw = function() {
+      const w = this.getWidth(), h = this.getHeight();
+      const ctx = this.ctx;
+      ctx.clearRect(0, 0, w, h);
+      drawGrid(ctx, w, h);
+
+      const centerY = h * 0.5;
+      const centerX = w / 2;
+      const scale = w / 40;
+
+      // Track line
+      ctx.strokeStyle = SIM_COLORS.surfaceHover;
+      ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.moveTo(20, centerY + 30); ctx.lineTo(w - 20, centerY + 30); ctx.stroke();
+      ctx.strokeStyle = SIM_COLORS.gold;
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(20, centerY + 30); ctx.lineTo(w - 20, centerY + 30); ctx.stroke();
+
+      // Collision flash
+      if (collisionFlash > 0) {
+        const flashX = centerX + ((obj1.x + obj2.x) / 2) * scale;
+        const gradient = ctx.createRadialGradient(flashX, centerY, 0, flashX, centerY, 80);
+        gradient.addColorStop(0, 'rgba(251,191,36,' + (collisionFlash * 0.6) + ')');
+        gradient.addColorStop(1, 'rgba(251,191,36,0)');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(flashX - 80, centerY - 80, 160, 160);
+      }
+
+      // Draw objects
+      function drawObj(obj, mass, color, label) {
+        const r = getRadius(mass);
+        const sx = centerX + obj.x * scale;
+        const sy = centerY;
+
+        // Glow
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 12;
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(sx, sy, r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        ctx.strokeStyle = SIM_COLORS.white;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(sx, sy, r, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Mass label
+        ctx.fillStyle = SIM_COLORS.void;
+        ctx.font = 'bold 12px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(formatNum(mass, 1) + 'kg', sx, sy);
+
+        // Velocity arrow
+        if (Math.abs(obj.v) > 0.1) {
+          const arrowLen = clamp(Math.abs(obj.v) * 5, 10, 100);
+          const dir = obj.v > 0 ? 1 : -1;
+          drawArrow(ctx, sx + dir * (r + 5), sy - r - 12, sx + dir * (r + 5 + arrowLen), sy - r - 12, color, 8, 2);
+          ctx.fillStyle = color;
+          ctx.font = '11px "Space Grotesk", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('v=' + formatNum(obj.v) + ' m/s', sx + dir * (r + 5 + arrowLen / 2), sy - r - 24);
+        }
+
+        // Label
+        ctx.fillStyle = color;
+        ctx.font = '10px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(label, sx, sy + r + 16);
+      }
+
+      drawObj(obj1, m1, SIM_COLORS.electric, 'Object 1');
+      drawObj(obj2, m2, SIM_COLORS.magenta, 'Object 2');
+
+      // Momentum bars at bottom
+      const barY = h - 80;
+      const barH = 20;
+      const maxP = Math.max(Math.abs(pBefore), 1) * 1.3;
+
+      // Before momentum bar
+      ctx.fillStyle = SIM_COLORS.textMuted;
+      ctx.font = '11px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Momentum Before:', 20, barY - 6);
+      const pbWidth = (pBefore / maxP) * (w / 3);
+      ctx.fillStyle = SIM_COLORS.lime;
+      ctx.globalAlpha = 0.3;
+      roundRect(ctx, w / 2, barY, pbWidth, barH, 4);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = SIM_COLORS.lime;
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, w / 2, barY, pbWidth, barH, 4);
+      ctx.stroke();
+      ctx.fillStyle = SIM_COLORS.lime;
+      ctx.textAlign = 'left';
+      ctx.fillText(formatNum(pBefore) + ' kg\u00B7m/s', w / 2 + pbWidth + 8, barY + 14);
+
+      // After momentum bar
+      if (collided) {
+        ctx.fillStyle = SIM_COLORS.textMuted;
+        ctx.textAlign = 'left';
+        ctx.fillText('Momentum After:', 20, barY + barH + 18);
+        const paWidth = (pAfter / maxP) * (w / 3);
+        ctx.fillStyle = SIM_COLORS.gold;
+        ctx.globalAlpha = 0.3;
+        roundRect(ctx, w / 2, barY + barH + 8, paWidth, barH, 4);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = SIM_COLORS.gold;
+        ctx.lineWidth = 1.5;
+        roundRect(ctx, w / 2, barY + barH + 8, paWidth, barH, 4);
+        ctx.stroke();
+        ctx.fillStyle = SIM_COLORS.gold;
+        ctx.textAlign = 'left';
+        ctx.fillText(formatNum(pAfter) + ' kg\u00B7m/s', w / 2 + paWidth + 8, barY + barH + 22);
+      }
+
+      // Title
+      ctx.fillStyle = SIM_COLORS.textMuted;
+      ctx.font = '12px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Momentum & Collisions — ' + (elastic ? 'Elastic' : 'Perfectly Inelastic'), 12, 20);
+      ctx.fillText('t = ' + formatNum(sim.time, 1) + ' s', 12, 36);
+    };
+
+    updateInitial();
+    sim.onReset();
+    sim.draw();
+  })();
+  </script>
+</body>
+</html>

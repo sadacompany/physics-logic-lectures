@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lectures — Physics Logic</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="main-content">
+
+    <!-- Reading Progress -->
+    <div class="reading-progress"></div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-brand"><span class="brand-icon">φ</span> Physics Logic</a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="lectures.html" class="active">Lectures</a>
+          <a href="faq.html">FAQ</a>
+        </div>
+        <div class="nav-search">
+          <span class="search-icon">&#128269;</span>
+          <input type="text" placeholder="Search lectures...">
+          <div class="search-results"></div>
+        </div>
+        <button class="nav-toggle"><span></span><span></span><span></span></button>
+      </div>
+    </nav>
+
+    <!-- Lectures Hero -->
+    <section class="lectures-hero">
+      <div class="container">
+        <div>
+          <h1>The Complete <em>Lecture Series</em></h1>
+          <p>12 structured lectures from foundations to modern physics.</p>
+        </div>
+        <div class="filter-tags">
+          <button class="filter-tag active" data-category="all">All</button>
+          <button class="filter-tag" data-category="foundations">Foundations</button>
+          <button class="filter-tag" data-category="mechanics">Mechanics</button>
+          <button class="filter-tag" data-category="waves">Waves</button>
+          <button class="filter-tag" data-category="thermal">Thermal</button>
+          <button class="filter-tag" data-category="em">E&amp;M</button>
+          <button class="filter-tag" data-category="modern">Modern</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lecture List -->
+    <div class="lecture-list">
+
+      <!-- Lecture 1 -->
+      <div class="lecture-list-item" data-category="foundations">
+        <div class="list-number">01</div>
+        <div class="list-content">
+          <h3><a href="lectures/01-introduction.html">Introduction to Physics and Physical Reasoning</a></h3>
+          <p>Explore what physics truly is, how physicists observe and model the natural world, and the logical framework that underpins all physical reasoning.</p>
+        </div>
+        <div class="list-meta">
+          <span class="difficulty difficulty-beginner">Beginner</span>
+          <span class="time">25 min read</span>
+        </div>
+      </div>
+
+      <!-- Lecture 2 -->
+      <div class="lecture-list-item" data-category="foundations">
+        <div class="list-number">02</div>
+        <div class="list-content">
+          <h3><a href="lectures/02-units-dimensions.html">Units, Dimensions, and Measurement</a></h3>
+          <p>Master the SI system, learn dimensional analysis as a powerful problem-solving tool, and understand precision, uncertainty, and scientific notation.</p>
+        </div>
+        <div class="list-meta">
+          <span class="difficulty difficulty-beginner">Beginner</span>
+          <span class="time">30 min read</span>
+        </div>
+      </div>
+
+      <!-- Lecture 3 -->
+      <div class="lecture-list-item" data-category="mechanics">
+        <div class="list-number">03</div>
+        <div class="list-content">
+          <h3><a href="lectures/03-vectors-motion.html">Vectors and Motion</a></h3>
+          <p>Distinguish scalars from vectors, understand displacement, velocity, and acceleration, and analyze motion in one and two dimensions.</p>
+        </div>
+        <div class="list-meta">
+          <span class="difficulty difficulty-beginner">Beginner</span>
+          <span class="time">40 min read</span>
+        </div>
+      </div>
+
+      <!-- Lecture 4 -->
+      <div class="lecture-list-item" data-category="mechanics">
+        <div class="list-number">04</div>
+        <div class="list-content">
+          <h3><a href="lectures/04-newtons-laws.html">Newton's Laws of Motion</a></h3>
+          <p>Develop deep intuition for inertia, force, and the action-reaction principle through free body analysis and real-world applications.</p>
+        </div>
+        <div class="list-meta">
+          <span class="difficulty difficulty-intermediate">Intermediate</span>
+          <span class="time">45 min read</span>
+        </div>
+      </div>
+
+      <!-- Lecture 5 -->
+      <div class="lecture-list-item" data-category="mechanics">
+        <div class="list-number">05</div>
+        <div class="list-content">
+          <h3><a href="lectures/05-work-energy-power.html">Work, Energy, and Power</a></h3>
+          <p>Understand energy as the currency of physics, explore kinetic and potential energy, and master the conservation of energy principle.</p>
+        </div>
+        <div class="list-meta">
+          <span class="difficulty difficulty-intermediate">Intermediate</span>
+          <span class="time">40 min read</span>
+        </div>
+      </div>
+
+      <!-- Lecture 6 -->
+      <div class="lecture-list-item" data-category="mechanics">
+        <div class="list-number">06</div>
+        <div class="list-content">
+          <h3><a href="lectures/06-momentum-collisions.html">Momentum and Collisions</a></h3>
+          <p>Explore linear momentum, impulse, and conservation laws through elastic and inelastic collision analysis.</p>
+        </div>
+        <div class="list-meta">
+          <span class="difficulty difficulty-intermediate">Intermediate</span>
+          <span class="time">35 min read</span>
+        </div>
+      </div>
+
+      <!-- Lecture 7 -->
+      <div class="lecture-list-item" data-category="mechanics">
+        <div class="list-number">07</div>
+        <div class="list-content">
+          <h3><a href="lectures/07-circular-motion-gravitation.html">Circular Motion and Gravitation</a></h3>
+          <p>Analyze centripetal acceleration and force, understand Newtonian gravitation, and explore the physics of orbits.</p>
+        </div>
+        <div class="list-meta">
+          <span class="difficulty difficulty-intermediate">Intermediate</span>
+          <span class="time">40 min read</span>
+        </div>
+      </div>
+
+      <!-- Lecture 8 -->
+      <div class="lecture-list-item" data-category="waves">
+        <div class="list-number">08</div>
+        <div class="list-content">
+          <h3><a href="lectures/08-oscillations-waves.html">Oscillations and Waves</a></h3>
+          <p>Study simple harmonic motion, wave properties, interference patterns, and the phenomenon of resonance.</p>
+        </div>
+        <div class="list-meta">
+          <span class="difficulty difficulty-intermediate">Intermediate</span>
+          <span class="time">45 min read</span>
+        </div>
+      </div>
+
+      <!-- Lecture 9 -->
+      <div class="lecture-list-item" data-category="thermal">
+        <div class="list-number">09</div>
+        <div class="list-content">
+          <h3><a href="lectures/09-thermodynamics.html">Thermodynamics</a></h3>
+          <p>Understand temperature, heat, and the four laws of thermodynamics, with an intuitive exploration of entropy.</p>
+        </div>
+        <div class="list-meta">
+          <span class="difficulty difficulty-intermediate">Intermediate</span>
+          <span class="time">50 min read</span>
+        </div>
+      </div>
+
+      <!-- Lecture 10 -->
+      <div class="lecture-list-item" data-category="em">
+        <div class="list-number">10</div>
+        <div class="list-content">
+          <h3><a href="lectures/10-electricity-magnetism.html">Electricity and Magnetism</a></h3>
+          <p>From electric charge to electromagnetic ideas, explore fields, potential, circuits, and the deep connection between electricity and magnetism.</p>
+        </div>
+        <div class="list-meta">
+          <span class="difficulty difficulty-advanced">Advanced</span>
+          <span class="time">55 min read</span>
+        </div>
+      </div>
+
+      <!-- Lecture 11 -->
+      <div class="lecture-list-item" data-category="waves">
+        <div class="list-number">11</div>
+        <div class="list-content">
+          <h3><a href="lectures/11-optics.html">Optics</a></h3>
+          <p>Investigate reflection, refraction, lenses, and image formation, culminating in the wave-particle nature of light.</p>
+        </div>
+        <div class="list-meta">
+          <span class="difficulty difficulty-intermediate">Intermediate</span>
+          <span class="time">40 min read</span>
+        </div>
+      </div>
+
+      <!-- Lecture 12 -->
+      <div class="lecture-list-item" data-category="modern">
+        <div class="list-number">12</div>
+        <div class="list-content">
+          <h3><a href="lectures/12-modern-physics.html">Modern Physics</a></h3>
+          <p>Journey into relativity, quantum mechanics, atomic structure, and the conceptual foundations of twentieth-century physics.</p>
+        </div>
+        <div class="list-meta">
+          <span class="difficulty difficulty-advanced">Advanced</span>
+          <span class="time">50 min read</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-brand">Physics Logic</div>
+            <p class="footer-desc">A structured journey through the logical foundations of physics, from first principles to modern theory.</p>
+          </div>
+          <div class="footer-col">
+            <h5>Lectures</h5>
+            <a href="lectures/01-introduction.html">Introduction</a>
+            <a href="lectures/04-newtons-laws.html">Newton's Laws</a>
+            <a href="lectures/09-thermodynamics.html">Thermodynamics</a>
+            <a href="lectures/12-modern-physics.html">Modern Physics</a>
+          </div>
+          <div class="footer-col">
+            <h5>Pages</h5>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="lectures.html">Lectures</a>
+            <a href="faq.html">FAQ</a>
+          </div>
+          <div class="footer-col">
+            <h5>Resources</h5>
+            <a href="#">Further Reading</a>
+            <a href="#">Problem Sets</a>
+            <a href="#">References</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>&copy; 2026 Physics Logic Lectures. All rights reserved.</span>
+          <span>Crafted for curious minds.</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

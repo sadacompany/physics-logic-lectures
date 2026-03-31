@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conservation of Energy — Physics Logic Simulations</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .sim-hero { padding: var(--space-2xl) var(--space-lg) var(--space-lg); text-align: center; }
+    .sim-hero .label { display: inline-block; font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--electric); background: var(--electric-glow); padding: 4px 14px; border-radius: 20px; margin-bottom: var(--space-sm); }
+    .sim-hero h1 { font-size: var(--text-3xl); margin-bottom: var(--space-xs); }
+    .sim-hero h1 em { color: var(--violet); font-style: normal; }
+    .sim-hero p { color: var(--text-secondary); max-width: 640px; margin: 0 auto; font-size: var(--text-base); }
+
+    .sim-container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-lg) var(--space-2xl); display: grid; grid-template-columns: 1fr 320px; gap: var(--space-lg); }
+    .sim-main { display: flex; flex-direction: column; gap: var(--space-md); }
+
+    .canvas-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: var(--void-light); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    .canvas-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    .sim-controls { display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; }
+    .sim-btn { font-family: var(--font-display); font-size: var(--text-sm); font-weight: 600; padding: 10px 22px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface); color: var(--text-primary); cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+    .sim-btn:hover { border-color: var(--electric); color: var(--electric); box-shadow: 0 0 16px var(--electric-glow); }
+    .sim-btn.active { background: var(--electric); color: var(--void); border-color: var(--electric); }
+    .sim-btn.reset-btn:hover { border-color: var(--magenta); color: var(--magenta); box-shadow: 0 0 16px var(--magenta-glow); }
+
+    .sim-sidebar { display: flex; flex-direction: column; gap: var(--space-md); }
+    .sim-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-md); }
+    .sim-panel h3 { font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--electric); margin-bottom: var(--space-sm); display: flex; align-items: center; gap: 8px; }
+    .sim-panel h3::before { content: ''; width: 3px; height: 14px; background: var(--electric); border-radius: 2px; }
+
+    .slider-group { margin-bottom: var(--space-sm); }
+    .slider-label { display: flex; justify-content: space-between; align-items: center; font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: 6px; }
+    .slider-label .slider-val { color: var(--electric); font-weight: 600; font-family: var(--font-display); }
+
+    input[type="range"] { -webkit-appearance: none; width: 100%; height: 6px; background: var(--surface-hover); border-radius: 3px; outline: none; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--electric); border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px var(--electric-glow-strong); border: 2px solid var(--void); }
+    input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; background: var(--electric); border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px rgba(0,212,255,0.3); border: 2px solid var(--void); }
+
+    .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .data-item { background: var(--void-light); border-radius: var(--radius-sm); padding: 10px 12px; }
+    .data-item .data-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 2px; }
+    .data-item .data-value { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; color: var(--electric); }
+    .data-item .data-unit { font-size: var(--text-xs); color: var(--text-muted); margin-left: 4px; }
+    .data-item.cyan .data-value { color: var(--electric); }
+    .data-item.magenta .data-value { color: var(--magenta); }
+    .data-item.white .data-value { color: var(--text-primary); }
+    .data-item.gold .data-value { color: var(--gold); }
+
+    .explanation-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-md); margin-top: 0; }
+    .explanation-panel h3 { font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--violet); margin-bottom: var(--space-sm); display: flex; align-items: center; gap: 8px; }
+    .explanation-panel h3::before { content: ''; width: 3px; height: 14px; background: var(--violet); border-radius: 2px; }
+    #explanation-text { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.7; }
+    #explanation-text strong { color: var(--electric); font-weight: 600; }
+
+    @media (max-width: 900px) {
+      .sim-container { grid-template-columns: 1fr; }
+      .canvas-wrap { aspect-ratio: 4/3; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reading-progress"></div>
+  <nav class="nav"><div class="nav-inner">
+    <a href="../index.html" class="nav-brand"><span class="brand-icon">&phi;</span> Physics Logic</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../lectures.html">Lectures</a>
+      <a href="../simulations.html" class="active">Simulations</a>
+      <a href="../faq.html">FAQ</a>
+    </div>
+    <div class="nav-search"><span class="search-icon">&#128269;</span><input type="text" placeholder="Search lectures..."><div class="search-results"></div></div>
+    <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+  </div></nav>
+
+  <main class="main-content">
+    <section class="sim-hero">
+      <span class="label">Simulation</span>
+      <h1>Conservation of <em>Energy</em></h1>
+      <p>Watch a ball roll along a curved track as kinetic and potential energy continuously transform into each other. Add friction to see energy dissipate as heat, violating conservation only in appearance.</p>
+    </section>
+
+    <div class="sim-container">
+      <div class="sim-main">
+        <div class="canvas-wrap">
+          <canvas id="simCanvas"></canvas>
+        </div>
+        <div class="sim-controls">
+          <button class="sim-btn" id="btn-play">&#9654; Play</button>
+          <button class="sim-btn" id="btn-pause">&#10074;&#10074; Pause</button>
+          <button class="sim-btn reset-btn" id="btn-reset">&#8634; Reset</button>
+        </div>
+        <div class="explanation-panel">
+          <h3>What's Happening</h3>
+          <div id="explanation-text">Press <strong>Play</strong> to release the ball from the set initial height. The ball rolls along a valley-shaped track. Without friction, total mechanical energy is perfectly conserved. Add friction to see energy slowly dissipate.</div>
+        </div>
+      </div>
+
+      <div class="sim-sidebar">
+        <div class="sim-panel">
+          <h3>Parameters</h3>
+          <div class="slider-group">
+            <div class="slider-label"><span>Initial Height</span><span class="slider-val"><span id="disp-height">8</span> m</span></div>
+            <input type="range" id="sl-height" min="1" max="12" step="0.5" value="8">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Ball Mass</span><span class="slider-val"><span id="disp-mass">2</span> kg</span></div>
+            <input type="range" id="sl-mass" min="0.5" max="10" step="0.5" value="2">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Friction</span><span class="slider-val" id="disp-friction">0.00</span></div>
+            <input type="range" id="sl-friction" min="0" max="0.3" step="0.01" value="0">
+          </div>
+        </div>
+
+        <div class="sim-panel">
+          <h3>Energy</h3>
+          <div class="data-grid">
+            <div class="data-item cyan">
+              <div class="data-label">Kinetic (KE)</div>
+              <div><span class="data-value" id="data-ke">0</span><span class="data-unit">J</span></div>
+            </div>
+            <div class="data-item magenta">
+              <div class="data-label">Potential (PE)</div>
+              <div><span class="data-value" id="data-pe">0</span><span class="data-unit">J</span></div>
+            </div>
+            <div class="data-item white">
+              <div class="data-label">Total Mech.</div>
+              <div><span class="data-value" id="data-total">0</span><span class="data-unit">J</span></div>
+            </div>
+            <div class="data-item gold">
+              <div class="data-label">Heat Lost</div>
+              <div><span class="data-value" id="data-heat">0</span><span class="data-unit">J</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sim-panel">
+          <h3>Motion</h3>
+          <div class="data-grid">
+            <div class="data-item">
+              <div class="data-label">Speed</div>
+              <div><span class="data-value" id="data-speed">0</span><span class="data-unit">m/s</span></div>
+            </div>
+            <div class="data-item">
+              <div class="data-label">Height</div>
+              <div><span class="data-value" id="data-curh">0</span><span class="data-unit">m</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <div class="footer-brand">Physics Logic</div>
+          <p class="footer-desc">A free educational platform dedicated to teaching physics through deep reasoning and logical thinking.</p>
+        </div>
+        <div class="footer-col"><h5>Simulations</h5><a href="../simulations.html">All Simulations</a><a href="momentum-collision.html">Momentum</a><a href="simple-harmonic-motion.html">SHM</a></div>
+        <div class="footer-col"><h5>Resources</h5><a href="../about.html">About</a><a href="../lectures.html">Lectures</a><a href="../faq.html">FAQ</a></div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Physics Logic Lectures. All rights reserved.</span>
+        <span>Built for learners, by learners.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/simulations.js"></script>
+  <script>
+  (function() {
+    const grav = 9.81;
+    let initHeight = 8, mass = 2, friction = 0;
+    // Ball state: parametric position along track (0 to 1)
+    let ballT = 0; // parameter along track
+    let ballSpeed = 0; // speed along track (m/s)
+    let heatLost = 0;
+    let initialEnergy = 0;
+
+    const sim = new SimController('simCanvas');
+
+    bindSlider('sl-height', 'disp-height', v => { initHeight = v; });
+    bindSlider('sl-mass', 'disp-mass', v => { mass = v; });
+    bindSlider('sl-friction', 'disp-friction', v => { friction = v; });
+
+    // Track shape: valley/half-pipe curve
+    // Track is defined as height(x) for x in [0, trackLen]
+    const trackLen = 40; // meters of horizontal extent
+
+    function trackHeight(x) {
+      // U-shape: cosine valley with raised ends
+      // h(x) = initHeight * (1 - cos(2*pi*x/trackLen)) / 2  ... but let's make hills
+      // Valley shape: high on left, dips to zero in middle, high on right
+      const norm = x / trackLen; // 0 to 1
+      // Two-hill shape: h = H * (2*(norm-0.5))^2
+      return initHeight * 4 * (norm - 0.5) * (norm - 0.5);
+    }
+
+    function trackSlope(x) {
+      // Derivative dh/dx
+      const norm = x / trackLen;
+      return initHeight * 8 * (norm - 0.5) / trackLen;
+    }
+
+    // Ball position along horizontal x coordinate
+    let ballX = 0;
+
+    sim.onReset = function() {
+      ballX = 0; // Start at left edge (high point)
+      ballSpeed = 0;
+      heatLost = 0;
+      initialEnergy = mass * grav * trackHeight(0);
+      updateDisplays();
+      setExplanation('Press <strong>Play</strong> to release the ball from the set initial height. The ball rolls along a valley-shaped track. Without friction, total mechanical energy is perfectly conserved. Add friction to see energy slowly dissipate.');
+    };
+
+    sim.update = function(dt) {
+      // The ball moves along the track.
+      // At position x, height = trackHeight(x)
+      // Slope angle: tan(theta) = dh/dx
+      // Component of gravity along track: g * sin(theta)
+      // With friction: friction force = friction * g * cos(theta)
+
+      const slope = trackSlope(ballX);
+      const theta = Math.atan(slope);
+      const sinT = Math.sin(theta);
+      const cosT = Math.cos(theta);
+
+      // Gravity component along track (positive = downhill from current direction)
+      // If ball moves to the right (positive dx), and slope is positive (going uphill),
+      // gravity decelerates; if slope is negative (downhill), gravity accelerates.
+      // Along-track acceleration from gravity: -g * sin(theta)
+      // (negative because positive slope means going up when moving right)
+      let accel = -grav * sinT;
+
+      // Friction opposes motion
+      if (Math.abs(ballSpeed) > 0.001) {
+        const frictionAccel = friction * grav * cosT;
+        accel -= Math.sign(ballSpeed) * frictionAccel;
+        heatLost += friction * mass * grav * cosT * Math.abs(ballSpeed) * dt;
+      }
+
+      ballSpeed += accel * dt;
+      ballX += ballSpeed * dt;
+
+      // Boundaries: bounce off edges
+      if (ballX < 0) { ballX = 0; ballSpeed = Math.abs(ballSpeed) * 0.98; }
+      if (ballX > trackLen) { ballX = trackLen; ballSpeed = -Math.abs(ballSpeed) * 0.98; }
+
+      updateDisplays();
+      updateExplanation();
+    };
+
+    function updateDisplays() {
+      const h = trackHeight(ballX);
+      const speed = Math.abs(ballSpeed);
+      const ke = 0.5 * mass * speed * speed;
+      const pe = mass * grav * h;
+      const total = ke + pe;
+
+      setDisplay('data-ke', ke);
+      setDisplay('data-pe', pe);
+      setDisplay('data-total', total);
+      setDisplay('data-heat', heatLost);
+      setDisplay('data-speed', speed);
+      setDisplay('data-curh', h);
+    }
+
+    function updateExplanation() {
+      const h = trackHeight(ballX);
+      const speed = Math.abs(ballSpeed);
+      const ke = 0.5 * mass * speed * speed;
+      const pe = mass * grav * h;
+      if (friction === 0) {
+        setExplanation('With <strong>zero friction</strong>, total mechanical energy is perfectly conserved at <strong>' + formatNum(ke + pe) + ' J</strong>. KE = <strong>' + formatNum(ke) + ' J</strong>, PE = <strong>' + formatNum(pe) + ' J</strong>. As the ball descends, PE converts to KE; as it climbs, KE converts back to PE. The ball oscillates forever.');
+      } else {
+        setExplanation('Friction is dissipating energy as heat: <strong>' + formatNum(heatLost) + ' J</strong> lost so far. Current KE = <strong>' + formatNum(ke) + ' J</strong>, PE = <strong>' + formatNum(pe) + ' J</strong>. Mechanical energy = <strong>' + formatNum(ke + pe) + ' J</strong>, decreasing from the initial <strong>' + formatNum(initialEnergy) + ' J</strong>. The ball reaches lower heights each swing.');
+      }
+    }
+
+    sim.draw = function() {
+      const w = this.getWidth(), h = this.getHeight();
+      const ctx = this.ctx;
+      ctx.clearRect(0, 0, w, h);
+      drawGrid(ctx, w, h);
+
+      const padL = 50, padR = 30, padT = 50, padB = 100;
+      const plotW = w - padL - padR;
+      const plotH = h - padT - padB;
+
+      // Track scaling
+      const maxH = initHeight * 1.1;
+      const scaleX = plotW / trackLen;
+      const scaleY = plotH / maxH;
+
+      function toScreen(tx, th) {
+        return { x: padL + tx * scaleX, y: padT + plotH - th * scaleY };
+      }
+
+      // Draw track
+      ctx.strokeStyle = SIM_COLORS.violet;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      for (let i = 0; i <= 200; i++) {
+        const tx = (i / 200) * trackLen;
+        const th = trackHeight(tx);
+        const p = toScreen(tx, th);
+        if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+      }
+      ctx.stroke();
+
+      // Track fill
+      ctx.fillStyle = 'rgba(139, 92, 246, 0.06)';
+      ctx.beginPath();
+      for (let i = 0; i <= 200; i++) {
+        const tx = (i / 200) * trackLen;
+        const th = trackHeight(tx);
+        const p = toScreen(tx, th);
+        if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+      }
+      const bottomRight = toScreen(trackLen, 0);
+      const bottomLeft = toScreen(0, 0);
+      ctx.lineTo(bottomRight.x, bottomRight.y + 20);
+      ctx.lineTo(bottomLeft.x, bottomLeft.y + 20);
+      ctx.closePath();
+      ctx.fill();
+
+      // Ball
+      const ballH = trackHeight(ballX);
+      const ballPos = toScreen(ballX, ballH);
+      const ballRadius = 10 + mass * 1.5;
+
+      // Ball glow
+      ctx.shadowColor = SIM_COLORS.electric;
+      ctx.shadowBlur = 15;
+      ctx.fillStyle = SIM_COLORS.electric;
+      ctx.beginPath();
+      ctx.arc(ballPos.x, ballPos.y - ballRadius, ballRadius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      ctx.strokeStyle = SIM_COLORS.white;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(ballPos.x, ballPos.y - ballRadius, ballRadius, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Speed arrow
+      const speed = Math.abs(ballSpeed);
+      if (speed > 0.5) {
+        const dir = ballSpeed > 0 ? 1 : -1;
+        const arrowLen = clamp(speed * 3, 10, 80);
+        drawArrow(ctx, ballPos.x, ballPos.y - ballRadius, ballPos.x + dir * arrowLen, ballPos.y - ballRadius, SIM_COLORS.lime, 8, 2);
+      }
+
+      // Energy bar chart at the bottom
+      const barChartY = h - padB + 15;
+      const barChartH = padB - 30;
+      const curKE = 0.5 * mass * speed * speed;
+      const curPE = mass * grav * ballH;
+      const curTotal = curKE + curPE;
+      const maxEnergy = Math.max(initialEnergy, mass * grav * initHeight) * 1.05;
+
+      const bars = [
+        { label: 'KE', value: curKE, color: SIM_COLORS.electric },
+        { label: 'PE', value: curPE, color: SIM_COLORS.magenta },
+        { label: 'Total', value: curTotal, color: SIM_COLORS.white },
+      ];
+      if (heatLost > 0.01) {
+        bars.push({ label: 'Heat', value: heatLost, color: SIM_COLORS.gold });
+      }
+      drawBarChart(ctx, padL, barChartY, plotW, barChartH, bars, maxEnergy);
+
+      // Height markers
+      ctx.fillStyle = SIM_COLORS.textMuted;
+      ctx.font = '10px "DM Sans", sans-serif';
+      ctx.textAlign = 'right';
+      for (let hh = 0; hh <= initHeight; hh += Math.ceil(initHeight / 4)) {
+        const p = toScreen(0, hh);
+        ctx.fillText(hh + 'm', padL - 8, p.y + 3);
+        ctx.strokeStyle = SIM_COLORS.gridLine;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(padL, p.y); ctx.lineTo(padL + plotW, p.y); ctx.stroke();
+      }
+
+      // Title
+      ctx.fillStyle = SIM_COLORS.textMuted;
+      ctx.font = '12px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Conservation of Energy — Valley Track', 12, 20);
+      ctx.fillText('t = ' + formatNum(sim.time, 1) + ' s', 12, 36);
+    };
+
+    sim.onReset();
+    sim.draw();
+  })();
+  </script>
+</body>
+</html>

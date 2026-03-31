@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lecture 9: Thermodynamics — Physics Logic Lectures</title>
+  <meta name="description" content="Understand temperature at a molecular level, distinguish heat from temperature, master all four laws of thermodynamics, and explore entropy and heat engines.">
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .sim-container { background: #101020; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 24px; margin: 2rem 0; }
+    .sim-canvas-wrap { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,212,255,0.15); }
+    .sim-canvas-wrap canvas { display: block; width: 100%; background: #0a0a14; }
+    .sim-controls { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px; align-items: center; }
+    .sim-control { display: flex; flex-direction: column; gap: 4px; }
+    .sim-control label { font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; color: #636780; text-transform: uppercase; letter-spacing: 0.1em; }
+    .sim-control input[type="range"] { -webkit-appearance: none; width: 160px; height: 4px; background: #222244; border-radius: 2px; outline: none; }
+    .sim-control input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #00d4ff; cursor: pointer; box-shadow: 0 0 8px rgba(0,212,255,0.4); }
+    .sim-btn { font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 600; padding: 8px 20px; border-radius: 20px; border: 1px solid rgba(0,212,255,0.3); background: rgba(0,212,255,0.08); color: #00d4ff; cursor: pointer; transition: all 0.15s; }
+    .sim-btn:hover { background: rgba(0,212,255,0.15); box-shadow: 0 0 12px rgba(0,212,255,0.2); }
+    .sim-btn.active { background: #00d4ff; color: #06060c; }
+    .sim-data { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-top: 16px; }
+    .sim-datum { background: #16162a; border-radius: 8px; padding: 12px; text-align: center; }
+    .sim-datum .datum-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; color: #00d4ff; }
+    .sim-datum .datum-label { font-size: 0.7rem; color: #636780; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+    .sim-explanation { margin-top: 16px; padding: 16px; background: rgba(0,212,255,0.04); border-left: 2px solid #00d4ff; border-radius: 0 8px 8px 0; font-size: 0.9rem; color: #a0a4b8; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress"></div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand"><span class="brand-icon">&phi;</span> Physics Logic</a>
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../lectures.html" class="active">Lectures</a>
+        <a href="../faq.html">FAQ</a>
+      </div>
+      <div class="nav-search">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" placeholder="Search lectures...">
+        <div class="search-results"></div>
+      </div>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Lecture Hero -->
+    <section class="lecture-hero">
+      <div class="lecture-hero-inner">
+        <div class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="../lectures.html">Lectures</a>
+          <span class="sep">/</span>
+          Lecture 9
+        </div>
+        <div class="lecture-number">Lecture 09</div>
+        <h1><em>Thermodynamics</em></h1>
+        <div class="lecture-meta">
+          <span>Thermal</span>
+          <span>Intermediate</span>
+          <span>50 min read</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two-Column Layout -->
+    <div class="lecture-layout">
+
+      <!-- Sidebar: Table of Contents -->
+      <aside class="lecture-toc">
+        <h3>Contents</h3>
+        <div class="toc-list">
+          <a href="#overview">Overview</a>
+          <a href="#temperature">Temperature and Thermal Equilibrium</a>
+          <a href="#heat-transfer">Heat and Heat Transfer</a>
+          <a href="#internal-energy">Internal Energy</a>
+          <a href="#zeroth-law">The Zeroth Law</a>
+          <a href="#first-law">The First Law</a>
+          <a href="#work">Work in Thermodynamics</a>
+          <a href="#heat-capacity">Heat Capacity</a>
+          <a href="#second-law">The Second Law</a>
+          <a href="#heat-engines">Heat Engines and Efficiency</a>
+          <a href="#entropy">Entropy</a>
+          <a href="#third-law">The Third Law</a>
+          <a href="#misconceptions">Common Misconceptions</a>
+          <a href="#gas-sim">Interactive: Ideal Gas Simulator</a>
+          <a href="#takeaways">Key Takeaways</a>
+        </div>
+      </aside>
+
+      <!-- Main Article -->
+      <article class="lecture-article">
+
+        <!-- Learning Goals -->
+        <div class="learning-goals">
+          <h3>Learning Goals</h3>
+          <ul>
+            <li>Understand temperature at a molecular level as the average kinetic energy of particles</li>
+            <li>Distinguish heat from temperature and explain why this distinction matters</li>
+            <li>Master all four laws of thermodynamics and their physical significance</li>
+            <li>Understand entropy conceptually as a measure of multiplicity and irreversibility</li>
+            <li>Analyze heat engines, calculate efficiency, and explain the Carnot limit</li>
+          </ul>
+        </div>
+
+        <!-- Overview -->
+        <section class="lecture-section" id="overview">
+          <h2>Overview</h2>
+          <p>Thermodynamics is the branch of physics that studies heat, temperature, energy, and the transformations between them. It is simultaneously one of the most practical and one of the most philosophically profound areas of physics. The steam engine, the refrigerator, the internal combustion engine, and the very metabolism of your body all obey the laws of thermodynamics. And yet, buried within those same laws is one of the deepest ideas in all of science: the arrow of time itself.</p>
+          <p>In previous lectures, we studied mechanics, where energy was exchanged between kinetic and potential forms and everything was, in principle, reversible. A ball thrown upward and then falling back down looks just as natural in reverse. But thermodynamics introduces something new. A hot cup of coffee left on a table always cools down. It never spontaneously heats up by absorbing energy from the cooler room. A glass of water with cream stirred in never un-stirs. These processes go in only one direction, and understanding why that is the case is one of the great achievements of thermodynamics.</p>
+          <p>This lecture will take you through the subject systematically. We begin with the fundamental concepts of temperature and heat, build up to the four laws of thermodynamics, explore the behavior of heat engines, and finally confront the concept of entropy, the quantity that distinguishes the past from the future.</p>
+        </section>
+
+        <!-- Temperature and Thermal Equilibrium -->
+        <section class="lecture-section" id="temperature">
+          <h2>Temperature and Thermal Equilibrium</h2>
+          <p>Temperature is a concept everyone has an intuitive sense of, but few people can define precisely. We say that a cup of coffee is hot and that ice cream is cold, but what does that really mean at the level of atoms and molecules?</p>
+
+          <h3>The Molecular Meaning of Temperature</h3>
+          <p>At the microscopic level, every substance is made of particles, atoms and molecules, that are in constant, random motion. In a gas, these particles fly freely and collide with one another. In a liquid, they slide past each other in a restless jostling. Even in a solid, atoms vibrate back and forth around fixed positions. All of this motion is thermal motion, and it carries kinetic energy.</p>
+          <p>Temperature is a measure of the average translational kinetic energy of the particles in a substance. When we say something is "hot," we mean its molecules are moving fast, on average. When we say something is "cold," we mean its molecules are moving slowly. This is not merely an analogy. It is a precise physical statement. For an ideal gas, the relationship is exact:</p>
+
+          <div class="formula">
+            <span class="formula-name">Average Kinetic Energy of a Gas Molecule</span>
+            KE_avg = (3/2) k_B T
+          </div>
+
+          <p>Here, k_B is the Boltzmann constant (1.38 &times; 10&sup2;&sup3; J/K) and T is the absolute temperature in Kelvin. Notice something crucial: temperature is proportional to kinetic energy. Double the temperature in Kelvin, and you double the average kinetic energy of each molecule.</p>
+          <p>It is important to note that temperature reflects the <em>average</em> kinetic energy. In any sample of gas at a given temperature, not every molecule moves at the same speed. Some are nearly stationary at any given instant, while others are screaming along at several times the average speed. The distribution of speeds follows the Maxwell-Boltzmann distribution, a bell-shaped curve that peaks at the most probable speed and has a long tail toward higher speeds. Raising the temperature shifts the entire distribution toward higher speeds and broadens it, but there is always a spread. Temperature captures the center of this spread: the mean kinetic energy per molecule.</p>
+
+          <h3>Temperature Scales</h3>
+          <p>Humans have invented several temperature scales. The Celsius scale sets 0&deg;C at the freezing point of water and 100&deg;C at the boiling point. The Fahrenheit scale, used primarily in the United States, sets 32&deg;F at the freezing point and 212&deg;F at the boiling point. Both are convenient for everyday life, but neither is fundamental.</p>
+          <p>The fundamental scale is the Kelvin scale. Zero Kelvin (0 K) is absolute zero, the temperature at which all thermal motion ceases, where molecules have the minimum possible energy allowed by quantum mechanics. You cannot go below 0 K because there is no such thing as "less than no motion." This is why the Kelvin scale is used in all of thermodynamics: it is the only scale where temperature is directly proportional to thermal energy, and it never produces negative values in equations where negative temperature would be physically nonsensical.</p>
+          <p>The conversion is straightforward: T(K) = T(&deg;C) + 273.15. Room temperature of about 20&deg;C is approximately 293 K. The surface of the Sun is about 5800 K. Outer space has a background temperature of about 2.7 K.</p>
+
+          <h3>Thermal Equilibrium</h3>
+          <p>If you place a hot metal block on a cold stone slab, the metal cools down and the stone warms up. Eventually, they reach the same temperature, and the flow of heat stops. This state, where two objects in thermal contact have the same temperature and no net heat flows between them, is called thermal equilibrium.</p>
+          <p>Thermal equilibrium is not a dead state. The molecules in both objects are still moving vigorously. But the average kinetic energies in the two objects have equalized. Energy is still being exchanged at the microscopic level, molecule by molecule, but the rate of energy transfer from hot to cold equals the rate from cold to hot. The net flow is zero.</p>
+          <p>How long it takes to reach thermal equilibrium depends on the materials, their masses, the initial temperature difference, and the quality of thermal contact between them. A thin aluminum pan on a hot burner reaches equilibrium quickly; a massive stone building exposed to a cold night takes hours. But given sufficient time and thermal contact, equilibrium is always reached. This is one of the deepest empirical facts of thermodynamics: isolated systems left to themselves always tend toward thermal equilibrium.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example</div>
+            <p>A 0.5 kg block of iron at 200&deg;C is placed in 2 kg of water at 20&deg;C in an insulated container. What is the equilibrium temperature? (Specific heat of iron: 449 J/(kg&middot;K); specific heat of water: 4186 J/(kg&middot;K))</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>In an insulated container, no heat escapes, so the heat lost by the iron equals the heat gained by the water:</p>
+              <p>m_iron &middot; c_iron &middot; (T_iron &minus; T_eq) = m_water &middot; c_water &middot; (T_eq &minus; T_water)</p>
+              <p>0.5 &times; 449 &times; (200 &minus; T_eq) = 2 &times; 4186 &times; (T_eq &minus; 20)</p>
+              <p>224.5 &times; (200 &minus; T_eq) = 8372 &times; (T_eq &minus; 20)</p>
+              <p>44900 &minus; 224.5 T_eq = 8372 T_eq &minus; 167440</p>
+              <p>44900 + 167440 = 8596.5 T_eq</p>
+              <p>T_eq = 212340 / 8596.5 &approx; 24.7&deg;C</p>
+              <p>The equilibrium temperature is about 24.7&deg;C, only slightly above the water's initial temperature. This makes physical sense: water has a much larger mass and a much higher specific heat capacity than iron, so the water "wins" the temperature tug-of-war. The iron drops by roughly 175&deg;C while the water rises by only about 5&deg;C.</p>
+            </div>
+          </div>
+
+          <div class="definition-box">
+            <div class="def-term">Thermal Equilibrium</div>
+            <div class="def-text">Two systems are in thermal equilibrium when they are in thermal contact and no net heat flows between them. This occurs when both systems are at the same temperature. Thermal equilibrium is the foundational concept that makes temperature measurement possible.</div>
+          </div>
+        </section>
+
+        <!-- Heat and Heat Transfer -->
+        <section class="lecture-section" id="heat-transfer">
+          <h2>Heat and Heat Transfer</h2>
+          <p>Heat is one of the most misunderstood words in physics. In everyday language, people say "the room is full of heat" or "close the door to keep the heat in." These expressions treat heat as a substance, something that can be stored in an object. But that is not what heat is in physics.</p>
+
+          <h3>What Heat Actually Is</h3>
+          <p>Heat is energy in transit. Specifically, heat is the transfer of energy from one system to another due to a temperature difference between them. Heat is not something an object "has." An object has internal energy. Heat is what flows between objects when their temperatures differ. The moment you measure it, it has already left one object and entered another.</p>
+          <p>This distinction matters profoundly. When you touch a hot stove, energy flows from the stove to your hand because the stove is at a higher temperature. That flow of energy is heat. The stove does not "contain heat." It contains internal energy, and some of that energy transfers to your hand as heat.</p>
+
+          <div class="definition-box">
+            <div class="def-term">Heat (Q)</div>
+            <div class="def-text">Heat is the spontaneous transfer of energy between systems due to a temperature difference. Heat always flows from the hotter body to the cooler body. It is measured in joules (J) or, historically, in calories. Heat is a process quantity, not a state quantity: it describes energy in motion, not energy stored.</div>
+          </div>
+
+          <h3>Three Mechanisms of Heat Transfer</h3>
+          <p>Energy can be transferred as heat through three distinct physical mechanisms:</p>
+          <p><strong>Conduction</strong> is the transfer of heat through direct molecular contact. When you hold one end of a metal rod and place the other end in a fire, energy travels along the rod from molecule to molecule. Fast-vibrating atoms at the hot end collide with their neighbors, transferring kinetic energy down the chain. Metals are excellent conductors because their free electrons carry energy rapidly. Materials like wood, plastic, and air are poor conductors, which is why they are used as insulators.</p>
+          <p><strong>Convection</strong> is the transfer of heat by the bulk movement of a fluid, a liquid or gas. When you heat water in a pot, the water at the bottom becomes warm, expands, becomes less dense, and rises. Cooler, denser water sinks to replace it, creating a convection current. This circulation distributes heat throughout the fluid far more efficiently than conduction alone. Convection is responsible for ocean currents, atmospheric weather patterns, and the circulation of magma beneath the Earth's crust.</p>
+          <p><strong>Radiation</strong> is the transfer of heat through electromagnetic waves. Unlike conduction and convection, radiation requires no medium; it can travel through the vacuum of space. This is how the Sun heats the Earth. Every object with a temperature above absolute zero emits thermal radiation. The hotter the object, the more radiation it emits and the shorter the wavelength of its peak emission. This is why a glowing coal appears red, a hotter flame appears yellow, and an extremely hot star appears blue-white.</p>
+
+          <h3>Quantifying Heat Transfer</h3>
+          <p>When heat flows into a substance and raises its temperature, the amount of heat depends on three factors: how much substance there is, what the substance is made of, and how much the temperature changes. This relationship is captured by the equation:</p>
+
+          <div class="formula">
+            <span class="formula-name">Heat Transfer Equation</span>
+            Q = mc&Delta;T
+          </div>
+
+          <p>Here, Q is the heat transferred (in joules), m is the mass of the substance (in kilograms), c is the specific heat capacity of the material (a property we will explore shortly), and &Delta;T is the change in temperature (in Kelvin or degrees Celsius, since a change of 1 K equals a change of 1&deg;C). This simple equation is one of the workhorses of thermal physics.</p>
+        </section>
+
+        <!-- Internal Energy -->
+        <section class="lecture-section" id="internal-energy">
+          <h2>Internal Energy</h2>
+          <p>Every substance possesses internal energy, denoted U. Internal energy is the total energy contained in all the microscopic motions and interactions of the particles that make up the substance. It includes the translational kinetic energy of molecules zipping around, the rotational energy of molecules spinning, the vibrational energy of atoms oscillating within molecules, and the potential energy arising from intermolecular forces.</p>
+          <p>Internal energy depends on the state of the system: its temperature, its phase (solid, liquid, or gas), and the nature of its molecular interactions. A liter of water at 80&deg;C has more internal energy than a liter of water at 20&deg;C, primarily because its molecules are moving faster. A liter of steam at 100&deg;C has more internal energy than a liter of liquid water at 100&deg;C, because breaking the bonds that hold the liquid together requires additional energy.</p>
+
+          <h3>Internal Energy Is Not Heat</h3>
+          <p>This is a critical distinction. Internal energy is a property of a system. Heat is a process of energy transfer. An object can have a large internal energy without any heat flowing. Consider a sealed, insulated container of gas at a high temperature: it has enormous internal energy, but if no energy is entering or leaving, there is no heat. Heat only arises when energy crosses a boundary due to a temperature difference.</p>
+
+          <h3>Internal Energy Is Not Temperature</h3>
+          <p>Nor is internal energy the same as temperature. A bathtub of lukewarm water has far more internal energy than a thimble of boiling water, even though the thimble is at a much higher temperature. Internal energy depends on both the temperature and the amount of substance. Temperature is an intensive property (independent of the amount of material), while internal energy is an extensive property (it scales with the amount).</p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>Temperature, heat, and internal energy are three distinct concepts. Temperature measures the average kinetic energy per molecule. Internal energy is the total energy of all molecules. Heat is the transfer of energy caused by a temperature difference. Confusing any two of these is one of the most common sources of error in thermodynamics.</p>
+          </div>
+        </section>
+
+        <!-- The Zeroth Law -->
+        <section class="lecture-section" id="zeroth-law">
+          <h2>The Zeroth Law of Thermodynamics</h2>
+          <p>The zeroth law is so fundamental that it was added to the list of thermodynamic laws after the first and second laws had already been named. It is called the "zeroth" law because it is logically prior to the others; they cannot function without it.</p>
+          <p>The zeroth law states:</p>
+
+          <div class="key-concept">
+            <div class="concept-label">The Zeroth Law of Thermodynamics</div>
+            <p>If system A is in thermal equilibrium with system C, and system B is also in thermal equilibrium with system C, then system A is in thermal equilibrium with system B.</p>
+          </div>
+
+          <p>This may seem obvious, even trivially so. But it is doing something essential: it guarantees that temperature is a well-defined, transitive property. It is what allows thermometers to work. When you place a thermometer (system C) against your forehead (system A), the thermometer reaches thermal equilibrium with your forehead. The thermometer reading then tells you the temperature of your forehead. If you then press the same thermometer against a pot of water (system B) and it gives the same reading, the zeroth law tells you that your forehead and the water are at the same temperature, even though they were never in direct contact.</p>
+          <p>Without the zeroth law, temperature would be a meaningless number. Two objects could each be in equilibrium with a thermometer at the same reading and yet not be in equilibrium with each other. The zeroth law prevents this absurdity. It establishes temperature as a universal, consistent property that can be compared across any pair of systems.</p>
+        </section>
+
+        <!-- The First Law -->
+        <section class="lecture-section" id="first-law">
+          <h2>The First Law of Thermodynamics</h2>
+          <p>The first law of thermodynamics is the law of conservation of energy applied to thermal systems. It tells us that energy is neither created nor destroyed; it can only be transferred or transformed. In the language of thermodynamics, it says:</p>
+
+          <div class="formula">
+            <span class="formula-name">The First Law of Thermodynamics</span>
+            &Delta;U = Q &minus; W
+          </div>
+
+          <p>Here, &Delta;U is the change in internal energy of the system, Q is the net heat added to the system, and W is the net work done by the system on its surroundings.</p>
+
+          <h3>Understanding Each Term</h3>
+          <p><strong>&Delta;U (change in internal energy):</strong> This is the change in the total microscopic energy of the system. If &Delta;U is positive, the system gained energy. If &Delta;U is negative, the system lost energy.</p>
+          <p><strong>Q (heat):</strong> This is the energy transferred into the system due to a temperature difference. Q is positive when heat flows into the system (the system absorbs heat from warmer surroundings) and negative when heat flows out (the system releases heat to cooler surroundings).</p>
+          <p><strong>W (work):</strong> This is the energy transferred out of the system by the system doing mechanical work on its surroundings. When a gas expands and pushes a piston, it does positive work. When a gas is compressed by an external force, the surroundings do work on the gas, so W is negative (or equivalently, the gas does negative work).</p>
+
+          <h3>Sign Conventions</h3>
+          <p>The sign convention used here, &Delta;U = Q &minus; W, treats Q as positive when heat enters the system and W as positive when the system does work on the surroundings. Some textbooks use the convention &Delta;U = Q + W, where W is positive when work is done on the system. Always check which convention a source is using. The physics is the same; only the bookkeeping differs.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example</div>
+            <p>A gas in a cylinder absorbs 500 J of heat from a flame while expanding against a piston and doing 200 J of work on the piston. What is the change in internal energy of the gas?</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>We identify Q = +500 J (heat added to the gas) and W = +200 J (work done by the gas). Applying the first law:</p>
+              <p>&Delta;U = Q &minus; W = 500 J &minus; 200 J = +300 J</p>
+              <p>The internal energy of the gas increases by 300 J. The gas absorbed 500 J of heat, but 200 J went into doing work on the piston, so only 300 J remained to increase the gas's internal energy (and therefore its temperature). This is the first law in action: energy is conserved, and we can track exactly where every joule goes.</p>
+            </div>
+          </div>
+
+          <p>The first law is immensely powerful. It applies to every process in the universe: the beating of your heart, the explosion of a star, the charging of a battery. Energy is always conserved. The first law tells you what is possible and what is not, at least in terms of energy balance. But it does not tell you the whole story. For that, we need the second law.</p>
+        </section>
+
+        <!-- Work in Thermodynamics -->
+        <section class="lecture-section" id="work">
+          <h2>Work in Thermodynamics</h2>
+          <p>In mechanics, work is done when a force moves an object through a distance. In thermodynamics, the most common type of work involves a gas expanding or compressing against a piston. When a gas expands, it pushes the piston outward, and the gas does positive work on the surroundings. When a gas is compressed, the surroundings push the piston inward, doing work on the gas.</p>
+
+          <h3>Work at Constant Pressure</h3>
+          <p>For a process that occurs at constant pressure, the work done by the gas is simply:</p>
+
+          <div class="formula">
+            <span class="formula-name">Work at Constant Pressure</span>
+            W = P&Delta;V
+          </div>
+
+          <p>Here, P is the constant pressure and &Delta;V is the change in volume. If the gas expands (&Delta;V > 0), the work is positive, meaning the gas does work on its surroundings. If the gas compresses (&Delta;V < 0), the work is negative, meaning the surroundings do work on the gas.</p>
+
+          <h3>Work as Area Under the P-V Curve</h3>
+          <p>In general, the pressure may change as the volume changes. In such cases, the work done by the gas is the area under the curve on a pressure-volume (P-V) diagram. This is one of the most important graphical tools in thermodynamics. The shape of the curve, determined by the type of process, dictates how much work is done.</p>
+
+          <h3>Four Important Thermodynamic Processes</h3>
+          <p>Different constraints on a system lead to different types of processes, each with its own characteristic behavior on a P-V diagram:</p>
+          <p><strong>Isothermal process (constant temperature):</strong> The system is in contact with a heat reservoir that keeps its temperature constant. For an ideal gas, PV = nRT = constant, so the P-V curve is a hyperbola. The gas does work by expanding, and it absorbs heat from the reservoir to compensate, keeping its internal energy (and therefore temperature) unchanged. Since &Delta;U = 0, the first law gives Q = W.</p>
+          <p><strong>Adiabatic process (no heat exchange):</strong> The system is perfectly insulated, so Q = 0. If the gas expands, it does work, and since no heat enters, its internal energy decreases and it cools. If it is compressed, its internal energy increases and it heats up. The adiabatic P-V curve is steeper than the isothermal curve. The first law gives &Delta;U = &minus;W.</p>
+          <p><strong>Isobaric process (constant pressure):</strong> The pressure remains constant throughout the process. On a P-V diagram, this is a horizontal line. Work is simply P&Delta;V. Heating a gas in a container with a freely moving piston is approximately isobaric, because the piston adjusts to maintain atmospheric pressure.</p>
+          <p><strong>Isochoric process (constant volume):</strong> The volume does not change, so &Delta;V = 0, which means W = 0. No work is done. All the heat added goes directly into increasing the internal energy: &Delta;U = Q. Heating a gas in a rigid, sealed container is an isochoric process.</p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>The type of thermodynamic process determines the relationship between heat, work, and internal energy change. Isothermal: &Delta;U = 0. Adiabatic: Q = 0. Isobaric: W = P&Delta;V. Isochoric: W = 0. These four processes are the building blocks from which we analyze complex thermodynamic cycles like those in engines and refrigerators.</p>
+          </div>
+        </section>
+
+        <!-- Heat Capacity -->
+        <section class="lecture-section" id="heat-capacity">
+          <h2>Heat Capacity</h2>
+          <p>Different substances respond to heat differently. If you put the same amount of heat into a kilogram of water and a kilogram of iron, the iron's temperature will rise much more than the water's. The property that quantifies this difference is called specific heat capacity.</p>
+
+          <h3>Specific Heat Capacity</h3>
+          <p>The specific heat capacity (c) of a substance is the amount of heat required to raise the temperature of one kilogram of that substance by one Kelvin. Water has a notably high specific heat capacity of about 4186 J/(kg&middot;K), which means it takes a lot of energy to change water's temperature. Iron has a specific heat of about 449 J/(kg&middot;K), roughly nine times less.</p>
+          <p>Why does water have such a high specific heat? The answer lies in hydrogen bonds. Water molecules are connected to their neighbors by hydrogen bonds, which are relatively strong intermolecular attractions. When you add heat to water, a significant portion of that energy goes into disrupting and rearranging these hydrogen bonds rather than increasing the kinetic energy of the molecules. Since temperature is a measure of kinetic energy, and much of the added energy is "diverted" into bond-breaking, the temperature rises slowly. This is why coastal climates are milder than inland climates: the ocean absorbs and releases enormous amounts of heat with minimal temperature change, buffering the air temperature of nearby land.</p>
+
+          <h3>C_p versus C_v for Gases</h3>
+          <p>For gases, the specific heat depends on whether the heating occurs at constant pressure or constant volume. This gives us two heat capacities:</p>
+          <p><strong>C_v (heat capacity at constant volume):</strong> When a gas is heated in a rigid container, all the heat goes into increasing internal energy. No work is done because the volume does not change.</p>
+          <p><strong>C_p (heat capacity at constant pressure):</strong> When a gas is heated at constant pressure (for example, in a container with a movable piston), it expands as it heats up. Some of the added heat goes into doing work to push the piston, and the rest increases the internal energy. Therefore, more heat is needed to achieve the same temperature rise, and C_p is always greater than C_v.</p>
+          <p>For an ideal gas, the relationship between them is remarkably simple: C_p &minus; C_v = nR, where n is the number of moles and R is the universal gas constant. The ratio &gamma; = C_p / C_v is called the adiabatic index and plays a central role in the behavior of adiabatic processes. For a monatomic ideal gas, &gamma; = 5/3. For a diatomic gas like air at moderate temperatures, &gamma; is approximately 7/5 = 1.4.</p>
+        </section>
+
+        <!-- The Second Law -->
+        <section class="lecture-section" id="second-law">
+          <h2>The Second Law of Thermodynamics</h2>
+          <p>The first law tells us that energy is conserved. But it says nothing about which processes actually happen. The first law would be perfectly satisfied if a cold cup of coffee spontaneously absorbed heat from the room and got hotter. Energy would still be conserved. Yet this never happens. The second law tells us why.</p>
+          <p>The second law of thermodynamics is one of the most profound statements in all of physics. It has been formulated in several equivalent ways, each illuminating a different aspect of the same deep truth.</p>
+
+          <h3>The Clausius Statement</h3>
+          <p>Heat cannot spontaneously flow from a colder body to a hotter body without external work being done. This is the most intuitive version. You never see an ice cube spontaneously getting colder while warming the room around it. Heat naturally flows from hot to cold, never the other way, unless something (like a refrigerator compressor) does work to force it.</p>
+
+          <h3>The Kelvin-Planck Statement</h3>
+          <p>It is impossible to construct a heat engine that, operating in a cycle, produces no effect other than the extraction of heat from a single reservoir and the performance of an equal amount of work. In other words, you cannot build a perfect heat engine. Any engine that converts heat to work must also dump some waste heat to a cooler reservoir. There is no free lunch.</p>
+
+          <h3>The Entropy Statement</h3>
+          <p>The entropy of an isolated system never decreases. It either increases (for irreversible processes) or remains constant (for reversible processes). This is the most general formulation and the one that carries the deepest implications, which we will explore in the section on entropy.</p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>The second law of thermodynamics explains why certain processes happen in one direction but never in reverse. It is the law that forbids perpetual motion machines of the second kind, engines that perfectly convert heat to work with no waste. The Clausius, Kelvin-Planck, and entropy formulations are all logically equivalent: if any one of them is true, the other two must be as well.</p>
+          </div>
+
+          <h3>Why Perpetual Motion Machines Are Impossible</h3>
+          <p>A perpetual motion machine of the first kind violates the first law: it would create energy from nothing. A perpetual motion machine of the second kind does not violate the first law but violates the second: it would perfectly convert heat into work with no waste, or it would spontaneously move heat from cold to hot. Both types are impossible. The first law says you cannot win; the second law says you cannot even break even.</p>
+        </section>
+
+        <!-- Heat Engines and Efficiency -->
+        <section class="lecture-section" id="heat-engines">
+          <h2>Heat Engines and Efficiency</h2>
+          <p>A heat engine is a device that converts thermal energy into mechanical work. The essential idea is simple: the engine absorbs heat from a hot source (the hot reservoir), converts some of that heat into work, and rejects the remaining heat to a cold sink (the cold reservoir). Every heat engine follows this pattern, from the massive turbines in a power plant to the engine in your car.</p>
+
+          <h3>Efficiency of a Heat Engine</h3>
+          <p>The efficiency of a heat engine is the fraction of input heat that gets converted into useful work:</p>
+
+          <div class="formula">
+            <span class="formula-name">Heat Engine Efficiency</span>
+            &eta; = W / Q_H = 1 &minus; Q_C / Q_H
+          </div>
+
+          <p>Here, Q_H is the heat absorbed from the hot reservoir, Q_C is the heat rejected to the cold reservoir, and W = Q_H &minus; Q_C is the work output. The second form of the equation, &eta; = 1 &minus; Q_C/Q_H, makes it clear that efficiency can only be 100% if Q_C = 0, that is, if no heat is wasted. But the second law tells us this is impossible. Every real heat engine must reject some heat.</p>
+
+          <h3>The Carnot Engine</h3>
+          <p>In 1824, the French engineer Sadi Carnot asked: what is the maximum possible efficiency of a heat engine operating between two temperatures? He showed that the answer depends only on the temperatures of the hot and cold reservoirs and is achieved by an idealized, perfectly reversible engine now called the Carnot engine.</p>
+          <p>The Carnot engine operates in a cycle of four steps: isothermal expansion (absorbing heat from the hot reservoir), adiabatic expansion (cooling without heat exchange), isothermal compression (rejecting heat to the cold reservoir), and adiabatic compression (warming back to the starting temperature). Because every step is reversible, it produces the maximum possible work for a given temperature difference.</p>
+
+          <div class="formula">
+            <span class="formula-name">Carnot Efficiency</span>
+            &eta;_Carnot = 1 &minus; T_C / T_H
+          </div>
+
+          <p>Here, T_C and T_H are the absolute temperatures (in Kelvin) of the cold and hot reservoirs. This is the theoretical maximum efficiency. No real engine can exceed it, and most fall well short because of friction, turbulence, and other irreversibilities.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example</div>
+            <p>A power plant operates with steam at 600 K and cools with river water at 300 K. What is the maximum possible efficiency?</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>&eta;_Carnot = 1 &minus; T_C / T_H = 1 &minus; 300/600 = 1 &minus; 0.5 = 0.5 = 50%</p>
+              <p>The maximum possible efficiency is 50%. At best, half the heat energy can be converted to useful work. The other half must be dumped into the river. In practice, due to irreversibilities, the actual efficiency is typically 30 to 40%. This is not an engineering failure; it is a fundamental constraint of nature imposed by the second law.</p>
+            </div>
+          </div>
+
+          <h3>Why 100% Efficiency Is Impossible</h3>
+          <p>The Carnot efficiency formula shows that &eta; = 100% only if T_C = 0 K (absolute zero). But reaching absolute zero is itself impossible, as we will see with the third law. Furthermore, if the cold reservoir had the same temperature as the hot reservoir, the efficiency would be zero, meaning no work could be extracted at all. Work requires a temperature difference. The greater the temperature difference, the more efficiently we can convert heat into work.</p>
+        </section>
+
+        <!-- Entropy -->
+        <section class="lecture-section" id="entropy">
+          <h2>Entropy</h2>
+          <p>Entropy is widely regarded as the most difficult concept in introductory thermodynamics. It is also, arguably, the most important. Entropy is the quantity that gives the second law its teeth, that explains why time has a direction, and that connects the microscopic world of atoms to the macroscopic world of engines and ice cubes.</p>
+
+          <h3>The Macroscopic Definition</h3>
+          <p>Historically, entropy was first defined in terms of heat and temperature. When a system absorbs a small amount of heat Q at temperature T in a reversible process, its entropy changes by:</p>
+
+          <div class="formula">
+            <span class="formula-name">Entropy Change (Thermodynamic Definition)</span>
+            &Delta;S = Q_rev / T
+          </div>
+
+          <p>This tells us that adding heat to a cold system increases its entropy more than adding the same heat to a hot system. Think of it this way: if you add a joule of energy to a system at 10 K, it is a huge relative change. If you add a joule to a system at 10,000 K, it is negligible. Entropy tracks how "significant" an energy transfer is relative to the system's existing thermal state.</p>
+
+          <h3>The Microscopic Definition: Entropy as Multiplicity</h3>
+          <p>Ludwig Boltzmann provided the deeper, microscopic interpretation of entropy. He showed that entropy is a measure of the number of microscopic arrangements (microstates) that correspond to a given macroscopic state:</p>
+
+          <div class="formula">
+            <span class="formula-name">Boltzmann's Entropy Formula</span>
+            S = k_B ln W
+          </div>
+
+          <p>Here, k_B is the Boltzmann constant, and W (sometimes written as &Omega;) is the number of microstates, the number of distinct ways the molecules could be arranged while still producing the same macroscopic properties (temperature, pressure, volume). The logarithm ensures that entropy is additive: if you combine two independent systems, their total entropy is the sum of their individual entropies.</p>
+
+          <h3>Why Processes Are Irreversible</h3>
+          <p>Consider stirring cream into a cup of coffee. Before stirring, the cream occupies a small, localized region, a state with relatively few microstates (there are limited ways to arrange the cream molecules in that small volume). After stirring, the cream is dispersed throughout the coffee, a state with an astronomically larger number of microstates (the cream molecules can be anywhere in the cup). The dispersed state is overwhelmingly more probable than the concentrated state.</p>
+          <p>Could the cream spontaneously un-stir and gather back into a blob? The laws of mechanics allow it; every molecular collision is individually reversible. But the probability is so unimaginably small, far smaller than one in 10 raised to the power of a trillion, that it will never happen in the lifetime of the universe. The second law is not a law of impossibility; it is a law of overwhelming probability. Entropy increases because there are vastly more disordered states than ordered ones.</p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>Entropy is a measure of the number of microscopic arrangements compatible with a system's macroscopic state. Natural processes proceed in the direction that increases the total entropy of the universe, not because physics forbids the reverse, but because the reverse is so improbable that it effectively never occurs. This is the arrow of time: the future is the direction in which entropy increases.</p>
+          </div>
+
+          <h3>The Arrow of Time</h3>
+          <p>Newton's laws are time-symmetric: a billiard ball collision looks equally valid whether you play the video forward or backward. But macroscopic processes are not. A video of an egg breaking looks normal; the same video in reverse looks absurd. The difference is entropy. The broken egg has far higher entropy than the intact egg, and the spontaneous decrease in entropy needed to un-break it is effectively impossible.</p>
+          <p>This is one of the deepest puzzles in physics. The fundamental laws are all reversible, yet the macroscopic world is profoundly irreversible. The resolution comes from statistics: there are so many more high-entropy states than low-entropy states that any system with many particles will, with overwhelming probability, evolve toward higher entropy. The past is the direction of lower entropy; the future is the direction of higher entropy. Entropy gives time its arrow.</p>
+        </section>
+
+        <!-- The Third Law -->
+        <section class="lecture-section" id="third-law">
+          <h2>The Third Law of Thermodynamics</h2>
+          <p>The third law of thermodynamics states that as the temperature of a system approaches absolute zero (0 K), its entropy approaches a minimum value, which for a perfect crystal is exactly zero:</p>
+
+          <div class="key-concept">
+            <div class="concept-label">The Third Law of Thermodynamics</div>
+            <p>As T &rarr; 0, S &rarr; 0 for a perfect crystal. Equivalently, it is impossible to reach absolute zero in a finite number of steps.</p>
+          </div>
+
+          <p>At absolute zero, a perfect crystal has only one possible microstate: every atom is in its ground state, in its precisely defined position. Since W = 1, the Boltzmann formula gives S = k_B ln(1) = 0. There is no uncertainty, no randomness, no multiplicity.</p>
+          <p>The third law also implies that absolute zero can never actually be reached, only approached asymptotically. Every cooling process becomes progressively less effective as the temperature drops. You can cool a system to 0.001 K, to 0.000001 K, to billionths of a Kelvin, but you can never reach exactly zero. Each step requires removing less and less entropy, but the process requires increasingly extreme effort. This is not a technological limitation; it is a fundamental law of nature.</p>
+          <p>The third law completes the logical structure of thermodynamics. The zeroth law establishes temperature. The first law establishes energy conservation. The second law establishes the direction of natural processes. The third law establishes the absolute reference point for entropy and sets the ultimate limit on cooling.</p>
+        </section>
+
+        <!-- Common Misconceptions -->
+        <section class="lecture-section" id="misconceptions">
+          <h2>Common Misconceptions</h2>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>"Heat and temperature are the same thing."</strong> They are not. Temperature is a measure of the average kinetic energy of molecules in a system. Heat is the transfer of energy between systems due to a temperature difference. An object has a temperature; it does not "have" heat. Heat is a process, not a property. A large lake at 20&deg;C has far more internal energy than a small spark at 3000&deg;C, even though the spark is at a much higher temperature.</p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>"Cold is transferred from cold objects to warm objects."</strong> There is no such thing as "cold" being transferred. Cold is not a substance or a form of energy. When you hold an ice cube and your hand feels cold, what is actually happening is that heat, thermal energy, is flowing from your hand into the ice. Your hand loses energy, and that loss is what you perceive as coldness. Heat always flows from hot to cold, never the other way.</p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>"Entropy means everything tends toward chaos."</strong> This is an oversimplification that can be misleading. Entropy is more precisely a measure of multiplicity, the number of microscopic configurations compatible with a macroscopic state. While high-entropy states often appear "disordered" to our eyes, the real point is that they are statistically overwhelmingly probable. Furthermore, entropy can decrease locally (as when a refrigerator cools food or a living organism builds complex structures) as long as it increases by a larger amount elsewhere. The total entropy of the universe increases, but that does not prevent pockets of extraordinary order from forming.</p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>"Heat always causes a temperature change."</strong> Not necessarily. During a phase transition, such as ice melting at 0&deg;C or water boiling at 100&deg;C, heat is absorbed but the temperature remains constant. The energy goes into breaking intermolecular bonds rather than increasing kinetic energy. This is called latent heat, and it is a vivid reminder that heat and temperature are fundamentally different quantities.</p>
+          </div>
+        </section>
+
+        <!-- Interactive: Ideal Gas Simulator -->
+        <section class="lecture-section" id="gas-sim">
+          <h2>Interactive: Ideal Gas Simulator</h2>
+          <p>Explore the ideal gas law in action. Adjust temperature, volume, and the number of particles to see how pressure and kinetic energy respond. Watch how particles speed up with temperature and collide more frequently in a smaller container.</p>
+          <div class="sim-container">
+            <div class="sim-canvas-wrap">
+              <canvas id="gasCanvas" width="800" height="400"></canvas>
+            </div>
+            <div class="sim-controls">
+              <div class="sim-control">
+                <label>Temperature: <span id="tempVal">300</span> K</label>
+                <input type="range" id="tempSlider" min="100" max="1000" value="300" step="10">
+              </div>
+              <div class="sim-control">
+                <label>Volume: <span id="volVal">100</span>%</label>
+                <input type="range" id="volSlider" min="30" max="100" value="100" step="1">
+              </div>
+              <div class="sim-control">
+                <label>Particles: <span id="numVal">50</span></label>
+                <input type="range" id="numSlider" min="10" max="100" value="50" step="1">
+              </div>
+              <button class="sim-btn active" id="gasPlayBtn">Pause</button>
+              <button class="sim-btn" id="gasResetBtn">Reset</button>
+            </div>
+            <div class="sim-data">
+              <div class="sim-datum">
+                <div class="datum-value" id="dispTemp">300 K</div>
+                <div class="datum-label">Temperature</div>
+              </div>
+              <div class="sim-datum">
+                <div class="datum-value" id="dispVol">100%</div>
+                <div class="datum-label">Volume</div>
+              </div>
+              <div class="sim-datum">
+                <div class="datum-value" id="dispPressure">0 kPa</div>
+                <div class="datum-label">Pressure</div>
+              </div>
+              <div class="sim-datum">
+                <div class="datum-value" id="dispKE">0 J</div>
+                <div class="datum-label">Avg KE</div>
+              </div>
+            </div>
+            <div class="sim-explanation" id="gasExplanation">
+              Particles move at speeds proportional to the square root of temperature. Adjust the sliders to see how the ideal gas law PV = nRT connects pressure, volume, and temperature.
+            </div>
+          </div>
+        </section>
+
+        <!-- Key Takeaways -->
+        <section class="lecture-section" id="takeaways">
+          <div class="takeaways">
+            <h3>Key Takeaways</h3>
+            <ul>
+              <li>Temperature measures the average translational kinetic energy of molecules. The Kelvin scale is fundamental because it starts at absolute zero and is directly proportional to thermal energy.</li>
+              <li>Heat is energy in transit due to a temperature difference. It is a process, not a property. Objects have internal energy and temperature, but they do not "contain" heat.</li>
+              <li>Internal energy is the total microscopic kinetic and potential energy of all particles in a system. It depends on temperature, amount of substance, and molecular interactions.</li>
+              <li>The zeroth law establishes that temperature is a well-defined, transitive property, making thermometers and temperature comparison possible.</li>
+              <li>The first law (&Delta;U = Q &minus; W) is conservation of energy for thermal systems. Every joule of heat is accounted for as either internal energy change or work.</li>
+              <li>Thermodynamic processes (isothermal, adiabatic, isobaric, isochoric) each impose different constraints that determine the relationship between Q, W, and &Delta;U.</li>
+              <li>The second law dictates the direction of natural processes: heat flows from hot to cold, not the reverse. No heat engine can be perfectly efficient, and perpetual motion machines are impossible.</li>
+              <li>The Carnot efficiency &eta; = 1 &minus; T_C/T_H sets the maximum possible efficiency for any heat engine operating between two temperatures. Reaching 100% would require a cold reservoir at absolute zero.</li>
+              <li>Entropy (S = k_B ln W) measures the number of microstates compatible with a macroscopic state. Natural processes evolve toward states of higher entropy because those states are overwhelmingly more probable.</li>
+              <li>The arrow of time is a consequence of the second law: the future is the direction in which entropy increases, even though the fundamental laws of physics are time-symmetric.</li>
+              <li>The third law states that entropy approaches zero as temperature approaches absolute zero, and that absolute zero itself is unattainable in a finite number of steps.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Lecture Navigation -->
+        <div class="lecture-nav">
+          <a href="08-oscillations-waves.html" class="nav-prev">
+            <div class="nav-direction">&larr; Previous</div>
+            <div class="nav-title">Lecture 8: Oscillations and Waves</div>
+          </a>
+          <a href="10-electricity-magnetism.html" class="nav-next">
+            <div class="nav-direction">Next &rarr;</div>
+            <div class="nav-title">Lecture 10: Electricity and Magnetism</div>
+          </a>
+        </div>
+
+      </article>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">&phi; Physics Logic</div>
+          <p class="footer-desc">A free educational platform dedicated to teaching physics through deep reasoning and logical thinking. Understanding over memorization, always.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Lectures</h5>
+          <a href="01-introduction.html">Introduction</a>
+          <a href="04-newtons-laws.html">Newton's Laws</a>
+          <a href="09-thermodynamics.html">Thermodynamics</a>
+          <a href="12-modern-physics.html">Modern Physics</a>
+        </div>
+        <div class="footer-col">
+          <h5>Pages</h5>
+          <a href="../index.html">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../lectures.html">Lectures</a>
+          <a href="../faq.html">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h5>Resources</h5>
+          <a href="#">Further Reading</a>
+          <a href="#">Problem Sets</a>
+          <a href="#">References</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Physics Logic Lectures. All rights reserved.</span>
+        <span>Crafted for curious minds.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+  (function() {
+    const canvas = document.getElementById('gasCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const tempSlider = document.getElementById('tempSlider');
+    const volSlider = document.getElementById('volSlider');
+    const numSlider = document.getElementById('numSlider');
+    const tempValEl = document.getElementById('tempVal');
+    const volValEl = document.getElementById('volVal');
+    const numValEl = document.getElementById('numVal');
+    const dispTemp = document.getElementById('dispTemp');
+    const dispVol = document.getElementById('dispVol');
+    const dispPressure = document.getElementById('dispPressure');
+    const dispKE = document.getElementById('dispKE');
+    const playBtn = document.getElementById('gasPlayBtn');
+    const resetBtn = document.getElementById('gasResetBtn');
+    const explanationEl = document.getElementById('gasExplanation');
+
+    const kB = 1.38e-23; // Boltzmann constant
+    let playing = true;
+    let animId = null;
+    let particles = [];
+    let wallHits = 0;
+    let wallHitTime = 0;
+    let lastTime = 0;
+
+    const PISTON_COLOR = '#334466';
+    const WALL_COLOR = '#1a1a3a';
+    const PISTON_HANDLE_COLOR = '#00d4ff';
+    const CONTAINER_MARGIN = 40;
+    const PISTON_WIDTH = 14;
+
+    function getContainerRight() {
+      const volFrac = parseInt(volSlider.value) / 100;
+      const maxRight = canvas.width - CONTAINER_MARGIN;
+      const minRight = CONTAINER_MARGIN + 80;
+      return minRight + (maxRight - minRight) * volFrac;
+    }
+
+    function speedForTemp(T) {
+      // Scale so particles move visibly: base speed ~ sqrt(T/300) * 2
+      return Math.sqrt(T / 300) * 2.2;
+    }
+
+    function createParticle(containerRight) {
+      const left = CONTAINER_MARGIN + 6;
+      const right = containerRight - PISTON_WIDTH - 6;
+      const top = CONTAINER_MARGIN + 6;
+      const bottom = canvas.height - CONTAINER_MARGIN - 6;
+      const T = parseInt(tempSlider.value);
+      const spd = speedForTemp(T);
+      const angle = Math.random() * Math.PI * 2;
+      const speed = (0.5 + Math.random()) * spd;
+      return {
+        x: left + Math.random() * (right - left),
+        y: top + Math.random() * (bottom - top),
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        radius: 3
+      };
+    }
+
+    function initParticles() {
+      const n = parseInt(numSlider.value);
+      const cr = getContainerRight();
+      particles = [];
+      for (let i = 0; i < n; i++) {
+        particles.push(createParticle(cr));
+      }
+      wallHits = 0;
+      wallHitTime = 0;
+      lastTime = performance.now();
+    }
+
+    function adjustParticleCount() {
+      const n = parseInt(numSlider.value);
+      const cr = getContainerRight();
+      while (particles.length < n) {
+        particles.push(createParticle(cr));
+      }
+      while (particles.length > n) {
+        particles.pop();
+      }
+    }
+
+    function adjustParticleSpeeds() {
+      const T = parseInt(tempSlider.value);
+      const targetSpd = speedForTemp(T);
+      particles.forEach(p => {
+        const curSpd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        if (curSpd > 0.001) {
+          const scale = targetSpd * (0.5 + Math.random()) / curSpd;
+          // Smooth transition
+          const blend = 0.08;
+          p.vx = p.vx * (1 - blend) + p.vx * scale * blend;
+          p.vy = p.vy * (1 - blend) + p.vy * scale * blend;
+        }
+      });
+    }
+
+    function speedColor(spd, maxSpd) {
+      const ratio = Math.min(spd / maxSpd, 1);
+      if (ratio < 0.4) {
+        // Blue range
+        const t = ratio / 0.4;
+        const r = Math.floor(0 + t * 0);
+        const g = Math.floor(100 + t * 155);
+        const b = Math.floor(255);
+        return `rgb(${r},${g},${b})`;
+      } else if (ratio < 0.7) {
+        // Cyan range
+        const t = (ratio - 0.4) / 0.3;
+        const r = Math.floor(0 + t * 50);
+        const g = Math.floor(255 - t * 40);
+        const b = Math.floor(255 - t * 55);
+        return `rgb(${r},${g},${b})`;
+      } else {
+        // Magenta range
+        const t = (ratio - 0.7) / 0.3;
+        const r = Math.floor(50 + t * 205);
+        const g = Math.floor(215 - t * 175);
+        const b = Math.floor(200 + t * 55);
+        return `rgb(${r},${g},${b})`;
+      }
+    }
+
+    function update() {
+      const left = CONTAINER_MARGIN;
+      const right = getContainerRight();
+      const top = CONTAINER_MARGIN;
+      const bottom = canvas.height - CONTAINER_MARGIN;
+      const innerLeft = left + 4;
+      const innerRight = right - PISTON_WIDTH - 4;
+      const innerTop = top + 4;
+      const innerBottom = bottom - 4;
+
+      const now = performance.now();
+      const dt = Math.min((now - lastTime) / 16.67, 3); // normalize to ~60fps
+      lastTime = now;
+      wallHitTime += dt;
+
+      particles.forEach(p => {
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+
+        // Constrain to container
+        if (p.x - p.radius < innerLeft) {
+          p.x = innerLeft + p.radius;
+          p.vx = Math.abs(p.vx);
+          wallHits++;
+        }
+        if (p.x + p.radius > innerRight) {
+          p.x = innerRight - p.radius;
+          p.vx = -Math.abs(p.vx);
+          wallHits++;
+        }
+        if (p.y - p.radius < innerTop) {
+          p.y = innerTop + p.radius;
+          p.vy = Math.abs(p.vy);
+          wallHits++;
+        }
+        if (p.y + p.radius > innerBottom) {
+          p.y = innerBottom - p.radius;
+          p.vy = -Math.abs(p.vy);
+          wallHits++;
+        }
+      });
+    }
+
+    function draw() {
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      const left = CONTAINER_MARGIN;
+      const right = getContainerRight();
+      const top = CONTAINER_MARGIN;
+      const bottom = h - CONTAINER_MARGIN;
+      const containerW = right - left;
+      const containerH = bottom - top;
+
+      // Draw container walls
+      ctx.fillStyle = WALL_COLOR;
+      ctx.fillRect(left, top, containerW, 4);           // top
+      ctx.fillRect(left, bottom - 4, containerW, 4);     // bottom
+      ctx.fillRect(left, top, 4, containerH);             // left
+
+      // Draw piston (right side)
+      const pistonX = right - PISTON_WIDTH;
+      ctx.fillStyle = PISTON_COLOR;
+      ctx.fillRect(pistonX, top, PISTON_WIDTH, containerH);
+
+      // Piston handle line
+      ctx.fillStyle = PISTON_HANDLE_COLOR;
+      ctx.fillRect(pistonX + PISTON_WIDTH / 2 - 1, top + 10, 2, containerH - 20);
+
+      // Piston grip lines
+      for (let gy = top + 20; gy < bottom - 20; gy += 18) {
+        ctx.fillStyle = 'rgba(0,212,255,0.15)';
+        ctx.fillRect(pistonX + 2, gy, PISTON_WIDTH - 4, 2);
+      }
+
+      // Draw particles
+      const T = parseInt(tempSlider.value);
+      const maxSpd = speedForTemp(1000) * 1.5;
+
+      particles.forEach(p => {
+        const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = speedColor(spd, maxSpd);
+        ctx.fill();
+
+        // Glow for fast particles
+        if (spd > maxSpd * 0.5) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius + 3, 0, Math.PI * 2);
+          ctx.fillStyle = speedColor(spd, maxSpd).replace('rgb', 'rgba').replace(')', ',0.15)');
+          ctx.fill();
+        }
+      });
+
+      // Labels
+      ctx.fillStyle = '#636780';
+      ctx.font = '11px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('PISTON', right - PISTON_WIDTH / 2, bottom + 20);
+      ctx.fillText('CONTAINER', (left + pistonX) / 2, bottom + 20);
+    }
+
+    function updateDisplay() {
+      const T = parseInt(tempSlider.value);
+      const volPct = parseInt(volSlider.value);
+      const n = parseInt(numSlider.value);
+
+      tempValEl.textContent = T;
+      volValEl.textContent = volPct;
+      numValEl.textContent = n;
+      dispTemp.textContent = T + ' K';
+      dispVol.textContent = volPct + '%';
+
+      // Pressure from PV=nRT (arbitrary units for display)
+      // P = nRT/V, normalize nicely
+      const volFrac = volPct / 100;
+      const P = (n * T) / (volFrac * 300); // normalized so 50 particles at 300K, 100% vol ~ 50 kPa
+      dispPressure.textContent = P.toFixed(1) + ' kPa';
+
+      // Avg KE = (3/2) kB T
+      const avgKE = 1.5 * kB * T;
+      dispKE.textContent = (avgKE * 1e21).toFixed(2) + ' zJ';
+
+      // Explanation updates
+      if (T > 700 && volPct < 50) {
+        explanationEl.textContent = 'High temperature and low volume: particles are moving very fast and hitting the walls frequently. This creates very high pressure, consistent with PV = nRT.';
+      } else if (T > 700) {
+        explanationEl.textContent = 'At high temperatures, particles have much greater kinetic energy and move faster (speed is proportional to the square root of T). Notice the shift toward magenta (fast) particles.';
+      } else if (volPct < 40) {
+        explanationEl.textContent = 'The piston has compressed the gas into a small volume. Particles hit the walls more often, increasing pressure even at moderate temperature. This is Boyle\'s law: P is inversely proportional to V at constant T.';
+      } else if (n > 70) {
+        explanationEl.textContent = 'More particles means more total collisions with the walls, resulting in higher pressure. At constant T and V, pressure is directly proportional to the number of particles.';
+      } else if (T < 200) {
+        explanationEl.textContent = 'At low temperatures, particles crawl slowly (shown in blue). The average kinetic energy is small and pressure is low. At absolute zero (0 K), classical motion would cease entirely.';
+      } else {
+        explanationEl.textContent = 'Particles move at speeds proportional to the square root of temperature. Adjust the sliders to see how the ideal gas law PV = nRT connects pressure, volume, and temperature.';
+      }
+    }
+
+    function animate() {
+      if (!playing) return;
+      update();
+      draw();
+      updateDisplay();
+      animId = requestAnimationFrame(animate);
+    }
+
+    // Event listeners
+    tempSlider.addEventListener('input', () => {
+      adjustParticleSpeeds();
+      updateDisplay();
+    });
+    volSlider.addEventListener('input', () => {
+      // Clamp particles inside new container
+      const cr = getContainerRight();
+      const innerRight = cr - PISTON_WIDTH - 4;
+      particles.forEach(p => {
+        if (p.x + p.radius > innerRight) {
+          p.x = innerRight - p.radius - Math.random() * 10;
+          p.vx = -Math.abs(p.vx);
+        }
+      });
+      updateDisplay();
+    });
+    numSlider.addEventListener('input', () => {
+      adjustParticleCount();
+      updateDisplay();
+    });
+
+    playBtn.addEventListener('click', () => {
+      playing = !playing;
+      if (playing) {
+        playBtn.textContent = 'Pause';
+        playBtn.classList.add('active');
+        lastTime = performance.now();
+        animate();
+      } else {
+        playBtn.textContent = 'Play';
+        playBtn.classList.remove('active');
+        if (animId) cancelAnimationFrame(animId);
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      tempSlider.value = 300;
+      volSlider.value = 100;
+      numSlider.value = 50;
+      initParticles();
+      updateDisplay();
+      if (!playing) {
+        draw();
+      }
+    });
+
+    // Canvas resize handling
+    function resizeCanvas() {
+      const wrap = canvas.parentElement;
+      const rect = wrap.getBoundingClientRect();
+      canvas.width = Math.floor(rect.width);
+      canvas.height = Math.floor(rect.width * 0.5);
+      // Re-clamp particles
+      const cr = getContainerRight();
+      const innerRight = cr - PISTON_WIDTH - 4;
+      const innerBottom = canvas.height - CONTAINER_MARGIN - 4;
+      particles.forEach(p => {
+        if (p.x + p.radius > innerRight) p.x = innerRight - p.radius;
+        if (p.y + p.radius > innerBottom) p.y = innerBottom - p.radius;
+        if (p.x - p.radius < CONTAINER_MARGIN + 4) p.x = CONTAINER_MARGIN + 8;
+        if (p.y - p.radius < CONTAINER_MARGIN + 4) p.y = CONTAINER_MARGIN + 8;
+      });
+      if (!playing) draw();
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+
+    // Initialize
+    initParticles();
+    resizeCanvas();
+    updateDisplay();
+    animate();
+  })();
+  </script>
+</body>
+</html>

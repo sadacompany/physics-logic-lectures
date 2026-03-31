@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lecture 6: Momentum and Collisions | Physics Logic</title>
+  <meta name="description" content="A rigorous exploration of linear momentum, impulse, conservation of momentum, and the physics of elastic, inelastic, and two-dimensional collisions.">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress"></div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand"><span class="brand-icon">&phi;</span> Physics Logic</a>
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../lectures.html" class="active">Lectures</a>
+        <a href="../faq.html">FAQ</a>
+      </div>
+      <div class="nav-search">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" placeholder="Search lectures...">
+        <div class="search-results"></div>
+      </div>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+  <!-- Lecture Hero -->
+  <section class="lecture-hero">
+    <div class="lecture-hero-inner">
+      <div class="breadcrumb animate-in">
+        <a href="../index.html">Home</a>
+        <span class="sep">/</span>
+        <a href="../lectures.html">Lectures</a>
+        <span class="sep">/</span>
+        Lecture 6
+      </div>
+      <div class="lecture-number animate-in">Lecture 06</div>
+      <h1 class="animate-in">Momentum and <em>Collisions</em></h1>
+      <div class="lecture-meta animate-in">
+        <span>Category: Mechanics</span>
+        <span>Difficulty: Intermediate</span>
+        <span>Reading Time: 35 min</span>
+      </div>
+    </div>
+    <div class="hero-decoration">&phi;</div>
+  </section>
+
+  <!-- Lecture Layout: Sidebar TOC + Article -->
+  <div class="lecture-layout">
+
+    <!-- Table of Contents (sticky sidebar) -->
+    <aside class="lecture-toc">
+      <h3>Contents</h3>
+      <ul class="toc-list">
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#linear-momentum">Linear Momentum</a></li>
+        <li><a href="#impulse">Impulse</a></li>
+        <li><a href="#impulse-momentum-theorem">Impulse-Momentum Theorem</a></li>
+        <li><a href="#conservation-of-momentum">Conservation of Momentum</a></li>
+        <li><a href="#elastic-collisions">Elastic Collisions</a></li>
+        <li><a href="#inelastic-collisions">Inelastic Collisions</a></li>
+        <li><a href="#perfectly-inelastic">Perfectly Inelastic Collisions</a></li>
+        <li><a href="#2d-collisions">2D Collisions</a></li>
+        <li><a href="#common-misconceptions">Common Misconceptions</a></li>
+        <li><a href="#key-takeaways">Key Takeaways</a></li>
+      </ul>
+    </aside>
+
+    <!-- Lecture Article -->
+    <article class="lecture-article">
+
+      <!-- Learning Goals -->
+      <div class="learning-goals">
+        <h3>Learning Goals</h3>
+        <ul>
+          <li>Define linear momentum and understand its vector nature</li>
+          <li>Define impulse and relate it to the change in momentum</li>
+          <li>Derive and apply the impulse-momentum theorem</li>
+          <li>Understand the law of conservation of momentum and derive it from Newton's third law</li>
+          <li>Distinguish between elastic, inelastic, and perfectly inelastic collisions</li>
+          <li>Solve collision problems using conservation of momentum and, where applicable, conservation of kinetic energy</li>
+          <li>Extend momentum conservation to two-dimensional collision problems</li>
+          <li>Identify and correct common misconceptions about momentum and collisions</li>
+        </ul>
+      </div>
+
+      <!-- ==================== OVERVIEW ==================== -->
+      <section id="overview" class="lecture-section">
+        <h2>Overview</h2>
+
+        <p>
+          In the previous lecture, we explored energy: a scalar quantity that is conserved and
+          transformed. Energy gave us a powerful tool for analyzing motion without tracking forces at
+          every instant. In this lecture, we introduce another conserved quantity that is equally
+          fundamental but fundamentally different in character: <strong>momentum</strong>.
+        </p>
+
+        <p>
+          Momentum is a vector. Unlike energy, it has direction. And unlike energy, which can be
+          converted between kinetic and potential forms, momentum in a closed system is simply
+          conserved&mdash;the total momentum before an interaction equals the total momentum after,
+          regardless of how violent or gentle the interaction may be. This makes momentum the ideal
+          tool for analyzing collisions: two cars crashing, two billiard balls striking, a bullet
+          embedding in a block, or even subatomic particles scattering off each other in a collider.
+        </p>
+
+        <p>
+          We will begin by defining momentum and then introduce impulse, which describes how forces
+          change momentum over time. The impulse-momentum theorem connects these ideas and reveals
+          why airbags save lives and why you bend your knees when landing from a jump. We will then
+          derive the conservation of momentum from Newton's third law&mdash;showing that this
+          conservation principle is not an additional assumption but a direct consequence of Newton's
+          laws.
+        </p>
+
+        <p>
+          The second half of the lecture focuses on collisions. We will classify collisions into
+          three types&mdash;elastic, inelastic, and perfectly inelastic&mdash;based on whether kinetic
+          energy is conserved, partially lost, or maximally lost. For each type, we will develop the
+          relevant equations and work through detailed examples. Finally, we extend these ideas to
+          two dimensions, where momentum conservation must be applied separately along each axis.
+        </p>
+
+        <p>
+          By the end of this lecture, you will have two complementary tools for analyzing mechanical
+          interactions: energy (from Lecture 5) and momentum (from this lecture). Many problems are
+          most efficiently solved by using both simultaneously, and the ability to choose the right
+          tool for the right situation is one of the hallmarks of a skilled physicist.
+        </p>
+      </section>
+
+      <!-- ==================== LINEAR MOMENTUM ==================== -->
+      <section id="linear-momentum" class="lecture-section">
+        <h2>Linear Momentum</h2>
+
+        <p>
+          Imagine two objects moving at the same speed: a tennis ball and a freight train. Which one
+          would be harder to stop? The freight train, obviously. It has vastly more mass. Now imagine
+          two freight trains, one crawling at 1 km/h and the other barreling along at 100 km/h. The
+          fast one is far harder to stop. What determines how difficult it is to change an object's
+          state of motion is not just its mass or just its velocity, but the product of the two.
+          This product is what we call momentum.
+        </p>
+
+        <div class="formula">
+          <span class="formula-name">Linear Momentum</span>
+          p = mv
+        </div>
+
+        <div class="definition-box">
+          <div class="def-term">Linear Momentum (p)</div>
+          <p class="def-text">
+            The product of an object's mass and velocity: p = mv. Momentum is a vector quantity&mdash;it
+            has the same direction as the velocity. The SI unit of momentum is kg &middot; m/s. Momentum
+            measures the "quantity of motion" and determines how much force or time is needed to change
+            an object's state of motion.
+          </p>
+        </div>
+
+        <p>
+          Several features of this definition are worth emphasizing. First, momentum is a
+          <strong>vector</strong>. It points in the same direction as the velocity. An object moving
+          east has eastward momentum; if it turns around and moves west at the same speed, its momentum
+          has reversed direction. This vector nature is essential for collision problems, where the
+          direction of motion before and after the collision matters enormously.
+        </p>
+
+        <p>
+          Second, momentum depends linearly on both mass and velocity. Doubling the mass doubles the
+          momentum. Doubling the velocity also doubles the momentum. Contrast this with kinetic energy,
+          which depends on v&sup2;: doubling the velocity quadruples the kinetic energy but only doubles
+          the momentum. This difference between the linear and quadratic dependence on velocity leads
+          to situations where momentum is conserved but kinetic energy is not, and vice versa.
+        </p>
+
+        <p>
+          Third, an object at rest has zero momentum. This follows directly from the definition: if
+          v = 0, then p = m(0) = 0. This is true regardless of the object's mass. A stationary freight
+          train has zero momentum, just like a stationary tennis ball.
+        </p>
+
+        <p>
+          Newton himself recognized the importance of momentum. In fact, Newton's second law was
+          originally stated not as F = ma but in terms of momentum. Newton wrote that the force
+          acting on a body is equal to the rate of change of its momentum:
+        </p>
+
+        <div class="formula">
+          <span class="formula-name">Newton's Second Law (Momentum Form)</span>
+          F<sub>net</sub> = &Delta;p / &Delta;t
+        </div>
+
+        <p>
+          For an object of constant mass, &Delta;p = m&Delta;v, so &Delta;p/&Delta;t = m(&Delta;v/&Delta;t) = ma,
+          which recovers the familiar F = ma. But the momentum form is more general. It applies even when
+          the mass is changing (as in a rocket expelling fuel) or when we are dealing with systems of
+          particles. We will see why this form is so powerful when we derive conservation of momentum.
+        </p>
+
+        <div class="key-concept">
+          <div class="concept-label">Key Concept</div>
+          <p>
+            Momentum is the "quantity of motion" and determines how hard it is to stop or deflect an
+            object. Newton's second law, in its most fundamental form, states that force equals the rate
+            of change of momentum. This formulation is more general than F = ma and leads directly to
+            the conservation of momentum.
+          </p>
+        </div>
+      </section>
+
+      <!-- ==================== IMPULSE ==================== -->
+      <section id="impulse" class="lecture-section">
+        <h2>Impulse</h2>
+
+        <p>
+          If force changes momentum, then the total change in momentum depends on two things: how
+          large the force is and how long it acts. A small force acting for a long time can produce
+          the same change in momentum as a large force acting for a short time. The quantity that
+          captures this combined effect is called impulse.
+        </p>
+
+        <div class="formula">
+          <span class="formula-name">Impulse</span>
+          J = F&Delta;t = &Delta;p
+        </div>
+
+        <div class="definition-box">
+          <div class="def-term">Impulse (J)</div>
+          <p class="def-text">
+            The product of the average force and the time interval over which it acts: J = F&Delta;t.
+            Impulse is a vector with the same direction as the force. It equals the change in momentum
+            of the object: J = &Delta;p. The SI unit of impulse is N &middot; s, which is equivalent
+            to kg &middot; m/s (the same as momentum).
+          </p>
+        </div>
+
+        <p>
+          The relationship J = F&Delta;t = &Delta;p is simply a rearrangement of Newton's second
+          law in momentum form. But writing it this way highlights something physically important:
+          for a given change in momentum, there is a trade-off between force and time. If the time
+          interval is large, the force can be small. If the time interval is small, the force must
+          be large.
+        </p>
+
+        <h3>Airbags and Bending Your Knees</h3>
+
+        <p>
+          This trade-off is the physics behind many safety devices. Consider a car crash. When a car
+          hits a wall and stops, the change in momentum is the same regardless of how the car stops.
+          The car goes from some velocity to zero, and &Delta;p = m(0) &minus; mv = &minus;mv. This
+          change must happen no matter what.
+        </p>
+
+        <p>
+          But the <em>force</em> experienced by the occupants depends on the <em>time</em> over which
+          this change occurs. If the car has a rigid front end and stops almost instantaneously
+          (&Delta;t is very small), the force is enormous and lethal. But if the car has a crumple
+          zone that gradually deforms, extending the collision time to perhaps 0.1 seconds instead
+          of 0.01 seconds, the average force is reduced by a factor of ten.
+        </p>
+
+        <p>
+          An airbag works on the same principle. As you decelerate, the airbag inflates and then
+          gradually deflates as you press into it. This extends the time over which your momentum
+          changes from several milliseconds (hitting the hard steering wheel) to tens of milliseconds
+          (sinking into the airbag). The impulse is the same, but the force&mdash;and therefore the
+          risk of injury&mdash;is dramatically reduced.
+        </p>
+
+        <p>
+          The same logic explains why you instinctively bend your knees when landing from a jump.
+          By bending your knees, you increase the time over which your downward momentum is brought
+          to zero. This reduces the force on your joints and bones. A gymnast performing a dismount
+          is an expert at this: the deep knee bend upon landing is not a sign of weakness but a
+          masterful application of impulse-momentum physics.
+        </p>
+
+        <div class="key-concept">
+          <div class="concept-label">Key Concept</div>
+          <p>
+            For a given change in momentum, increasing the time of interaction decreases the force.
+            This principle underlies the design of crumple zones, airbags, helmets, padding, and the
+            instinct to bend your knees on landing. Safety engineering is largely the art of managing
+            the impulse-momentum trade-off.
+          </p>
+        </div>
+      </section>
+
+      <!-- ==================== IMPULSE-MOMENTUM THEOREM ==================== -->
+      <section id="impulse-momentum-theorem" class="lecture-section">
+        <h2>The Impulse-Momentum Theorem</h2>
+
+        <p>
+          Let us state the impulse-momentum theorem formally. It is simply a restatement of Newton's
+          second law, but its form is especially useful for collision and impact problems:
+        </p>
+
+        <div class="formula">
+          <span class="formula-name">Impulse-Momentum Theorem</span>
+          F<sub>avg</sub> &Delta;t = mv<sub>f</sub> &minus; mv<sub>i</sub>
+        </div>
+
+        <p>
+          The left side is the impulse delivered to the object (the product of average force and time
+          interval). The right side is the change in the object's momentum (final momentum minus initial
+          momentum). The theorem says these are always equal.
+        </p>
+
+        <p>
+          This theorem is particularly useful when forces are large and act over short time intervals,
+          as in collisions. In these situations, the exact time history of the force is often unknown
+          or very complicated (the force rises sharply, peaks, and then drops to zero), but we can
+          still find the average force if we know the change in momentum and the duration of the impact.
+        </p>
+
+        <div class="example">
+          <div class="example-label">Worked Example</div>
+          <p>
+            A 0.145 kg baseball moving horizontally at 40 m/s is hit by a bat. After the hit, the ball
+            moves in the opposite direction at 50 m/s. The bat is in contact with the ball for 1.5 ms
+            (0.0015 s). Find the average force exerted by the bat on the ball.
+          </p>
+          <div class="solution">
+            <div class="solution-label">Solution</div>
+            <p>
+              Choose the initial direction of the ball's motion as positive. Then v<sub>i</sub> = +40 m/s
+              and v<sub>f</sub> = &minus;50 m/s (negative because it reverses direction).
+            </p>
+            <p>&Delta;p = mv<sub>f</sub> &minus; mv<sub>i</sub> = (0.145)(&minus;50) &minus; (0.145)(40)</p>
+            <p>&Delta;p = &minus;7.25 &minus; 5.8 = &minus;13.05 kg &middot; m/s</p>
+            <p>F<sub>avg</sub> = &Delta;p / &Delta;t = &minus;13.05 / 0.0015 = &minus;8,700 N</p>
+            <p>
+              The magnitude of the average force is 8,700 N (about 1,960 pounds). The negative sign
+              indicates the force is in the direction opposite to the ball's initial motion, which makes
+              sense: the bat pushes the ball backward. Notice how enormous this force is compared to
+              the ball's weight (about 1.4 N). Collision forces are typically very large because the
+              time interval is very small.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== CONSERVATION OF MOMENTUM ==================== -->
+      <section id="conservation-of-momentum" class="lecture-section">
+        <h2>Conservation of Momentum</h2>
+
+        <p>
+          We now arrive at one of the most important principles in physics: the law of conservation
+          of momentum. It states that for a system of objects with no external forces acting on it
+          (an isolated system), the total momentum is constant:
+        </p>
+
+        <div class="formula">
+          <span class="formula-name">Conservation of Momentum</span>
+          p<sub>total,before</sub> = p<sub>total,after</sub>
+        </div>
+
+        <p>
+          Or, for two objects:
+        </p>
+
+        <div class="formula">
+          <span class="formula-name">Conservation of Momentum (Two Objects)</span>
+          m<sub>1</sub>v<sub>1i</sub> + m<sub>2</sub>v<sub>2i</sub> = m<sub>1</sub>v<sub>1f</sub> + m<sub>2</sub>v<sub>2f</sub>
+        </div>
+
+        <h3>Derivation from Newton's Third Law</h3>
+
+        <p>
+          This conservation law is not an additional postulate. It is a direct consequence of Newton's
+          third law. Here is the argument. Consider two objects, 1 and 2, that interact with each other
+          but experience no external forces. By Newton's third law, the force that object 1 exerts on
+          object 2 is equal in magnitude and opposite in direction to the force that object 2 exerts on
+          object 1:
+        </p>
+
+        <p>
+          F<sub>12</sub> = &minus;F<sub>21</sub>
+        </p>
+
+        <p>
+          Now apply Newton's second law in momentum form to each object:
+        </p>
+
+        <p>
+          F<sub>21</sub> = &Delta;p<sub>1</sub> / &Delta;t &nbsp; and &nbsp; F<sub>12</sub> = &Delta;p<sub>2</sub> / &Delta;t
+        </p>
+
+        <p>
+          Since F<sub>12</sub> = &minus;F<sub>21</sub>, we have:
+        </p>
+
+        <p>
+          &Delta;p<sub>2</sub> / &Delta;t = &minus;&Delta;p<sub>1</sub> / &Delta;t
+        </p>
+
+        <p>
+          Therefore &Delta;p<sub>1</sub> + &Delta;p<sub>2</sub> = 0, which means:
+        </p>
+
+        <p>
+          &Delta;(p<sub>1</sub> + p<sub>2</sub>) = 0
+        </p>
+
+        <p>
+          The total momentum of the system does not change. Whatever momentum object 1 gains, object 2
+          loses, and vice versa. Momentum is transferred between the objects, but the total is conserved.
+          This derivation is beautifully simple and reveals why momentum conservation is such a robust
+          principle: it rests on nothing more than Newton's third law.
+        </p>
+
+        <div class="key-concept">
+          <div class="concept-label">Key Concept</div>
+          <p>
+            Conservation of momentum is a direct consequence of Newton's third law. In any interaction
+            between two objects, the momentum gained by one is exactly equal to the momentum lost by the
+            other. No external force means no change in total momentum. This principle applies to all
+            types of collisions&mdash;elastic, inelastic, or perfectly inelastic.
+          </p>
+        </div>
+
+        <p>
+          An important caveat: momentum is conserved only when no <em>net external force</em> acts on
+          the system. In a collision between two cars on a road, the collision forces are internal to
+          the two-car system (they are third-law pairs). But friction with the road is an external force.
+          However, the collision typically happens so quickly (milliseconds) that friction has negligible
+          time to change the system's momentum. So we can still apply momentum conservation during the
+          brief collision interval, even though friction is present. This is a common and important
+          approximation in collision problems.
+        </p>
+      </section>
+
+      <!-- ==================== ELASTIC COLLISIONS ==================== -->
+      <section id="elastic-collisions" class="lecture-section">
+        <h2>Elastic Collisions</h2>
+
+        <p>
+          Now we turn to the classification and analysis of collisions. An elastic collision is one
+          in which both momentum and kinetic energy are conserved. No kinetic energy is lost to heat,
+          sound, deformation, or other forms. Elastic collisions are an idealization: no macroscopic
+          collision is perfectly elastic. However, many collisions between hard objects (billiard balls,
+          steel spheres) are approximately elastic, and collisions between atoms and subatomic particles
+          can be truly elastic.
+        </p>
+
+        <div class="definition-box">
+          <div class="def-term">Elastic Collision</div>
+          <p class="def-text">
+            A collision in which both total momentum and total kinetic energy are conserved. No kinetic
+            energy is converted to other forms. Elastic collisions represent the "ideal" case and are
+            closely approximated by collisions between hard, rigid objects.
+          </p>
+        </div>
+
+        <p>
+          For a one-dimensional elastic collision between two objects, we have two conservation equations:
+        </p>
+
+        <p>
+          <strong>Momentum:</strong> m<sub>1</sub>v<sub>1i</sub> + m<sub>2</sub>v<sub>2i</sub> = m<sub>1</sub>v<sub>1f</sub> + m<sub>2</sub>v<sub>2f</sub>
+        </p>
+
+        <p>
+          <strong>Kinetic energy:</strong> &frac12;m<sub>1</sub>v<sub>1i</sub>&sup2; + &frac12;m<sub>2</sub>v<sub>2i</sub>&sup2; = &frac12;m<sub>1</sub>v<sub>1f</sub>&sup2; + &frac12;m<sub>2</sub>v<sub>2f</sub>&sup2;
+        </p>
+
+        <p>
+          These two equations, with two unknowns (v<sub>1f</sub> and v<sub>2f</sub>), can be solved
+          simultaneously. The algebra can be simplified significantly by rewriting the kinetic energy
+          equation. After some manipulation (factoring the difference of squares and using the momentum
+          equation), we arrive at a remarkably elegant result:
+        </p>
+
+        <div class="formula">
+          <span class="formula-name">Relative Velocity in Elastic Collisions</span>
+          v<sub>1i</sub> &minus; v<sub>2i</sub> = &minus;(v<sub>1f</sub> &minus; v<sub>2f</sub>)
+        </div>
+
+        <p>
+          This says that in an elastic collision, the relative velocity of approach equals the relative
+          velocity of separation (in magnitude, with a sign flip). The objects bounce apart at the same
+          relative speed at which they came together. This is equivalent to conserving kinetic energy
+          and is often easier to use in calculations.
+        </p>
+
+        <h3>Special Case: Equal Masses</h3>
+
+        <p>
+          When two objects of equal mass collide elastically head-on, and one is initially at rest,
+          something beautiful happens. The moving object stops completely, and the stationary object
+          moves off with the entire velocity of the first. You can verify this using the conservation
+          equations: set m<sub>1</sub> = m<sub>2</sub> = m and v<sub>2i</sub> = 0, and you find
+          v<sub>1f</sub> = 0 and v<sub>2f</sub> = v<sub>1i</sub>.
+        </p>
+
+        <p>
+          This is exactly what you see in Newton's cradle (the desk toy with hanging steel balls).
+          When one ball swings in and hits the row, it stops, and the ball at the far end swings out
+          with the same speed. Momentum and kinetic energy are both transferred completely from one
+          ball to the other. This velocity exchange is a hallmark of equal-mass elastic collisions.
+        </p>
+
+        <div class="example">
+          <div class="example-label">Worked Example</div>
+          <p>
+            A 2 kg ball moving at 6 m/s collides elastically and head-on with a 4 kg ball at rest.
+            Find the velocities of both balls after the collision.
+          </p>
+          <div class="solution">
+            <div class="solution-label">Solution</div>
+            <p>
+              Using momentum conservation: 2(6) + 4(0) = 2v<sub>1f</sub> + 4v<sub>2f</sub><br>
+              12 = 2v<sub>1f</sub> + 4v<sub>2f</sub> &nbsp; ... (1)
+            </p>
+            <p>
+              Using the relative velocity condition for elastic collisions:<br>
+              v<sub>1i</sub> &minus; v<sub>2i</sub> = &minus;(v<sub>1f</sub> &minus; v<sub>2f</sub>)<br>
+              6 &minus; 0 = &minus;(v<sub>1f</sub> &minus; v<sub>2f</sub>)<br>
+              v<sub>2f</sub> &minus; v<sub>1f</sub> = 6 &nbsp; ... (2)
+            </p>
+            <p>
+              From (2): v<sub>2f</sub> = v<sub>1f</sub> + 6. Substitute into (1):<br>
+              12 = 2v<sub>1f</sub> + 4(v<sub>1f</sub> + 6) = 6v<sub>1f</sub> + 24<br>
+              6v<sub>1f</sub> = &minus;12<br>
+              v<sub>1f</sub> = &minus;2 m/s
+            </p>
+            <p>v<sub>2f</sub> = &minus;2 + 6 = +4 m/s</p>
+            <p>
+              The 2 kg ball bounces back at 2 m/s (the negative sign indicates reversal), and the
+              4 kg ball moves forward at 4 m/s. We can verify: total momentum before = 12 kg&middot;m/s,
+              after = 2(&minus;2) + 4(4) = &minus;4 + 16 = 12 kg&middot;m/s. Kinetic energy before =
+              &frac12;(2)(36) = 36 J, after = &frac12;(2)(4) + &frac12;(4)(16) = 4 + 32 = 36 J.
+              Both are conserved.
+            </p>
+          </div>
+        </div>
+
+        <div class="key-concept">
+          <div class="concept-label">Key Concept</div>
+          <p>
+            In elastic collisions, both momentum and kinetic energy are conserved. The relative speed
+            of approach equals the relative speed of separation. For equal-mass elastic collisions with
+            one object initially at rest, the objects exchange velocities completely.
+          </p>
+        </div>
+      </section>
+
+      <!-- ==================== INELASTIC COLLISIONS ==================== -->
+      <section id="inelastic-collisions" class="lecture-section">
+        <h2>Inelastic Collisions</h2>
+
+        <p>
+          Most real-world collisions are inelastic. In an inelastic collision, momentum is conserved
+          but kinetic energy is not. Some kinetic energy is converted into other forms: thermal energy
+          (the objects heat up), sound (you hear the crash), deformation (the objects dent or crumple),
+          and internal energy. The total energy of the universe is still conserved, but mechanical
+          kinetic energy alone is not.
+        </p>
+
+        <div class="definition-box">
+          <div class="def-term">Inelastic Collision</div>
+          <p class="def-text">
+            A collision in which total momentum is conserved but total kinetic energy is not. Some
+            kinetic energy is transformed into thermal energy, sound, deformation, or other non-mechanical
+            forms. Most real-world collisions are inelastic to varying degrees.
+          </p>
+        </div>
+
+        <p>
+          In an inelastic collision, we can still use conservation of momentum to analyze the problem.
+          However, we cannot use conservation of kinetic energy, because KE is not conserved. This
+          means that for a one-dimensional inelastic collision between two objects, we have only one
+          equation (momentum conservation) but two unknowns (the two final velocities). We need
+          additional information to solve the problem completely&mdash;for example, one of the final
+          velocities, or the fraction of kinetic energy lost.
+        </p>
+
+        <p>
+          The amount of kinetic energy lost in an inelastic collision varies widely. Two rubber balls
+          bouncing off each other might lose only a small fraction of their kinetic energy. Two cars
+          colliding might lose a large fraction. The fraction lost depends on the materials, the
+          geometry of the collision, and the speeds involved. In general, we define the coefficient
+          of restitution, e, as the ratio of relative speeds after and before the collision:
+        </p>
+
+        <p>
+          e = |v<sub>2f</sub> &minus; v<sub>1f</sub>| / |v<sub>1i</sub> &minus; v<sub>2i</sub>|
+        </p>
+
+        <p>
+          For a perfectly elastic collision, e = 1 (the relative speed is unchanged). For a perfectly
+          inelastic collision (objects stick together), e = 0. For all other inelastic collisions,
+          0 &lt; e &lt; 1.
+        </p>
+
+        <div class="example">
+          <div class="example-label">Worked Example &mdash; Car Crash</div>
+          <p>
+            A 1,500 kg car traveling east at 20 m/s collides with a 1,000 kg car traveling west at
+            15 m/s. After the collision, the 1,500 kg car moves east at 5 m/s. Find the velocity
+            of the 1,000 kg car after the collision and the kinetic energy lost.
+          </p>
+          <div class="solution">
+            <div class="solution-label">Solution</div>
+            <p>Choose east as positive. Then v<sub>1i</sub> = +20, v<sub>2i</sub> = &minus;15.</p>
+            <p>
+              Momentum conservation:<br>
+              (1500)(20) + (1000)(&minus;15) = (1500)(5) + (1000)v<sub>2f</sub><br>
+              30,000 &minus; 15,000 = 7,500 + 1000v<sub>2f</sub><br>
+              15,000 = 7,500 + 1000v<sub>2f</sub><br>
+              v<sub>2f</sub> = +7.5 m/s (east)
+            </p>
+            <p>
+              KE<sub>before</sub> = &frac12;(1500)(20)&sup2; + &frac12;(1000)(15)&sup2; = 300,000 + 112,500 = 412,500 J
+            </p>
+            <p>
+              KE<sub>after</sub> = &frac12;(1500)(5)&sup2; + &frac12;(1000)(7.5)&sup2; = 18,750 + 28,125 = 46,875 J
+            </p>
+            <p>
+              KE lost = 412,500 &minus; 46,875 = 365,625 J
+            </p>
+            <p>
+              About 88.6% of the kinetic energy was lost, converted to heat, sound, and deformation
+              of the vehicles. This is typical of car crashes, which are highly inelastic.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== PERFECTLY INELASTIC COLLISIONS ==================== -->
+      <section id="perfectly-inelastic" class="lecture-section">
+        <h2>Perfectly Inelastic Collisions</h2>
+
+        <p>
+          A perfectly inelastic collision is the extreme case: the two objects collide and stick together,
+          moving as a single combined object after the collision. This is the collision type that loses
+          the maximum possible kinetic energy (consistent with momentum conservation). It is also the
+          simplest to analyze, because the two objects share a common final velocity.
+        </p>
+
+        <div class="formula">
+          <span class="formula-name">Perfectly Inelastic Collision</span>
+          m<sub>1</sub>v<sub>1i</sub> + m<sub>2</sub>v<sub>2i</sub> = (m<sub>1</sub> + m<sub>2</sub>)v<sub>f</sub>
+        </div>
+
+        <p>
+          Since the two objects have the same final velocity v<sub>f</sub>, there is only one unknown,
+          and momentum conservation alone is sufficient to solve for it.
+        </p>
+
+        <div class="definition-box">
+          <div class="def-term">Perfectly Inelastic Collision</div>
+          <p class="def-text">
+            A collision in which the two objects stick together and move as one unit after the collision.
+            Momentum is conserved, but the maximum possible kinetic energy is lost (consistent with
+            momentum conservation). The coefficient of restitution is zero.
+          </p>
+        </div>
+
+        <h3>The Ballistic Pendulum</h3>
+
+        <p>
+          One of the most elegant applications of perfectly inelastic collisions is the ballistic
+          pendulum, a device historically used to measure the speed of bullets. A bullet of mass m
+          is fired into a large block of mass M suspended by strings. The bullet embeds in the block
+          (a perfectly inelastic collision), and the combined block-bullet system swings upward to
+          some maximum height h. By measuring h, we can work backward to find the bullet's speed.
+        </p>
+
+        <p>
+          The analysis proceeds in two stages. First, during the collision (which happens very quickly),
+          momentum is conserved but kinetic energy is not:
+        </p>
+
+        <p>
+          mv<sub>bullet</sub> = (m + M)v<sub>after</sub>
+        </p>
+
+        <p>
+          Second, after the collision, as the block-bullet system swings upward, there are no
+          non-conservative forces doing work (we neglect air resistance), so mechanical energy is
+          conserved:
+        </p>
+
+        <p>
+          &frac12;(m + M)v<sub>after</sub>&sup2; = (m + M)gh
+        </p>
+
+        <p>
+          From the second equation: v<sub>after</sub> = &radic;(2gh). Substituting into the first:
+        </p>
+
+        <p>
+          v<sub>bullet</sub> = [(m + M) / m] &radic;(2gh)
+        </p>
+
+        <div class="example">
+          <div class="example-label">Worked Example &mdash; Ballistic Pendulum</div>
+          <p>
+            A 10 g bullet is fired into a 5 kg wooden block suspended as a pendulum. After the
+            bullet embeds in the block, the combination swings upward to a height of 8 cm.
+            Find the speed of the bullet.
+          </p>
+          <div class="solution">
+            <div class="solution-label">Solution</div>
+            <p>m = 0.010 kg, M = 5 kg, h = 0.08 m</p>
+            <p>v<sub>after</sub> = &radic;(2gh) = &radic;(2 &times; 9.8 &times; 0.08) = &radic;1.568 = 1.25 m/s</p>
+            <p>v<sub>bullet</sub> = [(m + M) / m] &times; v<sub>after</sub></p>
+            <p>v<sub>bullet</sub> = [(0.010 + 5) / 0.010] &times; 1.25 = 501 &times; 1.25 = 626 m/s</p>
+            <p>
+              The bullet was traveling at approximately 626 m/s. Notice how we used two different
+              conservation laws for two different phases of the problem: momentum conservation for
+              the collision (where KE is not conserved) and energy conservation for the swing
+              (where momentum is not conserved, because gravity is an external force acting on the
+              system during the swing).
+            </p>
+          </div>
+        </div>
+
+        <div class="key-concept">
+          <div class="concept-label">Key Concept</div>
+          <p>
+            The ballistic pendulum illustrates a crucial problem-solving strategy: use momentum
+            conservation during the collision (when forces are large and internal) and energy
+            conservation during the subsequent motion (when forces are conservative). Knowing
+            which conservation law to apply at each stage is the key to solving multi-phase problems.
+          </p>
+        </div>
+      </section>
+
+      <!-- ==================== 2D COLLISIONS ==================== -->
+      <section id="2d-collisions" class="lecture-section">
+        <h2>Two-Dimensional Collisions</h2>
+
+        <p>
+          So far, we have analyzed collisions in one dimension: objects moving along a single line.
+          But many real collisions happen in two dimensions. Two billiard balls striking at an angle,
+          a car T-boning another car at an intersection, or subatomic particles scattering in a
+          collider&mdash;these all involve motion in a plane.
+        </p>
+
+        <p>
+          The key principle is that momentum is conserved <em>as a vector</em>. This means that the
+          x-component of total momentum is conserved, and the y-component of total momentum is conserved,
+          independently of each other. For a two-dimensional collision between two objects, we write
+          two separate conservation equations:
+        </p>
+
+        <div class="formula">
+          <span class="formula-name">Momentum Conservation in 2D</span>
+          x: m<sub>1</sub>v<sub>1ix</sub> + m<sub>2</sub>v<sub>2ix</sub> = m<sub>1</sub>v<sub>1fx</sub> + m<sub>2</sub>v<sub>2fx</sub>
+          <br>
+          y: m<sub>1</sub>v<sub>1iy</sub> + m<sub>2</sub>v<sub>2iy</sub> = m<sub>1</sub>v<sub>1fy</sub> + m<sub>2</sub>v<sub>2fy</sub>
+        </div>
+
+        <p>
+          Each equation is applied independently. The x-equation involves only x-components of velocity,
+          and the y-equation involves only y-components. There is no "mixing" between directions.
+        </p>
+
+        <p>
+          In practice, solving a 2D collision problem often involves choosing a coordinate system wisely.
+          A common choice is to align the x-axis with the initial velocity of one of the objects. Then
+          the initial y-component of that object's velocity is zero, simplifying the equations. After the
+          collision, the objects generally move at angles to the x-axis, and trigonometry is used to
+          decompose their velocities into components.
+        </p>
+
+        <h3>Glancing Collisions</h3>
+
+        <p>
+          A particularly common type of 2D collision is the glancing collision, where one object (say
+          a billiard ball) strikes another at an angle rather than head-on. If the target object is
+          initially at rest, the two objects move off at different angles after the collision. For an
+          elastic glancing collision between equal masses (one initially at rest), a remarkable result
+          holds: the two objects always move off at right angles to each other (90&deg; apart). This
+          can be proven using both momentum and kinetic energy conservation, and it is something you
+          can observe on any billiard table.
+        </p>
+
+        <div class="example">
+          <div class="example-label">Worked Example &mdash; 2D Collision</div>
+          <p>
+            A 3 kg ball moving east at 8 m/s collides with a 3 kg ball at rest. After the collision,
+            the first ball moves at 30&deg; above the east axis. Find the speeds and direction of
+            both balls (elastic collision, equal masses).
+          </p>
+          <div class="solution">
+            <div class="solution-label">Solution</div>
+            <p>
+              For elastic collisions between equal masses with one at rest, the balls move at 90&deg;
+              to each other. So the second ball moves at 30&deg; below the east axis (since the first
+              goes 30&deg; above).
+            </p>
+            <p>
+              x-momentum: (3)(8) = 3v<sub>1f</sub>cos 30&deg; + 3v<sub>2f</sub>cos(&minus;30&deg;)<br>
+              Since cos(&minus;30&deg;) = cos 30&deg; = 0.866:<br>
+              24 = 3(0.866)(v<sub>1f</sub> + v<sub>2f</sub>) &nbsp; ... (1)
+            </p>
+            <p>
+              y-momentum: 0 = 3v<sub>1f</sub>sin 30&deg; &minus; 3v<sub>2f</sub>sin 30&deg;<br>
+              Wait&mdash;this would give v<sub>1f</sub> = v<sub>2f</sub> only if both angles from the
+              x-axis are equal. Let the first ball go at angle &alpha; = 30&deg; above and the second
+              at angle &beta; below.
+            </p>
+            <p>
+              y-momentum: 0 = 3v<sub>1f</sub>sin 30&deg; &minus; 3v<sub>2f</sub>sin &beta;<br>
+              Since &alpha; + &beta; = 90&deg;, &beta; = 60&deg;.<br>
+              v<sub>1f</sub>sin 30&deg; = v<sub>2f</sub>sin 60&deg;<br>
+              v<sub>1f</sub>(0.5) = v<sub>2f</sub>(0.866)<br>
+              v<sub>1f</sub> = 1.732 v<sub>2f</sub> &nbsp; ... (2)
+            </p>
+            <p>
+              x-momentum: 8 = v<sub>1f</sub>cos 30&deg; + v<sub>2f</sub>cos 60&deg;<br>
+              8 = 0.866 v<sub>1f</sub> + 0.5 v<sub>2f</sub> &nbsp; ... (3)
+            </p>
+            <p>
+              Substituting (2) into (3): 8 = 0.866(1.732 v<sub>2f</sub>) + 0.5 v<sub>2f</sub> = 1.5 v<sub>2f</sub> + 0.5 v<sub>2f</sub> = 2 v<sub>2f</sub><br>
+              v<sub>2f</sub> = 4 m/s, &nbsp; v<sub>1f</sub> = 1.732 &times; 4 = 6.93 m/s
+            </p>
+            <p>
+              The first ball moves at 6.93 m/s at 30&deg; above east, and the second moves at 4 m/s
+              at 60&deg; below east. We can verify: KE before = &frac12;(3)(64) = 96 J.
+              KE after = &frac12;(3)(48) + &frac12;(3)(16) = 72 + 24 = 96 J. Conserved.
+            </p>
+          </div>
+        </div>
+
+        <div class="key-concept">
+          <div class="concept-label">Key Concept</div>
+          <p>
+            In two-dimensional collisions, momentum conservation is applied component-wise: separately
+            in the x-direction and the y-direction. The two equations are independent and can be solved
+            simultaneously. For elastic collisions between equal masses with one at rest, the objects
+            always scatter at 90&deg; to each other.
+          </p>
+        </div>
+      </section>
+
+      <!-- ==================== COMMON MISCONCEPTIONS ==================== -->
+      <section id="common-misconceptions" class="lecture-section">
+        <h2>Common Misconceptions</h2>
+
+        <div class="misconception">
+          <div class="misconception-label">Misconception</div>
+          <p><strong>"A heavier object always has more momentum than a lighter one."</strong></p>
+          <p>
+            Not necessarily. Momentum depends on both mass and velocity: p = mv. A 0.01 kg bullet
+            moving at 800 m/s has a momentum of 8 kg&middot;m/s. A 100 kg person standing still has
+            a momentum of zero. And a 1 kg ball moving at 10 m/s has a momentum of 10 kg&middot;m/s,
+            which is more than the bullet despite having much less mass. It is the <em>product</em> of
+            mass and velocity that determines momentum, not mass alone.
+          </p>
+        </div>
+
+        <div class="misconception">
+          <div class="misconception-label">Misconception</div>
+          <p><strong>"Momentum is the same thing as kinetic energy."</strong></p>
+          <p>
+            Momentum (p = mv) and kinetic energy (KE = &frac12;mv&sup2;) are related but fundamentally
+            different quantities. Momentum is a vector; kinetic energy is a scalar. Momentum depends
+            linearly on velocity; kinetic energy depends on v&sup2;. Momentum can be negative (indicating
+            direction); kinetic energy is always non-negative. In collisions, momentum is always conserved
+            (for isolated systems), but kinetic energy is conserved only in elastic collisions. Two
+            objects can have the same momentum but different kinetic energies, and vice versa.
+          </p>
+        </div>
+
+        <div class="misconception">
+          <div class="misconception-label">Misconception</div>
+          <p><strong>"In a perfectly inelastic collision, all kinetic energy is lost."</strong></p>
+          <p>
+            No. In a perfectly inelastic collision, the <em>maximum possible</em> kinetic energy is
+            lost (consistent with momentum conservation), but not all of it. There is always some
+            remaining kinetic energy unless the total momentum of the system is zero. If two equal-mass
+            objects collide head-on at the same speed, their momenta are equal and opposite, the total
+            momentum is zero, and they stick together at rest&mdash;in that special case, all kinetic
+            energy is indeed lost. But in general, the combined object moves after the collision, and
+            it has kinetic energy.
+          </p>
+        </div>
+
+        <div class="misconception">
+          <div class="misconception-label">Misconception</div>
+          <p><strong>"A larger force always causes a larger change in momentum."</strong></p>
+          <p>
+            Not if you do not account for time. The change in momentum (impulse) is J = F&Delta;t. A
+            very large force acting for a very short time might produce the same impulse as a small
+            force acting for a long time. The magnitude of the force alone does not determine the change
+            in momentum&mdash;the duration matters equally. This is precisely why airbags work: they
+            reduce the force by increasing the time, while the impulse (change in momentum) remains
+            the same.
+          </p>
+        </div>
+      </section>
+
+      <!-- ==================== KEY TAKEAWAYS ==================== -->
+      <section id="key-takeaways" class="lecture-section">
+        <div class="takeaways">
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>
+              Linear momentum, p = mv, is a vector quantity that describes the "quantity of motion." It
+              has the same direction as the velocity and is measured in kg &middot; m/s.
+            </li>
+            <li>
+              Impulse, J = F&Delta;t, equals the change in momentum. For a given &Delta;p, increasing
+              the interaction time decreases the force, which is the basis for airbags, helmets, and
+              crumple zones.
+            </li>
+            <li>
+              Newton's second law in momentum form, F = &Delta;p/&Delta;t, is the most general statement
+              of the law. It reduces to F = ma for constant-mass systems.
+            </li>
+            <li>
+              Conservation of momentum is derived directly from Newton's third law. In any isolated
+              system, total momentum is constant: p<sub>before</sub> = p<sub>after</sub>.
+            </li>
+            <li>
+              In elastic collisions, both momentum and kinetic energy are conserved. The relative speed
+              of approach equals the relative speed of separation. For equal-mass elastic collisions
+              with one object at rest, the objects exchange velocities.
+            </li>
+            <li>
+              In inelastic collisions, momentum is conserved but kinetic energy is not. The lost kinetic
+              energy is converted to heat, sound, and deformation.
+            </li>
+            <li>
+              In perfectly inelastic collisions, the objects stick together. Momentum is conserved, and
+              the maximum kinetic energy is lost consistent with momentum conservation.
+            </li>
+            <li>
+              The ballistic pendulum illustrates using momentum conservation during the collision and
+              energy conservation during the subsequent swing&mdash;a two-phase analysis strategy.
+            </li>
+            <li>
+              In two-dimensional collisions, momentum conservation is applied independently along each
+              axis. For equal-mass elastic collisions with one object at rest, the objects scatter at
+              90&deg; to each other.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Lecture Navigation -->
+      <div class="lecture-nav">
+        <a href="05-work-energy-power.html" class="nav-prev">
+          <div class="nav-direction">&larr; Previous</div>
+          <div class="nav-title">Lecture 5: Work, Energy, and Power</div>
+        </a>
+        <a href="07-circular-motion-gravitation.html" class="nav-next">
+          <div class="nav-direction">Next &rarr;</div>
+          <div class="nav-title">Lecture 7: Circular Motion and Gravitation</div>
+        </a>
+      </div>
+
+    </article>
+
+  </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">Physics Logic</div>
+          <p class="footer-desc">Deep, logical physics education.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Lectures</h5>
+          <a href="../lectures/01-introduction.html">Introduction</a>
+          <a href="../lectures/02-units-dimensions.html">Units</a>
+          <a href="../lectures/03-vectors-motion.html">Vectors</a>
+        </div>
+        <div class="footer-col">
+          <h5>Pages</h5>
+          <a href="../about.html">About</a>
+          <a href="../lectures.html">All Lectures</a>
+          <a href="../faq.html">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h5>Connect</h5>
+          <a href="#">Twitter</a>
+          <a href="#">GitHub</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Physics Logic Lectures</span>
+        <span>Built for learners</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

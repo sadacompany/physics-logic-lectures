@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lecture 10: Electricity and Magnetism — Physics Logic Lectures</title>
+  <meta name="description" content="Explore electric charge and Coulomb's law, visualize electric fields and potential, analyze DC circuits using Ohm's law and Kirchhoff's laws, and understand magnetic fields and electromagnetic induction.">
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .sim-container { background: #101020; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 24px; margin: 2rem 0; }
+    .sim-canvas-wrap { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,212,255,0.15); }
+    .sim-canvas-wrap canvas { display: block; width: 100%; background: #0a0a14; }
+    .sim-controls { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px; align-items: center; }
+    .sim-control { display: flex; flex-direction: column; gap: 4px; }
+    .sim-control label { font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; color: #636780; text-transform: uppercase; letter-spacing: 0.1em; }
+    .sim-control input[type="range"] { -webkit-appearance: none; width: 160px; height: 4px; background: #222244; border-radius: 2px; outline: none; }
+    .sim-control input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #00d4ff; cursor: pointer; box-shadow: 0 0 8px rgba(0,212,255,0.4); }
+    .sim-btn { font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 600; padding: 8px 20px; border-radius: 20px; border: 1px solid rgba(0,212,255,0.3); background: rgba(0,212,255,0.08); color: #00d4ff; cursor: pointer; transition: all 0.15s; }
+    .sim-btn:hover { background: rgba(0,212,255,0.15); box-shadow: 0 0 12px rgba(0,212,255,0.2); }
+    .sim-btn.active { background: #00d4ff; color: #06060c; }
+    .sim-data { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-top: 16px; }
+    .sim-datum { background: #16162a; border-radius: 8px; padding: 12px; text-align: center; }
+    .sim-datum .datum-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; color: #00d4ff; }
+    .sim-datum .datum-label { font-size: 0.7rem; color: #636780; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+    .sim-explanation { margin-top: 16px; padding: 16px; background: rgba(0,212,255,0.04); border-left: 2px solid #00d4ff; border-radius: 0 8px 8px 0; font-size: 0.9rem; color: #a0a4b8; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress"></div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand"><span class="brand-icon">&phi;</span> Physics Logic</a>
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../lectures.html" class="active">Lectures</a>
+        <a href="../faq.html">FAQ</a>
+      </div>
+      <div class="nav-search">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" placeholder="Search lectures...">
+        <div class="search-results"></div>
+      </div>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Lecture Hero -->
+    <section class="lecture-hero">
+      <div class="lecture-hero-inner">
+        <div class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="../lectures.html">Lectures</a>
+          <span class="sep">/</span>
+          Lecture 10
+        </div>
+        <div class="lecture-number">Lecture 10</div>
+        <h1>Electricity and <em>Magnetism</em></h1>
+        <div class="lecture-meta">
+          <span>E&amp;M</span>
+          <span>Advanced</span>
+          <span>55 min read</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two-Column Layout -->
+    <div class="lecture-layout">
+
+      <!-- Sidebar: Table of Contents -->
+      <aside class="lecture-toc">
+        <h3>Contents</h3>
+        <div class="toc-list">
+          <a href="#overview">Overview</a>
+          <a href="#electric-charge">Electric Charge</a>
+          <a href="#coulombs-law">Coulomb's Law</a>
+          <a href="#electric-field">Electric Field</a>
+          <a href="#electric-potential">Electric Potential</a>
+          <a href="#current">Current</a>
+          <a href="#resistance">Resistance and Ohm's Law</a>
+          <a href="#circuits">Circuits</a>
+          <a href="#kirchhoffs-laws">Kirchhoff's Laws</a>
+          <a href="#capacitance">Capacitance</a>
+          <a href="#magnetic-fields">Magnetic Fields</a>
+          <a href="#force-on-charges">Force on Moving Charges</a>
+          <a href="#induction">Electromagnetic Induction</a>
+          <a href="#misconceptions">Common Misconceptions</a>
+          <a href="#circuit-sim">Interactive: Circuit Simulator</a>
+          <a href="#takeaways">Key Takeaways</a>
+        </div>
+      </aside>
+
+      <!-- Main Article -->
+      <article class="lecture-article">
+
+        <!-- Learning Goals -->
+        <div class="learning-goals">
+          <h3>Learning Goals</h3>
+          <ul>
+            <li>Understand electric charge and Coulomb's law as the foundation of electrostatics</li>
+            <li>Visualize electric fields and electric potential, and relate them to force and energy</li>
+            <li>Analyze DC circuits using Ohm's law and Kirchhoff's junction and loop rules</li>
+            <li>Understand magnetic fields, their sources, and the force they exert on moving charges</li>
+            <li>Grasp electromagnetic induction and how changing magnetic flux produces electric current</li>
+          </ul>
+        </div>
+
+        <!-- Overview -->
+        <section class="lecture-section" id="overview">
+          <h2>Overview</h2>
+          <p>Electricity and magnetism are two of the most transformative subjects in all of physics. They govern the behavior of every electronic device, every motor, every generator, every radio signal, every beam of light, and every chemical bond. For most of human history, electricity and magnetism appeared to be completely separate phenomena: lightning was one mystery, and the curious attraction of lodestones was another. It was only in the nineteenth century that physicists discovered that these two forces are intimately connected, two manifestations of a single underlying force, the electromagnetic force.</p>
+          <p>This lecture traces the logical arc from electric charge to electromagnetic induction. We begin with the fundamental properties of charge and the force between charges (Coulomb's law), then develop the powerful abstractions of electric field and electric potential. From there, we turn to the flow of charge, electric current, and learn how to analyze circuits using Ohm's law and Kirchhoff's rules. Finally, we enter the domain of magnetism: magnetic fields, the force on moving charges, and the extraordinary phenomenon of electromagnetic induction, by which changing magnetic fields generate electricity.</p>
+          <p>This is an ambitious lecture, spanning what many courses devote an entire semester to. Our aim is not to cover every detail but to build a coherent conceptual framework that reveals why these phenomena are connected and how the key ideas fit together logically.</p>
+        </section>
+
+        <!-- Electric Charge -->
+        <section class="lecture-section" id="electric-charge">
+          <h2>Electric Charge</h2>
+          <p>Electric charge is a fundamental property of matter, as intrinsic as mass. Just as mass determines how strongly an object responds to gravity, charge determines how strongly an object responds to electromagnetic forces. But unlike mass, which comes in only one variety (positive), charge comes in two types: positive and negative.</p>
+
+          <h3>Two Types of Charge</h3>
+          <p>The convention, established by Benjamin Franklin, assigns positive charge to protons and negative charge to electrons. These labels are arbitrary; what matters physically is that there are exactly two kinds, and they interact according to a simple rule: like charges repel, and unlike charges attract. Two protons push each other apart. An electron and a proton pull each other together. Two electrons repel. This is the foundation of all electromagnetic phenomena.</p>
+
+          <h3>Quantization of Charge</h3>
+          <p>Charge is quantized, meaning it comes in discrete, indivisible units. The smallest possible charge is the elementary charge:</p>
+
+          <div class="formula">
+            <span class="formula-name">Elementary Charge</span>
+            e = 1.6 &times; 10&sup1;&sup9; C
+          </div>
+
+          <p>The proton carries a charge of +e, and the electron carries a charge of &minus;e. Every observable charge in nature is an integer multiple of e. You can have a charge of 2e, 3e, or 17e, but never 1.5e. The unit of charge is the coulomb (C), which is an enormous amount of charge by atomic standards: one coulomb is approximately 6.24 &times; 10&sup1;&sup8; elementary charges.</p>
+
+          <h3>Conservation of Charge</h3>
+          <p>Electric charge is conserved. It cannot be created or destroyed; it can only be transferred from one object to another. When you rub a balloon on your hair and the balloon becomes negatively charged, your hair loses the same amount of negative charge and becomes positively charged. The total charge of the system (balloon plus hair) remains zero. This conservation law holds in every known physical process, from static electricity to nuclear reactions.</p>
+
+          <h3>Conductors and Insulators</h3>
+          <p>Materials differ dramatically in how easily charge moves through them. In conductors, such as metals, the outermost electrons of each atom are loosely bound and free to move throughout the material. These free electrons can carry charge from one place to another, which is why metals conduct electricity. In insulators, such as rubber, glass, and plastic, electrons are tightly bound to their atoms and cannot move freely. Charge placed on an insulator stays exactly where it is placed. Semiconductors, like silicon, fall between these extremes and can be engineered to conduct or insulate depending on conditions, which is the basis of all modern electronics.</p>
+
+          <div class="definition-box">
+            <div class="def-term">Electric Charge</div>
+            <div class="def-text">Electric charge is a fundamental, conserved, quantized property of matter that determines the strength of electromagnetic interactions. It comes in two types (positive and negative), with like charges repelling and unlike charges attracting. The SI unit is the coulomb (C).</div>
+          </div>
+        </section>
+
+        <!-- Coulomb's Law -->
+        <section class="lecture-section" id="coulombs-law">
+          <h2>Coulomb's Law</h2>
+          <p>In 1785, Charles-Augustin de Coulomb measured the force between charged objects with exquisite precision using a torsion balance. He discovered that the electrostatic force between two point charges obeys a beautifully simple law:</p>
+
+          <div class="formula">
+            <span class="formula-name">Coulomb's Law</span>
+            F = k q&sub1; q&sub2; / r&sup2;
+          </div>
+
+          <p>Here, F is the magnitude of the force, q&sub1; and q&sub2; are the magnitudes of the two charges, r is the distance between them, and k is Coulomb's constant:</p>
+          <p>k = 8.99 &times; 10&sup9; N&middot;m&sup2;/C&sup2;</p>
+
+          <h3>Parallels with Gravity</h3>
+          <p>Notice the striking similarity to Newton's law of gravitation, F = Gm&sub1;m&sub2;/r&sup2;. Both are inverse-square laws: doubling the distance reduces the force to one-quarter. Both depend on the product of two quantities (masses or charges). But there are critical differences. Gravity is always attractive. The electrostatic force can be attractive or repulsive. And the electrostatic force is enormously stronger than gravity.</p>
+          <p>How much stronger? Consider the hydrogen atom, where a proton and an electron are separated by about 5.3 &times; 10&sup1;&sup1; m. The electrostatic force between them is about 8.2 &times; 10&sup8; N. The gravitational force between the same proton and electron at the same distance is about 3.6 &times; 10&sup4;&sup7; N. The electric force is roughly 10&sup3;&sup9; times stronger. Gravity only dominates at astronomical scales because most objects are electrically neutral: their positive and negative charges cancel almost perfectly.</p>
+
+          <h3>The Superposition Principle</h3>
+          <p>When multiple charges are present, the total force on any one charge is the vector sum of the individual forces from all other charges. This is the principle of superposition, and it is immensely powerful. It means that no matter how complicated a charge distribution is, we can always analyze it by considering one pair of charges at a time and adding up the results.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example</div>
+            <p>Two charges, q&sub1; = +3 &mu;C and q&sub2; = &minus;5 &mu;C, are separated by 0.2 m. What is the magnitude and direction of the force between them?</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>F = k |q&sub1;| |q&sub2;| / r&sup2; = (8.99 &times; 10&sup9;)(3 &times; 10&sup6;)(5 &times; 10&sup6;) / (0.2)&sup2;</p>
+              <p>F = (8.99 &times; 10&sup9;)(15 &times; 10&sup1;&sup2;) / 0.04 = 134.85 &times; 10&sup3; / 0.04 = 3.37 N</p>
+              <p>Since the charges are of opposite sign, the force is attractive. Each charge is pulled toward the other with a force of approximately 3.37 N. This is a substantial force between microscopic amounts of charge, illustrating just how strong the electromagnetic interaction is.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Electric Field -->
+        <section class="lecture-section" id="electric-field">
+          <h2>Electric Field</h2>
+          <p>Coulomb's law describes the force between two specific charges. But in physics, we often want to describe the influence of a charge on the space around it, independent of any particular test charge that might be placed there. This leads to the concept of the electric field.</p>
+
+          <h3>The Field Concept</h3>
+          <p>The electric field at a point in space is defined as the force per unit positive charge that a small positive test charge would experience if placed at that point:</p>
+
+          <div class="formula">
+            <span class="formula-name">Electric Field</span>
+            E = F / q
+          </div>
+
+          <p>The electric field is a vector quantity. It has both magnitude and direction at every point in space. The field exists whether or not a test charge is present; it is a property of the source charges and the space they influence.</p>
+
+          <div class="definition-box">
+            <div class="def-term">Electric Field</div>
+            <div class="def-text">The electric field E at a point is the force per unit positive charge at that point. It describes the influence that source charges exert on the surrounding space. The SI unit is newtons per coulomb (N/C) or, equivalently, volts per meter (V/m).</div>
+          </div>
+
+          <h3>Electric Field of a Point Charge</h3>
+          <p>For a single point charge Q, the electric field at a distance r from the charge is:</p>
+          <p>E = kQ / r&sup2;</p>
+          <p>The field points radially outward from a positive charge and radially inward toward a negative charge. The magnitude decreases with the square of the distance, just like the force.</p>
+
+          <h3>Electric Field Lines</h3>
+          <p>We visualize electric fields using field lines. These are imaginary lines drawn in space with two rules: they start on positive charges and end on negative charges, and at any point, the tangent to a field line gives the direction of the electric field. Where the lines are dense, the field is strong; where they are sparse, the field is weak. Field lines never cross, because a point in space cannot have two simultaneous field directions.</p>
+          <p>A single positive charge produces field lines radiating outward in all directions, like the spines of a sea urchin. A single negative charge produces lines converging inward. A pair of opposite charges (a dipole) produces a beautiful pattern where lines emerge from the positive charge, arc through space, and terminate on the negative charge.</p>
+
+          <h3>Uniform Electric Field</h3>
+          <p>Between two large, parallel plates carrying equal and opposite charges, the electric field is approximately uniform: it has the same magnitude and direction at every point between the plates. The field lines are straight, parallel, and evenly spaced. This configuration is extremely useful in physics and engineering because it provides a controlled, predictable field for accelerating charged particles, as in a cathode ray tube or a particle accelerator.</p>
+        </section>
+
+        <!-- Electric Potential -->
+        <section class="lecture-section" id="electric-potential">
+          <h2>Electric Potential</h2>
+          <p>In mechanics, we found it enormously useful to work with energy rather than force. The same is true in electrostatics. Just as gravitational potential energy simplifies the analysis of falling objects, electric potential simplifies the analysis of charges in electric fields.</p>
+
+          <h3>Electric Potential and Voltage</h3>
+          <p>The electric potential V at a point is the electric potential energy per unit charge:</p>
+
+          <div class="formula">
+            <span class="formula-name">Electric Potential</span>
+            V = U / q = kQ / r
+          </div>
+
+          <p>Here, U is the electric potential energy of a charge q at that point, and the second expression gives the potential at distance r from a point charge Q. The SI unit of electric potential is the volt (V), where 1 V = 1 J/C.</p>
+          <p>The voltage between two points is the difference in electric potential: &Delta;V = V_B &minus; V_A. This potential difference is what drives charges to move. When a charge q moves through a potential difference &Delta;V, the work done on it is:</p>
+          <p>W = q&Delta;V</p>
+          <p>A positive charge naturally moves from higher potential to lower potential, just as a ball naturally rolls downhill. A negative charge moves the opposite way, from lower potential to higher potential.</p>
+
+          <h3>Why Birds on Power Lines Are Safe</h3>
+          <p>A bird sitting on a single high-voltage power line is perfectly safe despite the wire being at perhaps 100,000 volts. Why? Because the bird's two feet are nearly at the same point on the wire, so the potential difference between them is essentially zero. No potential difference means no current flows through the bird, and no current means no danger. The voltage of the wire relative to the ground is enormous, but the voltage between the bird's two feet is negligible. It is potential difference, not absolute potential, that matters. If the bird were to touch both the wire and a grounded pole simultaneously, the full voltage would drive a lethal current through its body.</p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>Electric potential (voltage) is electric potential energy per unit charge. What drives current and causes physical effects is the potential difference between two points, not the absolute potential at any single point. A charged particle moves in response to potential differences, gaining kinetic energy as it moves from higher to lower potential energy.</p>
+          </div>
+        </section>
+
+        <!-- Current -->
+        <section class="lecture-section" id="current">
+          <h2>Current</h2>
+          <p>When a potential difference is maintained across a conducting material, the free charges within it begin to flow, creating an electric current. Current is the rate at which charge flows past a point:</p>
+
+          <div class="formula">
+            <span class="formula-name">Electric Current</span>
+            I = dQ / dt
+          </div>
+
+          <p>The SI unit of current is the ampere (A), where 1 A = 1 C/s. One ampere corresponds to approximately 6.24 &times; 10&sup1;&sup8; electrons passing a point every second.</p>
+
+          <h3>Conventional Current versus Electron Flow</h3>
+          <p>Here lies one of the great historical accidents in physics. Benjamin Franklin, when establishing the convention for positive and negative charge, had no way of knowing which type of charge actually moves in a wire. He guessed that positive charges flow from the positive terminal to the negative terminal. We now know that in metals, it is actually negative charges (electrons) that move, and they flow from the negative terminal to the positive terminal, the opposite direction.</p>
+          <p>Nonetheless, the convention stuck. Conventional current is defined as the direction in which positive charge would flow. In a wire, this means conventional current points from the positive terminal toward the negative terminal, even though the electrons actually move in the opposite direction. This is confusing at first, but it causes no errors in calculations because a flow of negative charge in one direction is mathematically equivalent to a flow of positive charge in the opposite direction.</p>
+
+          <h3>Drift Velocity</h3>
+          <p>Individual electrons in a wire do not move fast. Despite the enormous number of free electrons, the average drift velocity is typically only a fraction of a millimeter per second. What travels fast is the electric field signal. When you flip a light switch, the field propagates through the wire at nearly the speed of light, pushing all the electrons simultaneously. The light turns on almost instantly not because electrons race from the switch to the bulb, but because the push propagates almost instantaneously through the wire, like a chain of dominoes falling.</p>
+        </section>
+
+        <!-- Resistance and Ohm's Law -->
+        <section class="lecture-section" id="resistance">
+          <h2>Resistance and Ohm's Law</h2>
+          <p>When current flows through a material, the moving charges collide with the atoms of the material, transferring energy and encountering resistance. Resistance is a measure of how much a material opposes the flow of current. The fundamental relationship between voltage, current, and resistance is Ohm's law:</p>
+
+          <div class="formula">
+            <span class="formula-name">Ohm's Law</span>
+            V = IR
+          </div>
+
+          <p>Here, V is the potential difference across the resistor (in volts), I is the current through it (in amperes), and R is the resistance (in ohms, &Omega;). Ohm's law says that for a given resistance, increasing the voltage increases the current proportionally. Doubling the voltage across a resistor doubles the current through it.</p>
+
+          <h3>What Determines Resistance</h3>
+          <p>The resistance of a wire or component depends on four factors: the material it is made of, its length, its cross-sectional area, and its temperature. These factors are captured by the resistivity equation:</p>
+
+          <div class="formula">
+            <span class="formula-name">Resistance of a Wire</span>
+            R = &rho;L / A
+          </div>
+
+          <p>Here, &rho; (rho) is the resistivity of the material (a property of the substance itself), L is the length of the wire, and A is its cross-sectional area. A longer wire has more resistance (more material for electrons to collide with). A thicker wire has less resistance (more room for electrons to flow). Copper has very low resistivity, which is why it is used for electrical wiring. Rubber has extremely high resistivity, which is why it is used for insulation.</p>
+
+          <h3>Ohmic versus Non-Ohmic Materials</h3>
+          <p>Ohm's law is not a universal law of nature; it is an empirical observation that holds for many materials under ordinary conditions. Materials that obey V = IR with a constant R are called ohmic. Metals at constant temperature are excellent examples. Materials where R changes with voltage or current are called non-ohmic. Light bulb filaments (whose resistance increases with temperature), diodes (which conduct in only one direction), and transistors are all non-ohmic devices. Understanding when Ohm's law applies and when it does not is essential for circuit analysis.</p>
+        </section>
+
+        <!-- Circuits -->
+        <section class="lecture-section" id="circuits">
+          <h2>Circuits</h2>
+          <p>An electric circuit is a closed path through which current can flow. At minimum, a circuit requires a source of potential difference (like a battery), a conducting path (like wires), and typically one or more components that use the electrical energy (like resistors, light bulbs, or motors).</p>
+
+          <h3>Series Circuits</h3>
+          <p>When resistors are connected in series, they are arranged end-to-end so that the same current flows through each one. There is only one path for the current, so every resistor carries the same current I. The voltages across individual resistors add up to the total voltage supplied by the battery:</p>
+          <p>V_total = V&sub1; + V&sub2; + V&sub3; + ...</p>
+          <p>The equivalent resistance of resistors in series is simply their sum:</p>
+          <p>R_eq = R&sub1; + R&sub2; + R&sub3; + ...</p>
+          <p>Adding more resistors in series always increases the total resistance and decreases the current. This is intuitive: putting more obstacles in a single path makes it harder for charge to flow.</p>
+
+          <h3>Parallel Circuits</h3>
+          <p>When resistors are connected in parallel, they are arranged so that both ends of each resistor are connected to the same two nodes. Each resistor has the same voltage across it (equal to the battery voltage), but the current splits among the branches:</p>
+          <p>I_total = I&sub1; + I&sub2; + I&sub3; + ...</p>
+          <p>The equivalent resistance of resistors in parallel is found using:</p>
+          <p>1/R_eq = 1/R&sub1; + 1/R&sub2; + 1/R&sub3; + ...</p>
+          <p>Adding more resistors in parallel always decreases the total resistance and increases the total current. This is also intuitive: providing more paths for current to flow makes it easier for charge to get through, like opening additional checkout lanes in a store.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example</div>
+            <p>A 12 V battery is connected to a circuit containing a 4 &Omega; resistor in series with a parallel combination of 6 &Omega; and 3 &Omega; resistors. Find the total current drawn from the battery.</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>First, find the equivalent resistance of the parallel combination:</p>
+              <p>1/R_parallel = 1/6 + 1/3 = 1/6 + 2/6 = 3/6 = 1/2</p>
+              <p>R_parallel = 2 &Omega;</p>
+              <p>Next, add the series resistance:</p>
+              <p>R_total = 4 + 2 = 6 &Omega;</p>
+              <p>Finally, apply Ohm's law:</p>
+              <p>I = V / R_total = 12 / 6 = 2 A</p>
+              <p>The battery delivers 2 amperes. This current flows through the 4 &Omega; resistor, then splits at the junction: 2/3 of it (about 1.33 A) goes through the 3 &Omega; resistor, and 1/3 (about 0.67 A) goes through the 6 &Omega; resistor. The smaller resistor carries more current, because it offers less opposition to flow.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Kirchhoff's Laws -->
+        <section class="lecture-section" id="kirchhoffs-laws">
+          <h2>Kirchhoff's Laws</h2>
+          <p>For circuits more complex than simple series-parallel combinations, we need a systematic method of analysis. Gustav Kirchhoff provided exactly that with two rules, each grounded in a fundamental conservation law.</p>
+
+          <h3>Kirchhoff's Junction Rule (KCL)</h3>
+          <p>At any junction (node) in a circuit, the total current entering equals the total current leaving. This is a direct consequence of conservation of charge: charge does not accumulate at a junction, and it does not vanish. What comes in must go out.</p>
+          <p>Mathematically: &Sigma; I_in = &Sigma; I_out</p>
+
+          <h3>Kirchhoff's Loop Rule (KVL)</h3>
+          <p>Around any closed loop in a circuit, the sum of all voltage gains and drops equals zero. This is a direct consequence of conservation of energy: a charge that travels around a complete loop returns to its starting point with the same potential energy it started with, so the net change in potential must be zero.</p>
+          <p>Mathematically: &Sigma; &Delta;V = 0 around any closed loop</p>
+
+          <h3>How to Apply Kirchhoff's Laws Systematically</h3>
+          <ol>
+            <li>Label all currents with a direction. If you guess wrong, the answer will simply be negative, telling you the current flows the other way.</li>
+            <li>Apply the junction rule at enough junctions to relate all the unknown currents. In a circuit with n junctions, you need n &minus; 1 independent junction equations.</li>
+            <li>Choose independent loops and apply the loop rule. When traversing a loop, a battery contributes a positive voltage gain when crossed from &minus; to +, and a resistor contributes a voltage drop of IR in the direction of current.</li>
+            <li>Solve the resulting system of equations for the unknown currents and voltages.</li>
+          </ol>
+
+          <div class="example">
+            <div class="example-label">Worked Example</div>
+            <p>A circuit has two batteries: a 10 V battery and a 6 V battery, connected in a loop with three resistors (2 &Omega;, 3 &Omega;, and 1 &Omega;). Using Kirchhoff's loop rule, we traverse the loop in the direction of assumed current I:</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>Starting at one point and going around the loop:</p>
+              <p>+10 &minus; I(2) &minus; I(3) &minus; 6 &minus; I(1) = 0</p>
+              <p>10 &minus; 6 = I(2 + 3 + 1)</p>
+              <p>4 = 6I</p>
+              <p>I = 4/6 = 0.667 A</p>
+              <p>The current is positive, confirming our assumed direction was correct. The 10 V battery drives the current, while the 6 V battery opposes it. The net driving voltage is 4 V, distributed across 6 &Omega; of total resistance.</p>
+            </div>
+          </div>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>Kirchhoff's junction rule is conservation of charge. Kirchhoff's loop rule is conservation of energy. Together, they provide a complete and systematic method for analyzing any circuit, no matter how complex. Every circuit analysis problem ultimately reduces to applying these two rules and solving the resulting equations.</p>
+          </div>
+        </section>
+
+        <!-- Capacitance -->
+        <section class="lecture-section" id="capacitance">
+          <h2>Capacitance</h2>
+          <p>A capacitor is a device that stores electric charge and, with it, electric potential energy. The simplest capacitor consists of two parallel conducting plates separated by a gap. When connected to a battery, charge flows onto the plates: positive charge accumulates on one plate, and an equal amount of negative charge accumulates on the other. The capacitance C is defined as the ratio of the stored charge to the voltage across the plates:</p>
+
+          <div class="formula">
+            <span class="formula-name">Capacitance</span>
+            C = Q / V
+          </div>
+
+          <p>The SI unit of capacitance is the farad (F), where 1 F = 1 C/V. One farad is an enormous capacitance; most practical capacitors are measured in microfarads (&mu;F), nanofarads (nF), or picofarads (pF).</p>
+
+          <h3>Parallel Plate Capacitor</h3>
+          <p>For a parallel plate capacitor with plate area A and separation d, the capacitance is:</p>
+          <p>C = &epsilon;&sub0; A / d</p>
+          <p>Here, &epsilon;&sub0; = 8.85 &times; 10&sup1;&sup2; F/m is the permittivity of free space. The capacitance increases with plate area (more room to store charge) and decreases with plate separation (a larger gap weakens the electric field between the plates). Inserting a dielectric material between the plates increases the capacitance further by reducing the effective electric field.</p>
+
+          <h3>Energy Stored in a Capacitor</h3>
+          <p>A charged capacitor stores energy in its electric field. The energy is:</p>
+
+          <div class="formula">
+            <span class="formula-name">Energy in a Capacitor</span>
+            U = &frac12; CV&sup2;
+          </div>
+
+          <p>This stored energy can be released rapidly, which is why capacitors are used in camera flashes (releasing a burst of energy in milliseconds), defibrillators (delivering a precisely timed pulse to the heart), and countless electronic circuits where energy storage and rapid discharge are needed.</p>
+        </section>
+
+        <!-- Magnetic Fields -->
+        <section class="lecture-section" id="magnetic-fields">
+          <h2>Magnetic Fields</h2>
+          <p>Magnetism was known to the ancients through the behavior of lodestones, naturally occurring magnetic minerals. But the deep understanding of magnetism only came when scientists discovered its connection to moving electric charges. A magnetic field is produced by any moving charge, and in turn, a magnetic field exerts a force on any charge that moves through it.</p>
+
+          <h3>Sources of Magnetic Fields</h3>
+          <p>Every magnetic field ultimately originates from moving charges. A single moving charged particle creates a magnetic field around it. A current flowing through a wire creates a magnetic field that circles the wire. A permanent magnet's field arises from the collective effect of electrons orbiting and spinning within its atoms. There are no magnetic monopoles; every magnet has both a north and a south pole, and the field lines form continuous closed loops from north to south outside the magnet and from south to north inside.</p>
+
+          <h3>Magnetic Field of a Long Straight Wire</h3>
+          <p>The magnetic field around a long, straight wire carrying current I at a perpendicular distance r from the wire is:</p>
+          <p>B = &mu;&sub0; I / (2&pi;r)</p>
+          <p>Here, &mu;&sub0; = 4&pi; &times; 10&sup7; T&middot;m/A is the permeability of free space. The field forms concentric circles around the wire, and its direction is given by the right-hand rule: point your right thumb in the direction of conventional current, and your fingers curl in the direction of the magnetic field.</p>
+
+          <h3>The Right-Hand Rule</h3>
+          <p>The right-hand rule is an essential tool for determining the direction of magnetic fields and forces. For a current-carrying wire, grip the wire with your right hand so that your thumb points in the direction of conventional current. Your fingers wrap around the wire in the direction of the magnetic field lines. This simple rule encodes the three-dimensional vector relationships that govern magnetism.</p>
+
+          <div class="definition-box">
+            <div class="def-term">Magnetic Field (B)</div>
+            <div class="def-text">The magnetic field is a vector field that describes the magnetic influence on moving charges, currents, and magnetic materials. It is produced by moving charges and exerts forces on other moving charges. The SI unit is the tesla (T), where 1 T = 1 kg/(A&middot;s&sup2;).</div>
+          </div>
+        </section>
+
+        <!-- Force on Moving Charges -->
+        <section class="lecture-section" id="force-on-charges">
+          <h2>Force on Moving Charges</h2>
+          <p>When a charged particle moves through a magnetic field, it experiences a force. This force is given by the Lorentz force law for the magnetic component:</p>
+
+          <div class="formula">
+            <span class="formula-name">Magnetic Force on a Moving Charge</span>
+            F = qv &times; B
+          </div>
+
+          <p>Here, q is the charge, v is the velocity of the particle, B is the magnetic field, and &times; denotes the cross product. The magnitude of the force is F = qvB sin&theta;, where &theta; is the angle between v and B.</p>
+
+          <h3>Key Properties of the Magnetic Force</h3>
+          <p><strong>Perpendicular to both v and B:</strong> The magnetic force is always perpendicular to both the velocity of the charge and the magnetic field. This is a consequence of the cross product. Use the right-hand rule: point your fingers in the direction of v, curl them toward B, and your thumb points in the direction of F (for a positive charge). For a negative charge, the force is in the opposite direction.</p>
+          <p><strong>Does no work:</strong> Because the force is always perpendicular to the velocity, it never has a component along the direction of motion. Therefore, it does no work on the charge. The magnetic force changes the direction of the charge's velocity but not its speed. The kinetic energy of the charge remains constant. This is a profound property that distinguishes magnetic forces from electric forces.</p>
+          <p><strong>Zero force for stationary charges:</strong> If v = 0, the magnetic force is zero. Magnetic fields do not exert forces on stationary charges. Only moving charges experience the magnetic force.</p>
+
+          <h3>Circular Motion of Charged Particles</h3>
+          <p>When a charged particle enters a uniform magnetic field perpendicular to its velocity, the magnetic force provides centripetal acceleration, causing the particle to move in a circle. Since the force is always perpendicular to the velocity, it continuously bends the particle's path without changing its speed, producing uniform circular motion.</p>
+          <p>Setting the magnetic force equal to the centripetal force:</p>
+          <p>qvB = mv&sup2;/r</p>
+          <p>Solving for the radius: r = mv/(qB)</p>
+          <p>The radius of the circular orbit increases with the particle's momentum (mv) and decreases with the strength of the magnetic field and the magnitude of the charge. This principle is the basis of mass spectrometers (which separate ions by mass), cyclotrons (which accelerate particles to high energies), and the confinement of plasma in fusion reactors.</p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>The magnetic force on a moving charge is always perpendicular to the velocity, so it changes the particle's direction but never its speed. The magnetic force does zero work. This is fundamentally different from the electric force, which can accelerate or decelerate charges along their direction of motion. A charged particle in a uniform magnetic field follows a circular path whose radius depends on its momentum and the field strength.</p>
+          </div>
+        </section>
+
+        <!-- Electromagnetic Induction -->
+        <section class="lecture-section" id="induction">
+          <h2>Electromagnetic Induction</h2>
+          <p>In 1831, Michael Faraday made one of the most consequential discoveries in the history of science: a changing magnetic field can produce an electric current. This phenomenon, electromagnetic induction, is the principle behind electric generators, transformers, wireless charging, and much of modern technology. It also revealed the deep symmetry between electricity and magnetism: not only do electric currents produce magnetic fields, but changing magnetic fields produce electric fields.</p>
+
+          <h3>Magnetic Flux</h3>
+          <p>To state Faraday's law precisely, we first need the concept of magnetic flux. Magnetic flux &Phi; through a surface is the total amount of magnetic field passing through that surface:</p>
+          <p>&Phi; = BA cos&theta;</p>
+          <p>Here, B is the magnetic field strength, A is the area of the surface, and &theta; is the angle between the field and the perpendicular to the surface. When the field is perpendicular to the surface (&theta; = 0), the flux is maximum. When the field is parallel to the surface (&theta; = 90&deg;), the flux is zero because no field lines "pierce" the surface. The SI unit of magnetic flux is the weber (Wb), where 1 Wb = 1 T&middot;m&sup2;.</p>
+
+          <h3>Faraday's Law</h3>
+          <p>Faraday's law states that the induced electromotive force (EMF) in a loop is equal to the negative rate of change of magnetic flux through the loop:</p>
+
+          <div class="formula">
+            <span class="formula-name">Faraday's Law of Induction</span>
+            &epsilon; = &minus;d&Phi; / dt
+          </div>
+
+          <p>The induced EMF is what drives the induced current. Note that it is the change in flux that matters, not the flux itself. A constant magnetic field through a stationary loop produces no induced EMF, no matter how strong the field is. But if the field changes, or if the loop moves or changes shape, flux changes and an EMF is induced.</p>
+          <p>There are three ways to change the magnetic flux through a loop: change the magnetic field strength B, change the area of the loop A, or change the angle &theta; between the field and the loop. All three are exploited in practical devices.</p>
+
+          <h3>Lenz's Law</h3>
+          <p>The negative sign in Faraday's law encodes Lenz's law: the induced current always flows in a direction that opposes the change in flux that caused it. If the flux through a loop is increasing, the induced current creates a magnetic field that opposes the increase. If the flux is decreasing, the induced current creates a field that tries to maintain it.</p>
+          <p>Lenz's law is a manifestation of energy conservation. If the induced current reinforced the change instead of opposing it, the flux would increase further, inducing a larger current, which would increase the flux even more, creating a runaway process that generates energy from nothing. That would violate conservation of energy. Lenz's law prevents it.</p>
+
+          <h3>Applications: Generators and Transformers</h3>
+          <p><strong>Electric generators</strong> exploit electromagnetic induction directly. A coil of wire is rotated in a magnetic field (or a magnet is rotated near a stationary coil). As the angle between the coil and the field changes, the flux through the coil changes sinusoidally, inducing an alternating EMF. This is how virtually all the world's electricity is produced, whether the rotation is driven by steam (in coal, gas, or nuclear plants), flowing water (hydroelectric), or wind.</p>
+          <p><strong>Transformers</strong> use electromagnetic induction to change voltage levels. Two coils are wound around a shared iron core. An alternating current in the primary coil creates a changing magnetic flux in the core, which induces an EMF in the secondary coil. The ratio of voltages equals the ratio of turns: V_s/V_p = N_s/N_p. Transformers are essential for efficient long-distance power transmission: stepping voltage up to hundreds of thousands of volts reduces current and therefore reduces energy losses in the transmission lines.</p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>Electromagnetic induction is the production of an EMF by a changing magnetic flux. Faraday's law (&epsilon; = &minus;d&Phi;/dt) quantifies the effect, and Lenz's law ensures the induced current opposes the change, preserving energy conservation. Induction is the fundamental principle behind generators, transformers, and the deep unity of electricity and magnetism.</p>
+          </div>
+        </section>
+
+        <!-- Common Misconceptions -->
+        <section class="lecture-section" id="misconceptions">
+          <h2>Common Misconceptions</h2>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>"Current is used up as it flows through a circuit."</strong> This is perhaps the most widespread misconception in introductory electricity. Current is the flow of charge, and charge is conserved. The current entering a light bulb is exactly the same as the current leaving it. What gets "used up" is electrical potential energy: the voltage drops across the bulb as the electrical energy is converted to light and heat. The charges themselves are never consumed; they circulate continuously around the circuit.</p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>"Voltage is the same as current."</strong> Voltage and current are fundamentally different quantities. Voltage (potential difference) is the energy per unit charge between two points; it is what pushes charges to move. Current is the rate at which charges actually flow. A helpful analogy: voltage is like water pressure in a pipe, and current is like the flow rate of water. High pressure (voltage) can exist with no flow (current) if the pipe is blocked (infinite resistance). Conversely, a tiny pressure difference can drive a large flow through a wide, smooth pipe (low resistance). Understanding this distinction is essential for circuit analysis.</p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>"Magnets have single poles (monopoles)."</strong> Every magnet that has ever been observed has both a north pole and a south pole. If you break a bar magnet in half, you do not get a north pole and a south pole; you get two smaller magnets, each with its own north and south poles. Despite extensive searches, no magnetic monopole has ever been detected. This asymmetry between electricity (which has single positive and negative charges) and magnetism (which has only dipoles) is one of the intriguing open questions in fundamental physics.</p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>"A magnetic field accelerates charged particles."</strong> The magnetic force changes the direction of a moving charge but not its speed. Since the force is perpendicular to the velocity, it does zero work and cannot change the kinetic energy. Only an electric field can accelerate a charged particle in the sense of changing its speed. This is why particle accelerators use electric fields to speed up particles and magnetic fields to steer and focus them.</p>
+          </div>
+        </section>
+
+        <!-- Interactive: Circuit Simulator -->
+        <section class="lecture-section" id="circuit-sim">
+          <h2>Interactive: Circuit Simulator (Ohm's Law)</h2>
+          <p>Build and explore a simple DC circuit. Adjust voltage and resistance to observe how current, power, and the brightness of a light bulb change. Toggle between series and parallel resistor configurations.</p>
+          <div class="sim-container">
+            <div class="sim-canvas-wrap">
+              <canvas id="circuitCanvas" width="800" height="450"></canvas>
+            </div>
+            <div class="sim-controls">
+              <div class="sim-control">
+                <label>Voltage: <span id="voltVal">12</span> V</label>
+                <input type="range" id="voltSlider" min="0" max="24" value="12" step="0.5">
+              </div>
+              <div class="sim-control">
+                <label>Resistance R1: <span id="resVal">10</span> &Omega;</label>
+                <input type="range" id="resSlider" min="1" max="100" value="10" step="1">
+              </div>
+              <div class="sim-control">
+                <label>Resistance R2: <span id="res2Val">20</span> &Omega;</label>
+                <input type="range" id="res2Slider" min="1" max="100" value="20" step="1">
+              </div>
+              <button class="sim-btn active" id="circPlayBtn">Pause</button>
+              <button class="sim-btn" id="circResetBtn">Reset</button>
+              <button class="sim-btn" id="circModeBtn">Add Series R2</button>
+            </div>
+            <div class="sim-data">
+              <div class="sim-datum">
+                <div class="datum-value" id="dispVolt">12.0 V</div>
+                <div class="datum-label">Voltage</div>
+              </div>
+              <div class="sim-datum">
+                <div class="datum-value" id="dispRes">10 &Omega;</div>
+                <div class="datum-label">Total Resistance</div>
+              </div>
+              <div class="sim-datum">
+                <div class="datum-value" id="dispCurrent">1.200 A</div>
+                <div class="datum-label">Current</div>
+              </div>
+              <div class="sim-datum">
+                <div class="datum-value" id="dispPower">14.4 W</div>
+                <div class="datum-label">Power</div>
+              </div>
+            </div>
+            <div class="sim-explanation" id="circExplanation">
+              A single resistor circuit: I = V/R. Adjust voltage and resistance to see Ohm's law in action. The light bulb brightness reflects the power dissipated in the circuit.
+            </div>
+          </div>
+        </section>
+
+        <!-- Key Takeaways -->
+        <section class="lecture-section" id="takeaways">
+          <div class="takeaways">
+            <h3>Key Takeaways</h3>
+            <ul>
+              <li>Electric charge is a fundamental, conserved, quantized property of matter. It comes in two types (positive and negative), with like charges repelling and unlike charges attracting.</li>
+              <li>Coulomb's law (F = kq&sub1;q&sub2;/r&sup2;) describes the force between point charges. It has the same inverse-square form as gravity but is roughly 10&sup3;&sup9; times stronger.</li>
+              <li>The electric field E = F/q describes the force per unit charge at every point in space. Field lines start on positive charges and end on negative charges, providing a visual map of the field.</li>
+              <li>Electric potential (V = U/q) is energy per unit charge. Potential difference (voltage) drives the motion of charges and is the quantity that matters in circuits.</li>
+              <li>Current (I = dQ/dt) is the rate of charge flow. Conventional current flows from positive to negative terminals, opposite to the actual electron flow in metals.</li>
+              <li>Ohm's law (V = IR) relates voltage, current, and resistance. Resistance depends on material, length, and cross-section (R = &rho;L/A). Not all materials are ohmic.</li>
+              <li>Series resistors share current; their resistances add. Parallel resistors share voltage; their reciprocal resistances add. Mixed circuits are solved by reducing combinations step by step.</li>
+              <li>Kirchhoff's junction rule (conservation of charge) and loop rule (conservation of energy) provide a systematic method for analyzing any circuit.</li>
+              <li>Capacitance (C = Q/V) measures a device's ability to store charge. A parallel plate capacitor has C = &epsilon;&sub0;A/d. Energy stored is U = &frac12;CV&sup2;.</li>
+              <li>Magnetic fields are produced by moving charges and exert forces on other moving charges. The force (F = qv &times; B) is always perpendicular to velocity, so it changes direction but not speed.</li>
+              <li>Electromagnetic induction (Faraday's law) shows that a changing magnetic flux induces an EMF. Lenz's law ensures the induced current opposes the change, preserving energy conservation.</li>
+              <li>Generators convert mechanical energy to electrical energy via induction. Transformers change voltage levels using mutual induction between coils.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Lecture Navigation -->
+        <div class="lecture-nav">
+          <a href="09-thermodynamics.html" class="nav-prev">
+            <div class="nav-direction">&larr; Previous</div>
+            <div class="nav-title">Lecture 9: Thermodynamics</div>
+          </a>
+          <a href="11-optics.html" class="nav-next">
+            <div class="nav-direction">Next &rarr;</div>
+            <div class="nav-title">Lecture 11: Optics</div>
+          </a>
+        </div>
+
+      </article>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">&phi; Physics Logic</div>
+          <p class="footer-desc">A free educational platform dedicated to teaching physics through deep reasoning and logical thinking. Understanding over memorization, always.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Lectures</h5>
+          <a href="01-introduction.html">Introduction</a>
+          <a href="04-newtons-laws.html">Newton's Laws</a>
+          <a href="09-thermodynamics.html">Thermodynamics</a>
+          <a href="12-modern-physics.html">Modern Physics</a>
+        </div>
+        <div class="footer-col">
+          <h5>Pages</h5>
+          <a href="../index.html">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../lectures.html">Lectures</a>
+          <a href="../faq.html">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h5>Resources</h5>
+          <a href="#">Further Reading</a>
+          <a href="#">Problem Sets</a>
+          <a href="#">References</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Physics Logic Lectures. All rights reserved.</span>
+        <span>Crafted for curious minds.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

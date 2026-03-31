@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lecture 3: Vectors and Motion — Physics Logic Lectures</title>
+  <meta name="description" content="Master vectors, displacement, velocity, acceleration, and two-dimensional motion. Learn to decompose vectors, solve projectile problems, and interpret motion graphs.">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress"></div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand"><span class="brand-icon">&phi;</span> Physics Logic</a>
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../lectures.html" class="active">Lectures</a>
+        <a href="../index.html#faq">FAQ</a>
+      </div>
+      <div class="nav-search">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" placeholder="Search lectures...">
+        <div class="search-results"></div>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Lecture Hero -->
+    <section class="lecture-hero">
+      <div class="lecture-hero-inner">
+        <div class="breadcrumb animate-in">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="../lectures.html">Lectures</a>
+          <span class="sep">/</span>
+          Lecture 3
+        </div>
+        <div class="lecture-number animate-in">Lecture 03</div>
+        <h1 class="animate-in">Vectors and <em>Motion</em></h1>
+        <div class="lecture-meta animate-in">
+          <span>Mechanics</span>
+          <span>Beginner</span>
+          <span>40 min read</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two-column layout -->
+    <div class="lecture-layout">
+
+      <!-- Table of Contents Sidebar -->
+      <aside class="lecture-toc">
+        <h3>Contents</h3>
+        <div class="toc-list">
+          <a href="#overview">Overview</a>
+          <a href="#scalars-and-vectors">Scalars and Vectors</a>
+          <a href="#vector-representation">Vector Representation</a>
+          <a href="#vector-addition-subtraction">Vector Addition and Subtraction</a>
+          <a href="#components-of-vectors">Components of Vectors</a>
+          <a href="#displacement">Displacement</a>
+          <a href="#velocity">Velocity</a>
+          <a href="#acceleration">Acceleration</a>
+          <a href="#uniform-motion">Uniform Motion</a>
+          <a href="#uniformly-accelerated-motion">Uniformly Accelerated Motion</a>
+          <a href="#projectile-motion">Projectile Motion</a>
+          <a href="#graphical-interpretation">Graphical Interpretation</a>
+          <a href="#common-misconceptions">Common Misconceptions</a>
+          <a href="#key-takeaways">Key Takeaways</a>
+        </div>
+      </aside>
+
+      <!-- Lecture Article -->
+      <article class="lecture-article">
+
+        <!-- Learning Goals -->
+        <div class="learning-goals">
+          <h3>Learning Goals</h3>
+          <ul>
+            <li>Distinguish between scalar and vector quantities</li>
+            <li>Add, subtract, and resolve vectors into components</li>
+            <li>Define and relate displacement, velocity, and acceleration</li>
+            <li>Analyze motion in 1D and 2D</li>
+            <li>Interpret position-time, velocity-time, and acceleration-time graphs</li>
+            <li>Solve projectile motion problems using vector decomposition</li>
+          </ul>
+        </div>
+
+        <!-- Section: Overview -->
+        <section id="overview" class="lecture-section">
+          <h2>Overview</h2>
+          <p>Motion is the most fundamental phenomenon in physics. Everything in the universe moves&mdash;planets orbit stars, electrons orbit nuclei, tectonic plates drift across the surface of the Earth, and light itself races through the vacuum of space at an extraordinary speed. To understand physics, you must first learn to describe motion with absolute precision. Vague statements like &ldquo;the car is moving fast&rdquo; or &ldquo;the ball went far&rdquo; are useless to a physicist. We need numbers, directions, and a clear mathematical language that captures exactly what is happening and how it changes over time.</p>
+          <p>The study of motion without regard to its causes is called <strong>kinematics</strong> (from the Greek <em>kinema</em>, meaning motion). In kinematics, we do not ask <em>why</em> an object moves the way it does&mdash;we simply describe <em>how</em> it moves. What path does it follow? How fast is it going at each moment? How is its velocity changing? These are kinematic questions. The &ldquo;why&rdquo; questions&mdash;what forces cause the motion&mdash;belong to <em>dynamics</em>, which we will address in the next lecture on Newton&rsquo;s Laws. Kinematics provides the vocabulary and mathematical framework that dynamics requires. You cannot analyze forces meaningfully until you can describe the motion those forces produce.</p>
+          <p>This lecture builds that language from the ground up. We begin with the distinction between quantities that have direction and those that do not&mdash;the difference between scalars and vectors. From there, we develop the tools to represent, add, subtract, and decompose vectors. Armed with these tools, we define the three pillars of kinematics: displacement, velocity, and acceleration. We then apply these concepts to progressively richer scenarios, from simple uniform motion in a straight line to the elegant parabolic arc of a projectile. Along the way, you will learn to read and interpret motion graphs, a skill that transforms abstract equations into vivid, intuitive pictures of how objects move through space and time.</p>
+          <p>By the end of this lecture, you will possess a complete toolkit for describing motion in one and two dimensions. You will understand not just the formulas, but the deep logical reasons behind each one. This foundation is essential: every topic that follows in mechanics&mdash;forces, energy, momentum&mdash;depends on the language and concepts you will master here.</p>
+          <p>A word of advice before we begin: the material in this lecture is cumulative. Each section builds on the one before it. Vector representation and components are the tools; displacement, velocity, and acceleration are the concepts those tools describe; and the kinematic equations and projectile motion are the applications where everything comes together. If you find yourself confused in a later section, the remedy is almost always to revisit an earlier one and make sure the foundation is solid. Take your time, work through the examples carefully, and do not rush ahead until each idea feels clear. The investment will pay enormous dividends in every physics topic that follows.</p>
+        </section>
+
+        <!-- Section: Scalars and Vectors -->
+        <section id="scalars-and-vectors" class="lecture-section">
+          <h2>Scalars and Vectors</h2>
+          <p>Physics deals with measurable quantities, but not all measurable quantities are created equal. Some are fully described by a single number with a unit. Temperature, for instance, is completely specified when you say &ldquo;25 degrees Celsius.&rdquo; Mass requires only a number: &ldquo;70 kilograms.&rdquo; Time, distance, speed, energy, and pressure all fall into this category. These are called <strong>scalar quantities</strong>. They have magnitude (size) and nothing more.</p>
+          <p>Other quantities demand more information. If a friend tells you they walked &ldquo;3 kilometers,&rdquo; you know how far they went, but you have no idea where they ended up. Did they walk north? East? In a circle? To fully describe their change in position, you need both a distance and a direction: &ldquo;3 kilometers northeast.&rdquo; Quantities that require both magnitude and direction are called <strong>vector quantities</strong>. Velocity, acceleration, force, displacement, and momentum are all vectors.</p>
+          <p>The distinction is not merely academic&mdash;it has profound practical consequences. Consider this: if you drive 5 m/s north and then turn to drive 5 m/s east, what is your combined velocity? If velocity were a scalar, the answer would be 10 m/s. But velocity is a vector, and when you combine these two perpendicular velocities, the result is approximately 7.07 m/s in a direction 45 degrees east of north. The rules for combining vectors are fundamentally different from the rules for combining scalars, and confusing the two leads to serious errors. Understanding this distinction is the first step toward mastering the physics of motion.</p>
+
+          <div class="definition-box">
+            <div class="def-term">Scalar Quantity</div>
+            <p class="def-text">A physical quantity that is fully described by its magnitude (a numerical value and a unit) alone. Examples include temperature, mass, speed, distance, time, energy, and pressure. Scalars obey the ordinary rules of arithmetic&mdash;you add, subtract, multiply, and divide them just as you would any number.</p>
+          </div>
+
+          <div class="definition-box">
+            <div class="def-term">Vector Quantity</div>
+            <p class="def-text">A physical quantity that requires both a magnitude and a direction for its complete description. Examples include displacement, velocity, acceleration, force, and momentum. Vectors follow special rules of addition and subtraction that account for direction, and they cannot be meaningfully combined using ordinary arithmetic alone.</p>
+          </div>
+
+          <p>A useful way to remember the distinction: if knowing the quantity would not help you point your finger in any particular direction, it is a scalar. If it naturally implies a direction&mdash;if you could draw an arrow to represent it&mdash;it is a vector. The ability to quickly identify whether a quantity is scalar or vector will save you from countless errors throughout your study of physics.</p>
+
+          <h3>Why the Distinction Matters in Practice</h3>
+          <p>Consider a pilot navigating across the Atlantic. The airplane has an airspeed (speed relative to the air) of 800 km/h, and the pilot wants to fly due east. However, a jet stream is blowing at 150 km/h from the north. If the pilot treats these as scalars and simply adds 800 + 150, the result of 950 km/h is meaningless&mdash;it tells the pilot nothing about the actual ground speed or the direction of travel. The correct approach is to treat both the airplane&rsquo;s velocity and the wind&rsquo;s velocity as vectors and add them using vector addition. The result is a ground velocity that points slightly south of east, with a magnitude that depends on the angle between the two vectors. Only by respecting the vector nature of velocity can the pilot determine the correct heading to compensate for the crosswind.</p>
+          <p>This example illustrates a general principle: whenever direction matters in a physical situation, you are dealing with vectors, and you must use vector mathematics. Ignoring direction and treating vectors as scalars is one of the most common and most dangerous mistakes in introductory physics. It can lead to answers that are not just imprecise but fundamentally wrong.</p>
+        </section>
+
+        <!-- Section: Vector Representation -->
+        <section id="vector-representation" class="lecture-section">
+          <h2>Vector Representation</h2>
+          <p>Now that we know what vectors are, we need a precise way to write them down and work with them mathematically. Physics offers several complementary representations, each useful in different contexts.</p>
+
+          <h3>Arrow Notation</h3>
+          <p>The most intuitive representation of a vector is a directed arrow. The arrow&rsquo;s length represents the vector&rsquo;s magnitude (drawn to some chosen scale), and the arrow&rsquo;s direction represents the direction of the physical quantity. When you draw a velocity vector of 10 m/s pointing north, you draw an arrow twice as long as one representing 5 m/s in the same direction. This graphical approach makes it easy to visualize what vectors are doing, and it is the foundation for geometric methods of vector addition.</p>
+          <p>When drawing vector diagrams, always establish a clear scale. For example, you might decide that 1 centimeter on your diagram represents 5 m/s. Without a consistent scale, your diagrams become qualitative sketches rather than quantitative tools, and you lose the ability to read off magnitudes by measuring arrow lengths. A well-drawn vector diagram with a clearly stated scale is a powerful problem-solving aid&mdash;many students find that drawing the diagram often reveals the solution before any algebra is needed.</p>
+          <p>In written notation, vectors are distinguished from scalars by an arrow above the symbol (<strong>v&#8407;</strong>) or by bold typeface (<strong>v</strong>). The magnitude of a vector is written without the arrow or bold: |<strong>v</strong>| or simply <em>v</em>. Being disciplined about this notation matters enormously. When you write <em>v</em> = 5 m/s, you are talking about a magnitude only&mdash;a scalar. When you write <strong>v</strong> = 5 m/s north, you are specifying the full vector.</p>
+
+          <h3>Component Notation</h3>
+          <p>While arrow diagrams are excellent for building intuition, they become unwieldy for precise calculations. The component notation solves this by breaking a vector into its projections along the axes of a coordinate system. In two dimensions, any vector <strong>A</strong> can be written as an ordered pair (A<sub>x</sub>, A<sub>y</sub>), where A<sub>x</sub> is the component along the x-axis and A<sub>y</sub> is the component along the y-axis. This representation transforms geometric problems into algebraic ones, which are far easier to solve systematically.</p>
+          <p>The choice of coordinate system is arbitrary. You can orient your x and y axes however you like&mdash;the physics does not change. However, a smart choice of coordinates can dramatically simplify the math. For projectile problems, the conventional choice is x horizontal and y vertical. For inclined plane problems, it is often better to choose x along the plane and y perpendicular to it. The component representation adapts seamlessly to any coordinate system, which is one of its great strengths.</p>
+
+          <h3>Unit Vector Notation</h3>
+          <p>Unit vectors are vectors with a magnitude of exactly 1, used to indicate direction without specifying size. In the Cartesian coordinate system, we define two fundamental unit vectors: <strong>&icirc;</strong> (read &ldquo;i-hat&rdquo;), which points in the positive x-direction, and <strong>&jcirc;</strong> (read &ldquo;j-hat&rdquo;), which points in the positive y-direction. Any two-dimensional vector can be expressed as a combination of these unit vectors:</p>
+
+          <div class="formula">
+            <span class="formula-name">Unit Vector Form</span>
+            <strong>A</strong> = A<sub>x</sub> <strong>&icirc;</strong> + A<sub>y</sub> <strong>&jcirc;</strong>
+          </div>
+
+          <p>This notation is elegant and powerful. The vector (3, 4) becomes 3<strong>&icirc;</strong> + 4<strong>&jcirc;</strong>, meaning &ldquo;3 units in the x-direction and 4 units in the y-direction.&rdquo; The notation makes the directional information explicit and algebraic manipulation straightforward.</p>
+
+          <h3>Magnitude and Direction</h3>
+          <p>Given a vector in component form, you can always recover its magnitude using the Pythagorean theorem. If <strong>A</strong> = (A<sub>x</sub>, A<sub>y</sub>), then:</p>
+
+          <div class="formula">
+            <span class="formula-name">Magnitude of a Vector</span>
+            |<strong>A</strong>| = &radic;(A<sub>x</sub>&sup2; + A<sub>y</sub>&sup2;)
+          </div>
+
+          <p>The direction is recovered using trigonometry. The angle &theta; that the vector makes with the positive x-axis is given by:</p>
+
+          <div class="formula">
+            <span class="formula-name">Direction Angle</span>
+            &theta; = tan<sup>&minus;1</sup>(A<sub>y</sub> / A<sub>x</sub>)
+          </div>
+
+          <p>You must take care to use the correct quadrant when evaluating the inverse tangent. The calculator gives values between &minus;90&deg; and 90&deg;, but the true angle may lie in any of the four quadrants depending on the signs of A<sub>x</sub> and A<sub>y</sub>. Always sketch your vector to verify that the angle makes physical sense.</p>
+
+          <h3>Converting Between Representations</h3>
+          <p>The ability to fluently convert between arrow, component, and magnitude-direction representations is a core skill. Given a magnitude A and direction &theta;, you find components using A<sub>x</sub> = A cos &theta; and A<sub>y</sub> = A sin &theta;. Given components, you recover the magnitude using the Pythagorean theorem and the direction using the inverse tangent. This back-and-forth conversion will appear in virtually every problem involving vectors, so it is worth practicing until it becomes second nature.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example &mdash; Vector Conversion</div>
+            <p>A force vector has components F<sub>x</sub> = &minus;3.0 N and F<sub>y</sub> = 4.0 N. Find the magnitude and direction of this force.</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>Magnitude: |<strong>F</strong>| = &radic;((&minus;3.0)&sup2; + (4.0)&sup2;) = &radic;(9.0 + 16.0) = &radic;25.0 = <strong>5.0 N</strong></p>
+              <p>Direction: &theta; = tan<sup>&minus;1</sup>(4.0 / &minus;3.0) = tan<sup>&minus;1</sup>(&minus;1.333)</p>
+              <p>The calculator gives &minus;53.1&deg;, but since F<sub>x</sub> is negative and F<sub>y</sub> is positive, the vector lies in the second quadrant. The correct angle measured from the positive x-axis is 180&deg; &minus; 53.1&deg; = <strong>126.9&deg;</strong>.</p>
+              <p>This example highlights why you must always check the quadrant. The calculator cannot distinguish between a vector in the second quadrant and one in the fourth quadrant, since both produce the same tangent ratio in absolute value.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Vector Addition and Subtraction -->
+        <section id="vector-addition-subtraction" class="lecture-section">
+          <h2>Vector Addition and Subtraction</h2>
+          <p>The ability to combine vectors is one of the most important skills in physics. Forces, velocities, and displacements routinely need to be added together, and understanding the geometry behind this process is essential. There are three primary methods, each with its own strengths.</p>
+
+          <h3>The Tip-to-Tail Method</h3>
+          <p>The most intuitive approach to adding vectors is the tip-to-tail method. Imagine you walk 4 meters east and then 3 meters north. To find your total displacement, you draw the first vector as an arrow. Then, starting from the <em>tip</em> (endpoint) of that arrow, you draw the second vector. The resultant vector&mdash;the sum&mdash;is the arrow drawn from the <em>tail</em> of the first vector to the <em>tip</em> of the last. In our example, this resultant stretches diagonally from your starting point to your final position, measuring 5 meters at an angle of about 36.9&deg; north of east.</p>
+          <p>The beauty of the tip-to-tail method is that it works for any number of vectors. To add five displacement vectors, simply chain them one after another: place each new vector&rsquo;s tail at the previous vector&rsquo;s tip, then draw the resultant from the very first tail to the very last tip. If the chain closes on itself&mdash;if the last tip lands exactly on the first tail&mdash;the resultant is zero. This is precisely what happens when you walk in a complete loop and return to your starting point: your total displacement is zero, even though you may have walked a considerable distance.</p>
+          <p>An important property of vector addition is that it is <strong>commutative</strong>: <strong>A</strong> + <strong>B</strong> = <strong>B</strong> + <strong>A</strong>. It does not matter which vector you draw first in the tip-to-tail chain; the resultant is the same. This can be verified geometrically: the two different orders of addition trace out the two diagonals of the same parallelogram, but they share the same resultant diagonal. Vector addition is also <strong>associative</strong>: (<strong>A</strong> + <strong>B</strong>) + <strong>C</strong> = <strong>A</strong> + (<strong>B</strong> + <strong>C</strong>). These properties mirror those of ordinary number addition and make vector algebra tractable.</p>
+
+          <h3>The Parallelogram Method</h3>
+          <p>When adding exactly two vectors, you can use the parallelogram method. Place both vectors so they share the same tail (starting point). Complete the parallelogram by drawing lines parallel to each vector from the tip of the other. The diagonal of the parallelogram, drawn from the shared tail, is the resultant. This method produces the same answer as tip-to-tail&mdash;it is simply a different geometric visualization of the same operation. It is especially useful when you want to see both original vectors and their sum in a single compact diagram.</p>
+          <p>The parallelogram method also gives insight into vector subtraction. To compute <strong>A</strong> &minus; <strong>B</strong>, you add <strong>A</strong> and the negative of <strong>B</strong> (which is <strong>B</strong> reversed in direction). Geometrically, the difference <strong>A</strong> &minus; <strong>B</strong> is the other diagonal of the parallelogram&mdash;the one connecting the tips of <strong>A</strong> and <strong>B</strong> when they share a common tail. This geometric picture is valuable when reasoning about changes in velocity, since acceleration is proportional to the velocity difference &Delta;<strong>v</strong> = <strong>v</strong><sub>f</sub> &minus; <strong>v</strong><sub>i</sub>.</p>
+
+          <h3>The Component Method</h3>
+          <p>While geometric methods build intuition, the component method is the most powerful and general approach to vector addition. The principle is straightforward: to add two vectors, simply add their corresponding components. If <strong>A</strong> = (A<sub>x</sub>, A<sub>y</sub>) and <strong>B</strong> = (B<sub>x</sub>, B<sub>y</sub>), then:</p>
+
+          <div class="formula">
+            <span class="formula-name">Vector Addition by Components</span>
+            <strong>A</strong> + <strong>B</strong> = (A<sub>x</sub> + B<sub>x</sub>, &ensp; A<sub>y</sub> + B<sub>y</sub>)
+          </div>
+
+          <p>Subtraction works identically: to subtract <strong>B</strong> from <strong>A</strong>, subtract the corresponding components.</p>
+
+          <div class="formula">
+            <span class="formula-name">Vector Subtraction by Components</span>
+            <strong>A</strong> &minus; <strong>B</strong> = (A<sub>x</sub> &minus; B<sub>x</sub>, &ensp; A<sub>y</sub> &minus; B<sub>y</sub>)
+          </div>
+
+          <p>This method reduces all vector operations to simple arithmetic on numbers, which is why it is overwhelmingly preferred for problem solving. No matter how many vectors you need to add, no matter what angles they make, the component method gives you the exact answer through nothing more than addition and subtraction of real numbers.</p>
+
+          <p>Why is the component method so reliable? Because it exploits the independence of perpendicular directions. Whatever happens along the x-axis has no effect on what happens along the y-axis, and vice versa. By separating the problem into independent dimensions, we eliminate the need for geometric reasoning about angles and triangles. This same principle&mdash;the independence of perpendicular components&mdash;will return again and again throughout mechanics, most notably in projectile motion, where horizontal and vertical motions are analyzed completely independently.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example &mdash; Adding Displacement Vectors</div>
+            <p>A hiker walks 6.0 km at 30&deg; north of east, then 4.0 km due north. Find the magnitude and direction of the total displacement.</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p><strong>Step 1: Resolve each vector into components.</strong></p>
+              <p>First displacement <strong>d</strong><sub>1</sub>: magnitude 6.0 km, angle 30&deg; from east.</p>
+              <p>d<sub>1x</sub> = 6.0 cos 30&deg; = 6.0 &times; 0.866 = 5.20 km</p>
+              <p>d<sub>1y</sub> = 6.0 sin 30&deg; = 6.0 &times; 0.500 = 3.00 km</p>
+              <p>Second displacement <strong>d</strong><sub>2</sub>: magnitude 4.0 km, due north (90&deg;).</p>
+              <p>d<sub>2x</sub> = 4.0 cos 90&deg; = 0 km</p>
+              <p>d<sub>2y</sub> = 4.0 sin 90&deg; = 4.00 km</p>
+              <p><strong>Step 2: Add components.</strong></p>
+              <p>R<sub>x</sub> = 5.20 + 0 = 5.20 km</p>
+              <p>R<sub>y</sub> = 3.00 + 4.00 = 7.00 km</p>
+              <p><strong>Step 3: Find magnitude and direction.</strong></p>
+              <p>|<strong>R</strong>| = &radic;(5.20&sup2; + 7.00&sup2;) = &radic;(27.04 + 49.00) = &radic;76.04 &asymp; 8.72 km</p>
+              <p>&theta; = tan<sup>&minus;1</sup>(7.00 / 5.20) = tan<sup>&minus;1</sup>(1.346) &asymp; 53.4&deg; north of east</p>
+              <p>The hiker&rsquo;s total displacement is approximately <strong>8.72 km at 53.4&deg; north of east</strong>.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Components of Vectors -->
+        <section id="components-of-vectors" class="lecture-section">
+          <h2>Components of Vectors</h2>
+          <p>The technique of breaking a vector into its x and y components deserves special emphasis because it is arguably the single most useful skill in introductory physics. Every time you encounter a problem involving vectors at angles&mdash;a force applied diagonally, a ball launched at an angle, a plane flying against a crosswind&mdash;the first step is almost always to decompose those vectors into perpendicular components.</p>
+          <p>The reason this technique is so powerful is that it transforms a two-dimensional problem into two independent one-dimensional problems. Motion along the x-axis and motion along the y-axis can be analyzed separately, using the simpler equations of one-dimensional motion. Once you have solved each dimension independently, you recombine the results to get the full two-dimensional answer. This divide-and-conquer strategy is the cornerstone of vector physics.</p>
+          <p>Given a vector <strong>A</strong> with magnitude A making an angle &theta; with the positive x-axis, the components are:</p>
+
+          <div class="formula">
+            <span class="formula-name">Resolving a Vector into Components</span>
+            A<sub>x</sub> = A cos &theta; &emsp;&emsp; A<sub>y</sub> = A sin &theta;
+          </div>
+
+          <p>These formulas come directly from trigonometry. The vector, its x-component, and its y-component form a right triangle. The x-component is the adjacent side (hence cosine), and the y-component is the opposite side (hence sine). If the angle is measured from a different reference direction, the roles of sine and cosine may swap&mdash;always draw a diagram and identify the triangle before writing equations.</p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>Decomposing vectors into components is the bridge between geometry and algebra. It transforms every two-dimensional vector problem into two separate one-dimensional problems, each of which can be solved independently. Master this technique and you have mastered the hardest part of vector physics.</p>
+          </div>
+
+          <p>A common source of confusion is the sign of components. Components are signed numbers: A<sub>x</sub> is positive when it points in the positive x-direction and negative when it points in the negative x-direction. The same applies to A<sub>y</sub>. When you resolve a vector pointing &ldquo;southwest,&rdquo; both components will be negative if your axes point in the conventional directions (x to the right, y upward). Always pay careful attention to signs&mdash;they encode the directional information that makes vectors different from scalars.</p>
+          <p>It is also important to choose your coordinate system wisely. In many problems, a clever choice of axes can simplify the mathematics enormously. For example, if an object slides down a ramp inclined at 30&deg;, choosing one axis parallel to the ramp and the other perpendicular to it makes the problem far easier than using horizontal and vertical axes. The physics does not depend on your choice of coordinates&mdash;the answer will be the same regardless&mdash;but the algebra can be dramatically simpler with the right choice. Developing an instinct for good coordinate systems is a hallmark of experienced problem solvers.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example &mdash; Resolving a Velocity Vector</div>
+            <p>An airplane flies at 250 km/h in a direction 40&deg; west of north. Find the northward and westward components of its velocity.</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>Let us define north as the positive y-axis and east as the positive x-axis. The direction &ldquo;40&deg; west of north&rdquo; means the vector is 40&deg; from north toward west.</p>
+              <p>The northward component (adjacent to the 40&deg; angle from north): v<sub>north</sub> = 250 cos 40&deg; = 250 &times; 0.766 = <strong>191.5 km/h</strong></p>
+              <p>The westward component (opposite to the 40&deg; angle from north): v<sub>west</sub> = 250 sin 40&deg; = 250 &times; 0.643 = <strong>160.7 km/h</strong></p>
+              <p>Since the plane is heading west (negative x-direction in our convention), the x-component is v<sub>x</sub> = &minus;160.7 km/h. The y-component is v<sub>y</sub> = +191.5 km/h. Notice how the signs correctly encode the direction: northward is positive, westward is negative along x.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Displacement -->
+        <section id="displacement" class="lecture-section">
+          <h2>Displacement</h2>
+          <p>With our vector toolkit in hand, we now turn to the first of the three fundamental kinematic quantities: displacement. In everyday language, people use &ldquo;distance&rdquo; and &ldquo;displacement&rdquo; interchangeably, but in physics they are profoundly different concepts.</p>
+          <p><strong>Distance</strong> is a scalar. It measures the total length of the path you travel, regardless of direction. If you walk 3 meters north and then 3 meters south, returning to your starting point, you have covered a distance of 6 meters. Distance is always non-negative and can only increase as an object moves. You cannot &ldquo;un-travel&rdquo; distance. A car&rsquo;s odometer measures distance: it always goes up, never down, no matter which direction you drive.</p>
+          <p><strong>Displacement</strong> is a vector. It measures the change in position&mdash;the straight-line separation between your starting point and your ending point, together with the direction from start to finish. In the same walk described above, your displacement is zero, because you ended up exactly where you started. Displacement cares only about where you began and where you ended, not about the path in between. Unlike distance, displacement can be positive, negative, or zero, and its magnitude can decrease if you reverse direction. A GPS tracking your straight-line distance from home is effectively measuring the magnitude of your displacement.</p>
+
+          <div class="definition-box">
+            <div class="def-term">Displacement</div>
+            <p class="def-text">The change in position of an object, defined as a vector from the initial position to the final position. Mathematically, &Delta;<strong>x</strong> = <strong>x</strong><sub>f</sub> &minus; <strong>x</strong><sub>i</sub>. Unlike distance, displacement has both magnitude and direction, and it is independent of the path taken between the two positions.</p>
+          </div>
+
+          <div class="example">
+            <div class="example-label">Worked Example &mdash; Distance vs. Displacement</div>
+            <p>A jogger runs around a rectangular park that is 200 m long and 100 m wide, completing one full lap. What are the total distance traveled and the total displacement?</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>The perimeter of the rectangle is 2(200) + 2(100) = 600 m. Since the jogger completes the full loop, the <strong>total distance</strong> is <strong>600 m</strong>.</p>
+              <p>However, the jogger returns to the starting point after one full lap. The initial position and the final position are identical. Therefore, the <strong>displacement</strong> is <strong>0 m</strong>&mdash;a zero vector.</p>
+              <p>This vividly illustrates the difference. You can travel an enormous distance while having zero displacement. The two quantities answer fundamentally different questions: distance asks &ldquo;how far did you walk?&rdquo; while displacement asks &ldquo;how far are you from where you started, and in what direction?&rdquo;</p>
+            </div>
+          </div>
+
+          <p>Displacement is the quantity that connects most naturally to the rest of kinematics. Velocity is defined as the rate of change of displacement, not distance. This is why direction matters so much in physics: the vector nature of displacement propagates through every equation of motion we will encounter.</p>
+          <p>In two dimensions, displacement becomes even more interesting. Suppose you walk 4 meters east and then 3 meters north. Your total distance is 7 meters, but your displacement is the straight-line vector from your starting point to your ending point: 5 meters at approximately 36.9&deg; north of east (from the Pythagorean theorem: &radic;(4&sup2; + 3&sup2;) = 5). The displacement vector encodes both how far you are from the start and in what direction. This is precisely the kind of information needed to describe an object&rsquo;s position change in a coordinate system, which is why displacement rather than distance appears in the equations of motion.</p>
+          <p>One subtle but important point: displacement depends only on the initial and final positions. It is completely independent of the path taken. Whether you walk in a straight line from A to B, or take a winding detour through C, D, and E before arriving at B, the displacement is the same&mdash;it is always the vector from A to B. This property makes displacement especially useful in physics because it simplifies the mathematics: we do not need to know every detail of the journey, only where it began and where it ended.</p>
+        </section>
+
+        <!-- Section: Velocity -->
+        <section id="velocity" class="lecture-section">
+          <h2>Velocity</h2>
+          <p>Velocity tells us how quickly and in what direction an object&rsquo;s position is changing. Like displacement, it is a vector quantity, and it must be carefully distinguished from its scalar cousin, speed.</p>
+          <p><strong>Speed</strong> is the rate at which distance is covered. It is always positive and tells you nothing about direction. A car traveling at 60 km/h has a speed of 60 km/h whether it is heading north, south, or in circles.</p>
+          <p><strong>Velocity</strong> is the rate at which displacement changes. It includes direction. A car traveling at 60 km/h north has a different velocity from a car traveling at 60 km/h south, even though both have the same speed. This directional information is what makes velocity far more useful than speed for analyzing motion in physics.</p>
+
+          <p>Understanding velocity deeply requires internalizing its vector nature. When a car makes a U-turn on a highway, its speed might remain at 60 km/h throughout the maneuver, yet its velocity changes dramatically&mdash;from 60 km/h north to 60 km/h south. The change in velocity (&Delta;<strong>v</strong>) during that turn is actually 120 km/h southward, even though the speedometer never wavered. This is why velocity, not speed, is the fundamental quantity in mechanics: it captures the full richness of motion, including changes in direction that speed alone misses entirely.</p>
+
+          <h3>Average Velocity</h3>
+          <p>The average velocity over a time interval is defined as the total displacement divided by the total time elapsed:</p>
+
+          <div class="formula">
+            <span class="formula-name">Average Velocity</span>
+            <strong>v</strong><sub>avg</sub> = &Delta;<strong>x</strong> / &Delta;t = (<strong>x</strong><sub>f</sub> &minus; <strong>x</strong><sub>i</sub>) / (t<sub>f</sub> &minus; t<sub>i</sub>)
+          </div>
+
+          <p>Notice that average velocity depends only on the starting and ending positions and the time between them. It contains no information about what happened in between&mdash;the object might have sped up, slowed down, or reversed direction during the interval.</p>
+
+          <h3>Instantaneous Velocity</h3>
+          <p>Instantaneous velocity is the velocity at a single, specific moment in time. Conceptually, it is the average velocity over an infinitesimally short time interval. In the language of calculus, instantaneous velocity is the time derivative of position: <strong>v</strong> = d<strong>x</strong>/dt. Even without calculus, you can think of it as what your speedometer reads at a given instant, combined with the direction you are heading at that moment.</p>
+          <p>On a position-time graph, the instantaneous velocity at any point is the slope of the tangent line at that point. For uniform motion, the tangent line is the graph itself (since it is already straight), and the slope is constant. For accelerated motion, the tangent line changes from point to point, reflecting the changing velocity. Drawing tangent lines at several points along a curved position-time graph is an excellent way to visualize how the velocity evolves over time.</p>
+          <p>A crucial point: velocity can be negative. In one-dimensional motion along the x-axis, a negative velocity simply means the object is moving in the negative x-direction (typically to the left). Negative velocity does not mean &ldquo;slowing down&rdquo;&mdash;it means &ldquo;moving in the opposite direction from what we defined as positive.&rdquo; An object can have a large negative velocity and be moving very fast.</p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>Speed is the magnitude of velocity. A velocity of &minus;5 m/s corresponds to a speed of 5 m/s. Speed is never negative; velocity can be, because velocity carries directional information. Always ask: &ldquo;Am I being asked about speed (how fast?) or velocity (how fast and which way?).&rdquo;</p>
+          </div>
+
+          <h3>Average Speed vs. Average Velocity</h3>
+          <p>The distinction between speed and velocity extends to their averaged versions, and here the difference can be dramatic. Average speed is defined as total distance divided by total time. Average velocity is total displacement divided by total time. For the jogger who runs a 600-meter lap around the park in 5 minutes, the average speed is 600 m / 300 s = 2 m/s. But the average velocity is 0 m / 300 s = 0, because the displacement is zero. Whenever an object returns to its starting point, the average velocity over the complete trip is zero regardless of how fast it moved.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example &mdash; Average Velocity</div>
+            <p>A car drives 120 km north in 2 hours, then immediately turns around and drives 80 km south in 1 hour. Find the average speed and the average velocity for the entire trip.</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>Total distance = 120 + 80 = 200 km. Total time = 2 + 1 = 3 hours.</p>
+              <p>Average speed = 200 km / 3 h = <strong>66.7 km/h</strong>.</p>
+              <p>Total displacement = 120 km north &minus; 80 km south = 40 km north. (Taking north as positive: +120 &minus; 80 = +40 km.)</p>
+              <p>Average velocity = 40 km / 3 h = <strong>13.3 km/h north</strong>.</p>
+              <p>The average speed (66.7 km/h) and average velocity (13.3 km/h north) are very different. The average speed reflects the total motion; the average velocity reflects only the net change in position.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Acceleration -->
+        <section id="acceleration" class="lecture-section">
+          <h2>Acceleration</h2>
+          <p>Just as velocity describes how position changes with time, acceleration describes how velocity changes with time. It is the rate of change of velocity, and it is a vector quantity.</p>
+
+          <div class="formula">
+            <span class="formula-name">Average Acceleration</span>
+            <strong>a</strong><sub>avg</sub> = &Delta;<strong>v</strong> / &Delta;t = (<strong>v</strong><sub>f</sub> &minus; <strong>v</strong><sub>i</sub>) / (t<sub>f</sub> &minus; t<sub>i</sub>)
+          </div>
+
+          <p>Notice the structure of this definition: it is completely parallel to the definition of average velocity, except that velocity has been replaced by acceleration and position by velocity. Velocity measures how position changes with time; acceleration measures how velocity changes with time. This nested structure&mdash;each quantity describing the rate of change of the previous one&mdash;is a recurring theme in physics and mathematics. In calculus, you would say that velocity is the first derivative of position and acceleration is the second derivative. But the conceptual understanding does not require calculus: acceleration is simply &ldquo;the rate at which velocity changes.&rdquo;</p>
+
+          <p>Acceleration is frequently misunderstood. Many students think acceleration means &ldquo;speeding up,&rdquo; but that is only part of the story. Acceleration occurs whenever velocity changes&mdash;and velocity is a vector, so it can change in three ways:</p>
+          <ul>
+            <li><strong>Speeding up:</strong> The magnitude of velocity increases. Acceleration is in the same direction as the velocity.</li>
+            <li><strong>Slowing down:</strong> The magnitude of velocity decreases. Acceleration is in the opposite direction to the velocity. This is sometimes called deceleration, but it is simply acceleration pointing opposite to the direction of motion.</li>
+            <li><strong>Changing direction:</strong> Even if the speed stays constant, a change in the direction of motion means the velocity vector is changing, which means there is acceleration. This is exactly what happens in circular motion&mdash;an object moving in a circle at constant speed is constantly accelerating because its direction is constantly changing.</li>
+          </ul>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>Acceleration perpendicular to velocity changes the direction of motion without changing the speed. Acceleration parallel to velocity changes the speed without changing the direction. Most real-world accelerations have both components, changing speed and direction simultaneously.</p>
+          </div>
+
+          <p>The word &ldquo;deceleration&rdquo; is common in everyday speech but can be misleading in physics. Deceleration is not a separate physical concept&mdash;it is simply acceleration that happens to be directed opposite to the velocity, causing the object to slow down. In a formal physics context, you should always speak of acceleration and specify its direction, rather than relying on the ambiguous term &ldquo;deceleration.&rdquo;</p>
+          <p>The SI unit of acceleration is meters per second per second, written m/s&sup2;. This unit reveals the meaning directly: acceleration tells you how many meters per second the velocity changes in each second. An acceleration of 3 m/s&sup2; means that every second, the velocity increases (or decreases, depending on direction) by 3 m/s.</p>
+          <p>A particularly important constant acceleration is the acceleration due to gravity near the Earth&rsquo;s surface, denoted <em>g</em> and approximately equal to 9.8 m/s&sup2; (often rounded to 10 m/s&sup2; in introductory problems). This acceleration is directed downward and acts on every object near the Earth&rsquo;s surface, regardless of its mass. It is responsible for the familiar arc of a thrown ball, the fall of raindrops, and the weight you feel pressing you into your chair. We will use this constant extensively in the sections on uniformly accelerated motion and projectile motion that follow.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example &mdash; Understanding Acceleration</div>
+            <p>A car is traveling east at 20 m/s. The driver brakes, and 4 seconds later the car is traveling east at 8 m/s. What is the average acceleration?</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p><strong>a</strong><sub>avg</sub> = (v<sub>f</sub> &minus; v<sub>i</sub>) / &Delta;t = (8 &minus; 20) / 4 = &minus;12 / 4 = <strong>&minus;3 m/s&sup2;</strong></p>
+              <p>The negative sign means the acceleration is directed westward (opposite to the eastward motion). This makes physical sense: the brakes oppose the motion, slowing the car down. The magnitude of the acceleration is 3 m/s&sup2;, meaning the car&rsquo;s speed decreases by 3 m/s every second.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Uniform Motion -->
+        <section id="uniform-motion" class="lecture-section">
+          <h2>Uniform Motion</h2>
+          <p>The simplest type of motion is uniform motion: motion at constant velocity. When an object moves with constant velocity, its speed is constant and its direction does not change. There is no acceleration. The position changes by the same amount during every equal time interval.</p>
+          <p>The equation describing uniform motion follows directly from the definition of velocity. If velocity <em>v</em> is constant, then position <em>x</em> at time <em>t</em> is given by:</p>
+
+          <div class="formula">
+            <span class="formula-name">Uniform Motion Equation</span>
+            x = x<sub>0</sub> + vt
+          </div>
+
+          <p>Here, x<sub>0</sub> is the initial position (position at time t = 0) and <em>v</em> is the constant velocity. This equation is a linear function of time: the position-time graph is a straight line with slope equal to the velocity and y-intercept equal to the initial position.</p>
+          <p>Although uniform motion might seem trivially simple, it is the foundation upon which all other motion analyses are built. The kinematic equations for accelerated motion reduce to this equation when acceleration is zero. Moreover, in two-dimensional projectile motion (which we will discuss shortly), the horizontal component of motion is uniform&mdash;it moves at constant velocity with no acceleration. Recognizing uniform motion when it appears, even as a component of a more complex problem, is a key problem-solving skill.</p>
+          <p>On a velocity-time graph, uniform motion appears as a horizontal line at the value of the constant velocity. The area under this line (a rectangle) equals the displacement, which is exactly <em>v</em> &times; <em>t</em>, consistent with our equation. On an acceleration-time graph, uniform motion is a flat line at a = 0. These graphical representations are worth memorizing because they provide instant visual confirmation of the type of motion you are analyzing.</p>
+          <p>It is worth noting that perfectly uniform motion is an idealization. In the real world, friction, air resistance, and other forces always act to change an object&rsquo;s velocity at least slightly. However, uniform motion is an excellent approximation in many situations: a car on cruise control on a flat highway, a hockey puck gliding on smooth ice, or a spacecraft coasting far from any gravitational body. Recognizing when uniform motion is a good approximation is itself an important physical skill.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example &mdash; Uniform Motion</div>
+            <p>A train travels at a constant velocity of 25 m/s eastward. If the train passes a station (position x<sub>0</sub> = 0) at time t = 0, where is it after 2 minutes?</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>First, convert time to seconds: 2 min = 120 s.</p>
+              <p>Using x = x<sub>0</sub> + vt:</p>
+              <p>x = 0 + (25)(120) = 3000 m = <strong>3.0 km east of the station</strong>.</p>
+              <p>On a position-time graph, this motion would appear as a straight line passing through the origin with a slope of 25 m/s.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Uniformly Accelerated Motion -->
+        <section id="uniformly-accelerated-motion" class="lecture-section">
+          <h2>Uniformly Accelerated Motion</h2>
+          <p>When acceleration is constant (non-zero), we call the motion uniformly accelerated motion. This is the next level of complexity beyond uniform motion, and it describes a remarkably wide range of real-world situations: a car accelerating from a stoplight, a ball falling under gravity (neglecting air resistance), a spacecraft during a rocket burn. The analysis of uniformly accelerated motion gives us three celebrated kinematic equations, each derived from the fundamental definitions of velocity and acceleration.</p>
+
+          <h3>Why &ldquo;Uniformly&rdquo; Accelerated?</h3>
+          <p>The word &ldquo;uniformly&rdquo; is crucial. It means the acceleration is constant&mdash;it does not change with time. Many forms of acceleration are not uniform: a car&rsquo;s acceleration depends on engine power and speed, air resistance increases with velocity, and springs exert forces that depend on displacement. The kinematic equations we derive in this section are valid <em>only</em> when acceleration is constant. Applying them to situations with changing acceleration will give wrong answers. Always verify that the acceleration is constant before reaching for these equations.</p>
+
+          <h3>First Kinematic Equation: Velocity as a Function of Time</h3>
+          <p>Since acceleration is constant, the change in velocity during any time interval is simply the acceleration multiplied by the time. Starting from the definition a = &Delta;v / &Delta;t and rearranging:</p>
+
+          <div class="formula">
+            <span class="formula-name">First Kinematic Equation</span>
+            v = v<sub>0</sub> + at
+          </div>
+
+          <p>This equation tells a simple story: your final velocity equals whatever velocity you started with, plus the additional velocity gained (or lost) due to the constant acceleration acting over time <em>t</em>. On a velocity-time graph, this is a straight line with slope <em>a</em> and y-intercept v<sub>0</sub>.</p>
+
+          <h3>Second Kinematic Equation: Position as a Function of Time</h3>
+          <p>To find position, we use a beautiful geometric argument. On a velocity-time graph, the area under the curve between two times gives the displacement during that interval. For uniformly accelerated motion, the velocity-time graph is a straight line (a trapezoid starting at v<sub>0</sub> and ending at v). The area under this line from t = 0 to t is:</p>
+
+          <div class="formula">
+            <span class="formula-name">Second Kinematic Equation</span>
+            x = x<sub>0</sub> + v<sub>0</sub>t + &frac12;at&sup2;
+          </div>
+
+          <p>The first term, x<sub>0</sub>, is where you started. The second term, v<sub>0</sub>t, is the displacement you would have had at constant velocity. The third term, &frac12;at&sup2;, is the extra displacement contributed by the acceleration. This equation is quadratic in time, which means the position-time graph is a parabola&mdash;a curve, not a straight line. The curvature tells you the object is speeding up or slowing down.</p>
+          <p>Understanding where this equation comes from is more valuable than memorizing it. The area under the velocity-time graph between two times gives the displacement. For uniformly accelerated motion, the v-t graph is a straight line from v<sub>0</sub> to v<sub>0</sub> + at. The area under this line is a trapezoid with parallel sides v<sub>0</sub> and (v<sub>0</sub> + at) and width t. The area of a trapezoid is &frac12;(sum of parallel sides) &times; width = &frac12;(v<sub>0</sub> + v<sub>0</sub> + at) &times; t = v<sub>0</sub>t + &frac12;at&sup2;. Add the initial position x<sub>0</sub> and you have the second kinematic equation. If you ever forget the formula, you can re-derive it in seconds from this geometric argument.</p>
+
+          <h3>Third Kinematic Equation: Velocity as a Function of Position</h3>
+          <p>Sometimes you need to relate velocity and position directly, without involving time. By eliminating time between the first two equations (solving the first for <em>t</em> and substituting into the second), you arrive at:</p>
+
+          <div class="formula">
+            <span class="formula-name">Third Kinematic Equation</span>
+            v&sup2; = v<sub>0</sub>&sup2; + 2a(x &minus; x<sub>0</sub>)
+          </div>
+
+          <p>This equation is indispensable when time is not given and not needed. It directly connects the change in velocity to the distance over which the acceleration acts. For example, if you know how fast a car is going and how hard the brakes are applied, this equation tells you exactly how far the car will travel before stopping&mdash;without ever needing to calculate the time it takes.</p>
+          <p>There is a deep physical insight hidden in this equation: the quantity v&sup2; is closely related to kinetic energy (as you will discover in Lecture 5). The equation says that the change in v&sup2; is proportional to the displacement and the acceleration. This foreshadows the work-energy theorem, one of the most powerful results in mechanics. For now, simply appreciate that this equation connects the &ldquo;before and after&rdquo; of motion through space rather than through time, making it uniquely suited for problems where time is irrelevant.</p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>Each kinematic equation involves four of the five variables (x, x<sub>0</sub>, v, v<sub>0</sub>, a, t). To solve a problem, identify which variable is unknown and which one is not needed, then choose the equation that involves the other four. This strategy makes kinematic problem-solving systematic and efficient.</p>
+          </div>
+
+          <div class="example">
+            <div class="example-label">Worked Example &mdash; Braking Distance</div>
+            <p>A car traveling at 30 m/s applies its brakes and decelerates uniformly at 5 m/s&sup2;. How far does it travel before coming to a complete stop?</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>We know: v<sub>0</sub> = 30 m/s, v = 0 (the car stops), a = &minus;5 m/s&sup2; (negative because it opposes the motion).</p>
+              <p>We want: the distance &Delta;x = x &minus; x<sub>0</sub>. Time is not given and not needed, so we use the third kinematic equation.</p>
+              <p>v&sup2; = v<sub>0</sub>&sup2; + 2a(&Delta;x)</p>
+              <p>0 = (30)&sup2; + 2(&minus;5)(&Delta;x)</p>
+              <p>0 = 900 &minus; 10&Delta;x</p>
+              <p>&Delta;x = 900 / 10 = <strong>90 m</strong></p>
+              <p>The car travels 90 meters before stopping. Notice how this braking distance depends on the square of the initial speed&mdash;doubling the speed quadruples the braking distance, which has enormous implications for road safety.</p>
+            </div>
+          </div>
+
+          <h3>Free Fall: A Special Case</h3>
+          <p>Free fall is uniformly accelerated motion under gravity alone. When you drop an object (or throw it upward) near the Earth&rsquo;s surface and ignore air resistance, the object accelerates at g &asymp; 9.8 m/s&sup2; downward. All three kinematic equations apply directly, with <em>a</em> = &minus;g (taking upward as positive).</p>
+          <p>A ball thrown straight upward at 20 m/s will slow down at 9.8 m/s&sup2;, reach its peak when v = 0 (at t = 20/9.8 &asymp; 2.04 s), and then fall back with increasing speed. The ascent and descent are perfectly symmetric: the ball takes the same time going up as coming down, and it returns to the launch point with the same speed it was thrown (but in the opposite direction). This symmetry is a direct consequence of the constant acceleration.</p>
+          <p>Free fall is the purest example of uniformly accelerated motion in nature. Galileo was the first to recognize that all objects, regardless of mass, fall with the same acceleration (in the absence of air resistance). He reportedly tested this by dropping objects of different weights from the Leaning Tower of Pisa, though the historical accuracy of this account is debated. What is not debated is the physics: in a vacuum, a feather and a hammer fall at exactly the same rate. This was famously confirmed by astronaut David Scott on the Moon during the Apollo 15 mission, where the absence of atmosphere makes the prediction strikingly visible.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example &mdash; Free Fall</div>
+            <p>A stone is dropped from rest from the top of a 45-meter-tall building. Using g = 10 m/s&sup2;, find: (a) the time to reach the ground, and (b) the speed just before impact.</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p>Taking downward as positive: v<sub>0</sub> = 0, a = g = 10 m/s&sup2;, &Delta;x = 45 m.</p>
+              <p>(a) Using x = x<sub>0</sub> + v<sub>0</sub>t + &frac12;at&sup2;: 45 = 0 + 0 + &frac12;(10)t&sup2; &rarr; t&sup2; = 9 &rarr; t = <strong>3.0 s</strong></p>
+              <p>(b) Using v = v<sub>0</sub> + at: v = 0 + (10)(3) = <strong>30 m/s</strong></p>
+              <p>Alternatively, using v&sup2; = v<sub>0</sub>&sup2; + 2a&Delta;x: v&sup2; = 0 + 2(10)(45) = 900 &rarr; v = 30 m/s. Both methods agree, as they must.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Projectile Motion -->
+        <section id="projectile-motion" class="lecture-section">
+          <h2>Projectile Motion</h2>
+          <p>Projectile motion is one of the most elegant applications of vector decomposition. A projectile is any object that, after being launched, moves through the air under the influence of gravity alone (we neglect air resistance). Baseballs, cannonballs, water from a fountain, and a basketball on its way to the hoop are all projectiles during their time in the air.</p>
+          <p>The key insight, first articulated clearly by Galileo, is that the horizontal and vertical components of motion are completely independent of each other. Gravity acts only in the vertical direction, so it affects only the vertical component of velocity. The horizontal component remains constant throughout the flight (assuming no air resistance). This means we can analyze the horizontal and vertical motions separately, as two independent one-dimensional problems, and combine the results to get the full two-dimensional trajectory.</p>
+          <p>Galileo reportedly demonstrated this independence through a thought experiment involving a ball rolling off the edge of a table. He reasoned that the horizontal motion of the ball (acquired from rolling along the table) should continue undisturbed, while gravity independently pulls the ball downward. The ball does not &ldquo;choose&rdquo; between moving forward and falling&mdash;it does both simultaneously. The horizontal and vertical motions neither help nor hinder each other. This insight was revolutionary in the 17th century and remains the conceptual foundation for analyzing any two-dimensional motion under constant acceleration.</p>
+
+          <h3>Assumptions and Limitations</h3>
+          <p>Before diving into the mathematics, it is important to state the assumptions underlying our analysis. We assume: (1) the acceleration due to gravity is constant in magnitude and direction (valid for trajectories much smaller than the Earth&rsquo;s radius); (2) air resistance is negligible (a reasonable approximation for dense, slow-moving objects but poor for feathers, parachutes, or high-speed projectiles); and (3) the Earth&rsquo;s rotation can be ignored (valid for short-range projectiles but not for intercontinental ballistic missiles). Within these assumptions, the analysis is exact and yields results that agree beautifully with experiment.</p>
+
+          <h3>Setting Up the Problem</h3>
+          <p>Consider a ball launched with initial speed v<sub>0</sub> at angle &theta; above the horizontal. We decompose the initial velocity into components:</p>
+
+          <div class="formula">
+            <span class="formula-name">Projectile Initial Components</span>
+            v<sub>0x</sub> = v<sub>0</sub> cos &theta; &emsp;&emsp; v<sub>0y</sub> = v<sub>0</sub> sin &theta;
+          </div>
+
+          <p>The horizontal motion is uniform (constant velocity, zero acceleration):</p>
+          <p>x = v<sub>0x</sub> t = (v<sub>0</sub> cos &theta;) t</p>
+
+          <p>The vertical motion is uniformly accelerated (acceleration = &minus;g downward):</p>
+          <p>y = v<sub>0y</sub> t &minus; &frac12;gt&sup2; = (v<sub>0</sub> sin &theta;) t &minus; &frac12;gt&sup2;</p>
+
+          <h3>Key Results</h3>
+          <p>From these two equations, we can derive all the important properties of the trajectory:</p>
+
+          <p><strong>Time of flight</strong> (time for the projectile to return to launch height): Set y = 0 in the vertical equation and solve for t. The result is T = 2v<sub>0</sub> sin &theta; / g.</p>
+
+          <p><strong>Maximum height</strong>: At the peak, the vertical velocity is zero. Using v<sub>y</sub> = v<sub>0y</sub> &minus; gt, set v<sub>y</sub> = 0 to find the time to reach maximum height: t<sub>peak</sub> = v<sub>0</sub> sin &theta; / g. Substituting back gives H = v<sub>0</sub>&sup2; sin&sup2;&theta; / (2g).</p>
+
+          <p><strong>Range</strong> (horizontal distance): Substitute the total time of flight into the horizontal equation: R = v<sub>0</sub>&sup2; sin 2&theta; / g. This famous result reveals that the maximum range occurs when &theta; = 45&deg;, because sin 2&theta; is maximized when 2&theta; = 90&deg;. The range depends on the square of the initial speed, so doubling the launch speed quadruples the range&mdash;a fact that has been well understood by artillerists for centuries.</p>
+
+          <div class="example">
+            <div class="example-label">Worked Example &mdash; Projectile at an Angle</div>
+            <p>A soccer ball is kicked at 20 m/s at an angle of 37&deg; above the horizontal. Using g = 10 m/s&sup2;, find: (a) the time of flight, (b) the maximum height, and (c) the horizontal range.</p>
+            <div class="solution">
+              <div class="solution-label">Solution</div>
+              <p><strong>Step 1: Decompose the initial velocity.</strong></p>
+              <p>v<sub>0x</sub> = 20 cos 37&deg; = 20 &times; 0.8 = 16 m/s</p>
+              <p>v<sub>0y</sub> = 20 sin 37&deg; = 20 &times; 0.6 = 12 m/s</p>
+              <p><strong>Step 2: Time of flight.</strong></p>
+              <p>T = 2v<sub>0y</sub> / g = 2(12) / 10 = <strong>2.4 s</strong></p>
+              <p><strong>Step 3: Maximum height.</strong></p>
+              <p>At the peak, v<sub>y</sub> = 0. Time to peak = v<sub>0y</sub> / g = 12 / 10 = 1.2 s.</p>
+              <p>H = v<sub>0y</sub> t<sub>peak</sub> &minus; &frac12;g t<sub>peak</sub>&sup2; = (12)(1.2) &minus; &frac12;(10)(1.2)&sup2; = 14.4 &minus; 7.2 = <strong>7.2 m</strong></p>
+              <p><strong>Step 4: Horizontal range.</strong></p>
+              <p>R = v<sub>0x</sub> &times; T = 16 &times; 2.4 = <strong>38.4 m</strong></p>
+              <p>The ball travels 38.4 meters horizontally, reaches a maximum height of 7.2 meters, and the entire flight takes 2.4 seconds. Notice how we treated the horizontal and vertical dimensions completely independently&mdash;the horizontal motion is at constant 16 m/s, while the vertical motion is governed entirely by gravity.</p>
+            </div>
+          </div>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>The horizontal and vertical components of projectile motion are independent. Gravity affects only the vertical component. This independence is Galileo&rsquo;s profound insight and the reason we decompose vectors: it lets us replace one hard 2D problem with two easy 1D problems.</p>
+          </div>
+
+          <h3>The Shape of the Trajectory</h3>
+          <p>By eliminating time from the horizontal and vertical equations, we can show that the trajectory of a projectile is a parabola. Solving x = (v<sub>0</sub> cos &theta;)t for t and substituting into the vertical equation yields y as a quadratic function of x. The parabolic shape is a signature of constant acceleration acting in one direction while the perpendicular direction has constant velocity. This same parabolic shape appears whenever these conditions hold, from the stream of water from a garden hose to the spark trails in a fireworks display.</p>
+
+          <h3>Complementary Angles and Range</h3>
+          <p>The range equation R = v<sub>0</sub>&sup2; sin 2&theta; / g reveals an interesting symmetry: launch angles of &theta; and (90&deg; &minus; &theta;) produce the same range. For example, a projectile launched at 30&deg; and one launched at 60&deg; (with the same speed) will land at the same horizontal distance, though they follow very different trajectories. The 30&deg; launch produces a low, fast trajectory, while the 60&deg; launch produces a high, arching path. The 45&deg; angle, being its own complement, gives the maximum range. This result assumes level ground and no air resistance&mdash;in practice, air resistance breaks this symmetry, and the optimal launch angle is somewhat less than 45&deg;.</p>
+
+          <h3>Horizontal Launch</h3>
+          <p>A common special case is a projectile launched horizontally from a height&mdash;a ball rolling off a table, for instance. In this case, &theta; = 0, so v<sub>0y</sub> = 0 and v<sub>0x</sub> = v<sub>0</sub>. The horizontal velocity remains v<sub>0</sub> throughout the flight, while the vertical motion is pure free fall from rest. The time to hit the ground depends only on the height and gravity (t = &radic;(2h/g)), completely independent of the horizontal speed. A bullet fired horizontally from a gun and a ball dropped from the same height at the same instant will hit the ground at the same time&mdash;one of the most counterintuitive yet well-verified results in classical mechanics.</p>
+        </section>
+
+        <!-- Section: Graphical Interpretation -->
+        <section id="graphical-interpretation" class="lecture-section">
+          <h2>Graphical Interpretation</h2>
+          <p>Graphs are one of the most powerful tools in physics. A well-drawn graph can communicate in an instant what would take paragraphs to describe in words. In kinematics, three types of graphs form a connected family, each revealing different aspects of the motion. Learning to move fluently between these graphs&mdash;reading slopes and areas, translating one graph into another&mdash;is perhaps the single most important skill you can develop for success in introductory physics. Many exam problems present a graph and ask you to extract information from it, and the ability to interpret graphs quickly and accurately is what separates students who deeply understand kinematics from those who merely memorize equations.</p>
+          <p>The three graphs&mdash;position-time, velocity-time, and acceleration-time&mdash;are connected by a chain of relationships. Position is the starting quantity. Taking the slope of the position-time graph gives velocity. Taking the slope of the velocity-time graph gives acceleration. Going the other direction, taking the area under the acceleration-time graph gives the change in velocity, and taking the area under the velocity-time graph gives displacement. These slope and area relationships are, in essence, the graphical version of differentiation and integration from calculus, but they can be understood and applied without any calculus at all.</p>
+
+          <h3>Position-Time Graphs</h3>
+          <p>A position-time (x-t) graph plots the object&rsquo;s position on the vertical axis against time on the horizontal axis. The most important property of this graph is that its <strong>slope equals the velocity</strong>. A straight line means constant velocity (uniform motion). A curved line means the velocity is changing (accelerated motion). A horizontal line means the object is stationary. A steeper slope means a higher speed. A negative slope means the object is moving in the negative direction.</p>
+          <p>For uniformly accelerated motion, the position-time graph is a parabola. The direction of curvature tells you the sign of the acceleration: curving upward (concave up) means positive acceleration; curving downward (concave down) means negative acceleration. A common exercise is to determine whether an object is speeding up or slowing down from the shape of the curve. If the curve is getting steeper over time, the object is speeding up. If it is leveling off, the object is slowing down. The tangent line at any point on the curve gives the instantaneous velocity at that moment.</p>
+
+          <h3>Velocity-Time Graphs</h3>
+          <p>A velocity-time (v-t) graph is extraordinarily rich in information. It encodes two things at once:</p>
+          <ul>
+            <li><strong>Slope = Acceleration:</strong> A straight line with a positive slope means constant positive acceleration. A horizontal line means zero acceleration (constant velocity). A negative slope means the velocity is decreasing.</li>
+            <li><strong>Area under the curve = Displacement:</strong> The area between the velocity curve and the time axis, over any interval, gives the displacement during that interval. Areas above the time axis represent positive displacement; areas below represent negative displacement. This is the geometric foundation of the second kinematic equation.</li>
+          </ul>
+
+          <h3>Acceleration-Time Graphs</h3>
+          <p>An acceleration-time (a-t) graph plots acceleration against time. For uniformly accelerated motion, this is simply a horizontal line at the value of the constant acceleration. The <strong>area under the acceleration-time curve gives the change in velocity</strong> over that interval, just as the area under the velocity-time curve gives displacement.</p>
+          <p>For free fall (ignoring air resistance), the acceleration-time graph is a horizontal line at a = &minus;9.8 m/s&sup2; (taking upward as positive). For uniform motion, it is a horizontal line at a = 0. For more complex motion, such as a car that accelerates, cruises, and then brakes, the acceleration-time graph shows distinct phases: a positive constant, then zero, then a negative constant. Each phase corresponds to a different segment of the velocity-time graph, and through integration (area-finding), to the position-time graph.</p>
+
+          <div class="key-concept">
+            <div class="concept-label">Key Concept</div>
+            <p>The three kinematic graphs are linked by slopes and areas. The slope of the position-time graph gives velocity. The slope of the velocity-time graph gives acceleration. The area under the velocity-time graph gives displacement. The area under the acceleration-time graph gives change in velocity. These relationships hold universally, even when the motion is not uniformly accelerated.</p>
+          </div>
+
+          <p>Learning to read these graphs fluently is a skill that pays dividends throughout all of physics. Practice moving between graphs: given a position-time graph, sketch the corresponding velocity-time and acceleration-time graphs, and vice versa. This exercise builds the deep intuition that connects abstract equations to physical reality.</p>
+
+          <h3>Reading a Velocity-Time Graph: A Detailed Example</h3>
+          <p>Imagine a velocity-time graph that shows the following: from t = 0 to t = 3 s, the velocity increases linearly from 0 to 6 m/s; from t = 3 to t = 6 s, the velocity remains constant at 6 m/s; from t = 6 to t = 8 s, the velocity decreases linearly from 6 m/s to 0. What can we extract from this graph?</p>
+          <p><strong>Phase 1 (0 to 3 s):</strong> The slope is (6 &minus; 0)/(3 &minus; 0) = 2 m/s&sup2;. The object accelerates uniformly at 2 m/s&sup2;. The displacement is the area of the triangle: &frac12; &times; 3 &times; 6 = 9 m.</p>
+          <p><strong>Phase 2 (3 to 6 s):</strong> The slope is 0. The object moves at constant velocity. The displacement is the area of the rectangle: 3 &times; 6 = 18 m.</p>
+          <p><strong>Phase 3 (6 to 8 s):</strong> The slope is (0 &minus; 6)/(8 &minus; 6) = &minus;3 m/s&sup2;. The object decelerates at 3 m/s&sup2;. The displacement is the area of the triangle: &frac12; &times; 2 &times; 6 = 6 m.</p>
+          <p>Total displacement over the full 8 seconds: 9 + 18 + 6 = 33 m. All of this information&mdash;three phases of motion, three different accelerations, and the total displacement&mdash;was extracted from a single graph without writing a single kinematic equation. This is the power of graphical analysis.</p>
+        </section>
+
+        <!-- Section: Common Misconceptions -->
+        <section id="common-misconceptions" class="lecture-section">
+          <h2>Common Misconceptions</h2>
+          <p>Certain misconceptions about motion are remarkably persistent, even among students who can solve kinematic problems correctly. Identifying and correcting these errors is as important as learning the correct concepts in the first place. Research in physics education has shown that misconceptions about motion are often rooted in everyday experience and intuitive reasoning that, while useful for navigating daily life, are fundamentally at odds with Newtonian mechanics. Simply being told the correct answer is rarely enough to overcome a deeply held misconception; you must understand <em>why</em> the intuitive answer is wrong and <em>how</em> the correct reasoning works. That is our goal in this section.</p>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>&ldquo;An object at rest has no acceleration.&rdquo;</strong> &mdash; This is false. An object at rest may have zero velocity at that instant, but it can still be accelerating. A ball thrown straight upward is momentarily at rest at its peak, yet gravity continues to accelerate it downward at 9.8 m/s&sup2; at every point in its trajectory, including the very top. Velocity zero does not imply acceleration zero.</p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>&ldquo;Velocity and speed are the same thing.&rdquo;</strong> &mdash; Speed is the magnitude of velocity. Velocity includes direction; speed does not. An object moving at 5 m/s to the left has the same speed as one moving at 5 m/s to the right, but their velocities are opposite. This distinction is critical in problems involving changes of direction, collisions, and wave propagation.</p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>&ldquo;If acceleration is zero, the object must be at rest.&rdquo;</strong> &mdash; Zero acceleration means zero change in velocity, not zero velocity. An object cruising at a constant 100 km/h on a straight highway has zero acceleration but is far from at rest. Zero acceleration implies constant velocity, which could be any constant value, including zero.</p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>&ldquo;Projectiles have zero acceleration at the peak of their trajectory.&rdquo;</strong> &mdash; At the peak, the vertical velocity is momentarily zero, but the acceleration due to gravity never vanishes. The acceleration is a constant g = 9.8 m/s&sup2; downward throughout the entire flight&mdash;before the peak, at the peak, and after the peak. The velocity is changing at every instant; it just happens to pass through zero at the highest point.</p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>&ldquo;Heavier objects fall faster than lighter ones.&rdquo;</strong> &mdash; In the absence of air resistance, all objects near the Earth&rsquo;s surface fall with the same acceleration, g &asymp; 9.8 m/s&sup2;, regardless of mass. A bowling ball and a feather dropped in a vacuum chamber hit the ground at the same instant. This was demonstrated dramatically by Apollo 15 astronaut David Scott on the Moon, where there is no air resistance. In everyday experience, air resistance makes light objects (like feathers) appear to fall slower, but the gravitational acceleration is identical for all masses.</p>
+          </div>
+
+          <div class="misconception">
+            <div class="misconception-label">Misconception</div>
+            <p><strong>&ldquo;An object thrown upward has upward acceleration while rising.&rdquo;</strong> &mdash; Once the object leaves your hand, the only acceleration (ignoring air resistance) is g downward. During the upward phase, the downward acceleration is decelerating the object (reducing its upward velocity). The acceleration does not flip direction at the peak or at any other point&mdash;it is a steady 9.8 m/s&sup2; downward from the moment of release to the moment of landing.</p>
+          </div>
+
+          <p>These misconceptions are not signs of poor intelligence&mdash;they arise from the ambiguity of everyday language. Words like &ldquo;acceleration,&rdquo; &ldquo;speed,&rdquo; and &ldquo;velocity&rdquo; have precise meanings in physics that differ from their casual usage. The cure is to always return to the definitions. Acceleration is the rate of change of velocity, period. If velocity is changing&mdash;in magnitude, in direction, or both&mdash;then there is acceleration. If velocity is not changing at all, then and only then is acceleration zero. Anchoring your reasoning in definitions rather than intuitions will keep you on solid ground.</p>
+        </section>
+
+        <!-- Section: Key Takeaways -->
+        <section id="key-takeaways" class="lecture-section">
+          <h2>Key Takeaways</h2>
+          <div class="takeaways">
+            <h3>Summary</h3>
+            <ul>
+              <li>Scalar quantities have magnitude only; vector quantities have both magnitude and direction. Confusing the two leads to fundamental errors in physics.</li>
+              <li>Vectors can be represented as arrows, as ordered pairs of components, or using unit vector notation. Each representation has advantages for different types of problems.</li>
+              <li>The component method of vector addition&mdash;adding x-components and y-components separately&mdash;is the most powerful and general technique for combining vectors.</li>
+              <li>Resolving vectors into components (A<sub>x</sub> = A cos &theta;, A<sub>y</sub> = A sin &theta;) transforms every two-dimensional problem into two independent one-dimensional problems, which is the most important problem-solving strategy in vector physics.</li>
+              <li>Displacement is the vector change in position (&Delta;<strong>x</strong> = <strong>x</strong><sub>f</sub> &minus; <strong>x</strong><sub>i</sub>). It differs from distance, which is a scalar measuring total path length. An object that returns to its starting point has zero displacement regardless of the distance traveled.</li>
+              <li>Velocity is the rate of change of displacement (v = &Delta;x / &Delta;t). It is a vector and can be negative, unlike speed, which is always the magnitude of velocity and therefore always non-negative.</li>
+              <li>Acceleration is the rate of change of velocity (a = &Delta;v / &Delta;t). It can mean speeding up, slowing down, or changing direction&mdash;any change in the velocity vector constitutes acceleration. Acceleration perpendicular to velocity changes direction; acceleration parallel to velocity changes speed.</li>
+              <li>The three kinematic equations (v = v<sub>0</sub> + at, x = x<sub>0</sub> + v<sub>0</sub>t + &frac12;at&sup2;, v&sup2; = v<sub>0</sub>&sup2; + 2a&Delta;x) describe all uniformly accelerated motion. Each equation involves a different set of four variables; choose the one that matches your knowns and unknowns.</li>
+              <li>Projectile motion is analyzed by decomposing it into independent horizontal (constant velocity) and vertical (constant acceleration g) components. The trajectory is a parabola, the maximum range occurs at 45&deg;, and complementary angles give equal ranges.</li>
+              <li>Motion graphs encode kinematics visually: the slope of position-time gives velocity; the slope of velocity-time gives acceleration; the area under velocity-time gives displacement; the area under acceleration-time gives change in velocity.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Lecture Navigation -->
+        <div class="lecture-nav">
+          <a href="02-units-dimensions.html" class="nav-prev">
+            <div class="nav-direction">&larr; Previous</div>
+            <div class="nav-title">Lecture 2: Units, Dimensions, and Measurement</div>
+          </a>
+          <a href="04-newtons-laws.html" class="nav-next">
+            <div class="nav-direction">Next &rarr;</div>
+            <div class="nav-title">Lecture 4: Newton&rsquo;s Laws of Motion</div>
+          </a>
+        </div>
+
+      </article>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <div class="footer-brand">Physics Logic</div>
+          <p class="footer-desc">A free educational platform dedicated to teaching physics through deep reasoning and logical thinking. Understanding over memorization, always.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Lectures</h5>
+          <a href="../lectures/01-introduction.html">Introduction to Physics</a>
+          <a href="../lectures/02-units-dimensions.html">Units and Dimensions</a>
+          <a href="../lectures/03-vectors-motion.html">Vectors and Motion</a>
+          <a href="../lectures/04-newtons-laws.html">Newton&rsquo;s Laws</a>
+          <a href="../lectures.html">View All &rarr;</a>
+        </div>
+        <div class="footer-col">
+          <h5>Resources</h5>
+          <a href="../about.html">About</a>
+          <a href="../lectures.html">All Lectures</a>
+          <a href="../index.html#faq">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h5>Connect</h5>
+          <a href="#">Twitter</a>
+          <a href="#">GitHub</a>
+          <a href="#">YouTube</a>
+          <a href="#">Email</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Physics Logic Lectures. All rights reserved.</span>
+        <span>Built for learners, by learners.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
